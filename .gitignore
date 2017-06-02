@@ -1,3 +1,4 @@
 /vendor
 /node_modules
 /front-end/js/vue-components/*
+/.idea
