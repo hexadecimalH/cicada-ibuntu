@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'parts/head.twig' %}
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <form action="/login" method="post">
+                    <div class="form-group">
+                        <label for="email">Email address:</label>
+                        <input type="email" name="email" class="form-control" id="email" >
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password:</label>
+                        <input type="password" name="password" class="form-control" id="pwd" >
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox"> Remember me</label>
+                    </div>
+                    <div class="form-group">
+                        <a href="{{ google }}">
+                            <img src="http://firecast.conservation.org/img/sign-in-with-google.png" alt="" width="100%">
+                        </a>
+                        <a href="{{ fb }}">
+                            <img src="http://i.stack.imgur.com/pZzc4.png" alt="" width="100%">
+                        </a>
+                    </div>
+                    {% if message is defined %}
+                    <div class="form-group">
+                        <div class="alert alert-danger">
+                            <strong>{{ message }}</strong>.
+                        </div>
+                    </div>
+                    {% endif %}
+                    <button type="" class="btn btn-default">Sign Up</button>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
+

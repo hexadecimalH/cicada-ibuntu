@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'parts/head.twig' %}
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    {% include 'parts/header.twig' with  {'active': active } %}
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="{{ user.picture }}" alt="Profile Picture" title="User Picture" >
+                        <div class="caption">
+                            <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                            <p>E-mail {{ user.email }}</p>
+                            <p>
+                                <a href="{{ user.link }}" class="btn btn-primary" role="button" target="_blank">Profile Link</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

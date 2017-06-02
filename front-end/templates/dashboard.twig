@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'parts/head.twig' %}
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            {% include 'parts/header.twig' %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="jumbotron">
+            <h1>Hello, {{ user.first_name }}</h1>
+            <p>Welcome to Ibuntu dashboard page</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Go Back</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

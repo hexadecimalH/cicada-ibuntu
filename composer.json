@@ -1,0 +1,16 @@
+{
+  "require": {
+    "cicada/cicada": "@stable",
+    "robmorgan/phinx": "^0.8.0",
+    "php-activerecord/php-activerecord": "^1.1",
+    "twig/twig": "~2.0",
+    "google/apiclient": "^2.0",
+    "facebook/graph-sdk": "^5.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ibuntu\\": "src/",
+      "IbuntuTest\\": "tests/"
+    }
+  }
+}
