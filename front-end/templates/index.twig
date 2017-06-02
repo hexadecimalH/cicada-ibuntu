@@ -2,7 +2,7 @@
 <html lang="en">
 {% include 'parts/head.twig' %}
 <body>
-    <div class="container">
+    <div class="container" id="root" >
         <div class="row">
             <div class="col-sm-4">
                 <form action="/login" method="post">
@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-
+    {% include 'parts/include-scripts.twig' %}
 
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 {% include 'parts/head.twig' %}
     <body>
-        <div class="container-fluid">
+        <div class="container-fluid" id="root" >
             <div class="row">
                 <div class="col-sm-12">
                     {% include 'parts/header.twig' with  {'active': active } %}
@@ -25,5 +25,6 @@
                 </div>
             </div>
         </div>
+        {% include 'parts/include-scripts.twig' %}
     </body>
 </html>

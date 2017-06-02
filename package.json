@@ -1,0 +1,34 @@
+{
+  "name": "ibuntu",
+  "version": "1.0.0",
+  "description": "### Ibuntu e-learning",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.config.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:hexadecimalH/cicada-ibuntu.git"
+  },
+  "author": "Haris Zenovic",
+  "license": "ISC",
+  "homepage": "",
+  "dependencies": {
+    "vue": "^2.2.6",
+    "vuejs-datepicker": "^0.7.5"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-modern-browsers": "^9.0.2",
+    "babel-preset-vue-app": "^1.2.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "webpack": "^2.4.1"
+  }
+}
