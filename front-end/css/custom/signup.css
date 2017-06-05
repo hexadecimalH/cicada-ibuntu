@@ -1,0 +1,34 @@
+.custom-grid{
+    width:80%;
+    margin:auto;
+}
+.submit-custom{
+    text-align: center;
+}
+.submit-custom div{
+    display:inline;
+}
+.submit-custom-right{
+    text-align: right;
+}
+.right{
+    text-align:right;
+}
+.right button{
+    display:inline;
+}
+.sign-up-heading{
+    text-align: center;
+}
+.profile-pic{
+    display: block
+}
+.text-gallery{
+    text-align:center;
+}
+
+@media screen and (max-width:767px) {
+    .right{
+        text-align: center;
+    }
+}

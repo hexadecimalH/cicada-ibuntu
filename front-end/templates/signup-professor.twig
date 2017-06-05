@@ -1,0 +1,338 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Ibuntu | Sign Up </title>
+    {% include 'parts/head.twig' %}
+    <link rel="stylesheet" href="/front-end/css/custom/signup.css">
+</head>
+<body >
+<div id="root">
+    <h2 class="header"><a href="index.html">Ibuntu</a></h2>
+    <div class="grid-form1 custom-grid">
+        <h3 class="sign-up-heading">Professor Sign Up</h3>
+        <div class="tab-content">
+            <form action="" class="form-horizontal" novalidate>
+                <div class="tab-pane active" id="horizontal-form">
+                    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#" id="home-tab" role="tab" >Personal Info</a></li>
+                            <li role="presentation"><a href="#" role="tab" id="profile-tab">Study Info</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                <div class="form-group">
+                                    <div class="col-sm-3 col-sm-offset-4 profile-pic">
+                                        <div class="gallery-img">
+                                            <a href="#" class="b-link-stripe b-animate-go  swipebox"  title="Image Title" >
+                                                <img class="img-responsive " v-bind:src="image" alt="" />
+                                                <span class="zoom-icon"> </span> </a>
+                                            </a>
+                                        </div>
+                                        <div class="text-gallery">
+                                            <button class="btn-danger btn" onclick="document.getElementById('uploadInput').click(function(e){e.preventDefault()}); return false;">Upload</button>
+                                            <input type="file" class="hidden" id="uploadInput" name="profile_picture" v-on:change="uploadImage($event)">
+                                            <input type="text" class="hidden" v-bind:value="imageUrl" name="image_url">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div  v-bind:class="nameClass">
+                                    <label for="focusedinput" class="col-sm-2 control-label">First Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" v-model="name" class="form-control1" id="focusedinput" name="first_name" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div  v-bind:class="surnameClass">
+                                    <label for="focusedinput" class="col-sm-2 control-label">Last Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" v-model="surname" class="form-control1" id="focusedinput" name="last_name" placeholder="Surname">
+                                    </div>
+                                </div>
+                                <div  v-bind:class="emailClass">
+                                    <label for="focusedinput" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" v-model="email" class="form-control1" id="focusedinput" name="last_name" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="radio" class="col-sm-2 control-label">Gender</label>
+                                    <div class="col-sm-8">
+                                        <div class="radio block"><label><input type="radio" name="gender" value="male" > Male</label></div>
+                                        <div class="radio block"><label><input type="radio" name="gender" value="female" > Female</label></div>
+                                    </div>
+                                </div>
+                                <div v-bind:class="labelClass">
+                                    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" v-model="password" class="form-control1" id="inputPassword" name="password" placeholder="Enter Your Password" >
+                                    </div>
+                                </div>
+                                <div v-bind:class="labelClass">
+                                    <label for="inputPassword" class="col-sm-2 control-label">Repeat Password</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" v-model="rePassword" class="form-control1" id="re-inputPassword"  placeholder="Re-Enter Your Password">
+                                    </div>
+                                </div>
+                                <div class="form-group submit-custom-right">
+                                    <div class="col-sm-4 col-sm-offset-6 right">
+                                        <button class="btn-danger btn" v-bind:href="buttonHref" id="profile-tab" data-toggle="tab" aria-controls="profile" v-on:click="checkFirstStepFields()">Next Step</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+                                <div class="form-group">
+                                    <label for="focusedinput" class="col-sm-2 control-label">University</label>
+                                    <div class="col-sm-8">
+                                        <select name="selector1" id="selector1" class="form-control1" >
+                                            <option>Please select University</option>
+                                            <option>IBU</option>
+                                            <option>Finki</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <p>If University is not offered please register your University</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="focusedinput" class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-8">
+                                        <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#universityModal">Enter New University</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="selector1" class="col-sm-2 control-label">Faculty</label>
+                                    <div class="col-sm-8">
+                                        <select name="selector1" id="selector1" class="form-control1" >
+                                            <option>Please select Faculty</option>
+                                            <option>IBU</option>
+                                            <option>Finki</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <p>If Faculty is not offered please register your Faculty</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="focusedinput" class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-8">
+                                        <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#facultyModal">Enter New Faculty</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="selector1" class="col-sm-2 control-label">Department</label>
+                                    <div class="col-sm-8">
+                                        <select name="selector1" id="selector1" class="form-control1" >
+                                            <option>Please select Department</option>
+                                            <option>Dolore, ab unde modi est!</option>
+                                            <option>Illum, fuga minus sit eaque.</option>
+                                            <option>Consequatur ducimus maiores voluptatum minima.</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <p>If Department is not offered please register your Department</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="focusedinput" class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-8">
+                                        <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#departmentModal">Enter New Department</button>
+                                    </div>
+                                </div>
+                                <div class="form-group submit-custom">
+                                    <div class="col-sm-4 col-sm-offset-6 right">
+                                        <button class="btn-danger btn" href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" v-on:click="checkFirstStepFields()">Back</button>
+                                        <button class="btn-primary btn">Submit</button>
+                                    </div>
+                                </div>
+                                <!-- University Modal Start -->
+                                <div class="modal fade" id="universityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h2 class="modal-title">Create new University</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">Name</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control1" id="focusedinput" name="name" placeholder="University Offical Name" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">Address</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control1" id="focusedinput" name="addres" placeholder="University Registered Addres" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">City</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control1" id="focusedinput" name="city" placeholder="City" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">Country</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control1" id="focusedinput" name="country" placeholder="Country" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">Email</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="email" class="form-control1" id="focusedinput" name="email" placeholder="uni@uni.edu.*" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">University Website</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control1" id="focusedinput" name="website" placeholder="www.uni.edu.*" required="required">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Create</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                    <!-- University Modal End -->
+                                </div>
+                                <!-- Faculty Modal Start -->
+                                <div class="modal fade" id="facultyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h2 class="modal-title">Create new Faculty</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">University</label>
+                                                    <div class="col-sm-8">
+                                                        <select name="selector1" id="selector1" class="form-control1" required="required">
+                                                            <option>Please select University</option>
+                                                            <option>IBU</option>
+                                                            <option>Finki</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">Name</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control1" id="focusedinput" name="name" placeholder="Faculty Offical Name" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Faculty Branch</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control1">
+                                                            <option>Option 1</option>
+                                                            <option>Option 2</option>
+                                                            <option>Option 3</option>
+                                                            <option>Option 4</option>
+                                                            <option>Option 5</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="txtarea1" class="col-sm-2 control-label">Faculty Info</label>
+                                                    <div class="col-sm-8"><textarea name="txtarea1" id="txtarea1" cols="50" rows="6" class="form-control1"></textarea></div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Create</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div>
+                                <!-- Faculty Modal End -->
+                                <!-- Department Modal Start -->
+                                <div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h2 class="modal-title">Create new Department</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">Name</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control1" id="focusedinput" name="name" placeholder="Faculty Offical Name" required="required">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="focusedinput" class="col-sm-2 control-label">University</label>
+                                                    <div class="col-sm-8">
+                                                        <select name="selector1" id="selector1" class="form-control1" required="required">
+                                                            <option>Please select University</option>
+                                                            <option>IBU</option>
+                                                            <option>Finki</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="selector1" class="col-sm-2 control-label">Faculty</label>
+                                                    <div class="col-sm-8"><select name="selector1" id="selector1" class="form-control1" required="required">
+                                                            <option>Please select Faculty</option>
+                                                            <option>IBU</option>
+                                                            <option>Finki</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="txtarea1" class="col-sm-2 control-label">Department Info</label>
+                                                    <div class="col-sm-8"><textarea name="txtarea1" id="txtarea1" cols="50" rows="6" class="form-control1"></textarea></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Create</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                    <!-- Department Modal End -->
+                                </div>
+                                <!-- Department Modal Start -->
+                                <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background: red;">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h2 class="modal-title">Error</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Sorry the picture hasn't been uploaded succesfully please try again or contact support</p>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                    <!-- Department Modal End -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!---->
+<div class="copy-right">
+    <p> &copy; 2016 Minimal. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+</div>
+<!---->
+<!--scrolling js-->
+<script src="/front-end/js/assets/jquery.nicescroll.js"></script>
+<script src="/front-end/js/assets/scripts.js"></script>
+<script src="/front-end/js/vue-components/commons.chunk.js"></script>
+<script src="https://unpkg.com/vue"></script>
+<script src="/front-end/js/vue-components/registration.chunk.js"></script>
+<!--//scrolling js-->
+</body>
+</html>

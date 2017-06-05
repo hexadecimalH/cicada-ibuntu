@@ -12,6 +12,8 @@ namespace Ibuntu;
 use Ibuntu\Clients\FacebookClient;
 use Ibuntu\Clients\GoogleClient;
 use Ibuntu\Middleware\Authentication;
+use Ibuntu\Libraries\ImageManipulationLibrary;
+use Ibuntu\Services\ImageStorageService;
 use Ibuntu\Services\LoginService;
 use Twig_Environment;
 use Twig_SimpleFunction;
@@ -19,15 +21,24 @@ use Twig_Loader_Filesystem;
 
 class Application extends \Cicada\Application
 {
+    public $basePath;
+    public $domain;
+    public $protocol;
+
     public function __construct($configPath, $domain, $protocol)
     {
         parent::__construct();
         $this->configure($configPath);
         $this->configureDatabase();
+        $this->setupLibraries();
         $this->setupServices();
         $this->createClients();
         $this->setupMiddleware();
         $this->setupTwig();
+
+        $this->basePath = $this['config']->getPathToUpload();
+        $this->domain = $domain;
+        $this->protocol = $protocol;
 
     }
 
@@ -37,10 +48,20 @@ class Application extends \Cicada\Application
         };
     }
 
+    protected function setupLibraries(){
+        $this['imageManipulationLibrary'] = function () {
+            return new ImageManipulationLibrary();
+        };
+    }
+
     protected function setupServices(){
         $this['loginService'] = function (){
             return new LoginService();
         };
+        $this['imageStorageService'] = function () {
+            return new ImageStorageService($this->basePath, $this->protocol, $this->domain, $this['imageManipulationLibrary']);
+        };
+
     }
 
     protected function configureDatabase()
@@ -92,7 +113,7 @@ class Application extends \Cicada\Application
         $googleClient = $this['googleClient'];
         $facebookClient = $this['facebookClient'];
         $this['authentication'] = function() use ($googleClient, $facebookClient){
-            new authentication($googleClient, $facebookClient);
+            new Authentication($googleClient, $facebookClient, $this['loginService']);
         };
     }
 }

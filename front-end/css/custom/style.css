@@ -1,0 +1,24 @@
+.login-sub{
+    background:#9b2b2f !important;
+}
+.center{
+    text-align:center;
+}
+.fb-login:before{
+    background:#3b5998 !important;
+}
+.fb-login{
+    background: #1b3f8c !important;
+}
+.header{
+    text-align: center;
+    color:#d95459 !important;
+    margin:.5em 0;
+}
+.header a{
+    color:#d95459 !important;
+    text-decoration: none;
+}
+.login-submit-custom{
+    margin-top:.5em;
+}

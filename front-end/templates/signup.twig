@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Ibuntu | Sign Up </title>
+    {% include 'parts/head.twig' %}
+    <link rel="stylesheet" href="/front-end/css/custom/signup.css">
+</head>
+<body>
+<div >
+    <h2 class="header"><a href="index.html">Ibuntu</a></h2>
+    <div class="grid-form1 custom-grid">
+        <h3 class="sign-up-heading">Student Sign Up</h3>
+        <div class="tab-content">
+            <form action="" class="form-horizontal">
+                <div class="tab-pane active" id="horizontal-form">
+                    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#" id="home-tab" role="tab" >Personal Info</a></li>
+                            <li role="presentation"><a href="#" role="tab" id="profile-tab">Study Info</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                <div class="form-group">
+                                    <div class="col-sm-3 col-sm-offset-4 profile-pic">
+                                        <div class="gallery-img">
+                                            <a href="images/ga.jpg" class="b-link-stripe b-animate-go  swipebox"  title="Image Title" >
+                                                <img class="img-responsive " src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="" />
+                                                <span class="zoom-icon"> </span> </a>
+                                            </a>
+                                        </div>
+                                        <div class="text-gallery">
+                                            <button class="btn-danger btn" id="upload">Upload</button>
+                                            <input type="file" class="hidden" id="uploadInput" name="profile_picture">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="focusedinput" class="col-sm-2 control-label">First Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control1" id="focusedinput" name="first_name" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="focusedinput" class="col-sm-2 control-label">Last Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control1" id="focusedinput" name="last_name" placeholder="Surname">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="radio" class="col-sm-2 control-label">Gender</label>
+                                    <div class="col-sm-8">
+                                        <div class="radio block"><label><input type="radio" name="gender" value="male" > Male</label></div>
+                                        <div class="radio block"><label><input type="radio" name="gender" value="female" > Female</label></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control1" id="inputPassword" name="password" placeholder="Enter Your Password">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword" class="col-sm-2 control-label">Repeat Password</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" class="form-control1" id="re-inputPassword"  placeholder="Re-Enter Your Password">
+                                    </div>
+                                </div>
+                                <div class="form-group submit-custom-right">
+                                    <div class="col-sm-4 col-sm-offset-6 right">
+                                        <button class="btn-danger btn" href="#profile" id="profile-tab" data-toggle="tab" aria-controls="profile">Next Step</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+                                <div class="form-group">
+                                    <label for="focusedinput" class="col-sm-2 control-label">University</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control1" id="focusedinput" name="university" placeholder="Full Official Name of University">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="focusedinput" class="col-sm-2 control-label">Department</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control1" id="focusedinput" name="university" placeholder="Department">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="selector1" class="col-sm-2 control-label">Dropdown Select</label>
+                                    <div class="col-sm-8"><select name="selector1" id="selector1" class="form-control1">
+                                            <option>Lorem ipsum dolor sit amet.</option>
+                                            <option>Dolore, ab unde modi est!</option>
+                                            <option>Illum, fuga minus sit eaque.</option>
+                                            <option>Consequatur ducimus maiores voluptatum minima.</option>
+                                        </select></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div class="col-sm-8">
+                                        <select multiple="" class="form-control1">
+                                            <option>Option 1</option>
+                                            <option>Option 2</option>
+                                            <option>Option 3</option>
+                                            <option>Option 4</option>
+                                            <option>Option 5</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group submit-custom">
+                                    <div class="col-sm-4 col-sm-offset-6 right">
+                                        <button class="btn-danger btn" href="#home" id="profile-tab" role="tab" data-toggle="tab" aria-controls="home">Back</button>
+                                        <button class="btn-primary btn">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!---->
+<div class="copy-right">
+    <p> &copy; 2016 Minimal. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>	    </div>
+<!---->
+<!--scrolling js-->
+<script src="/front-end/js/assets/jquery.nicescroll.js"></script>
+<script src="/front-end/js/assets/scripts.js"></script>
+<!--//scrolling js-->
+</body>
+</html>

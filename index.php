@@ -9,6 +9,7 @@ require 'vendor/autoload.php';
 use Ibuntu\Application;
 use Ibuntu\Controllers\LoginController;
 use Cicada\Routing\RouteCollection;
+use Ibuntu\Controllers\RegistrationController;
 use Ibuntu\Controllers\SessionController;
 use Ibuntu\Middleware\Authentication;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,10 +29,17 @@ $app = new Application($_SERVER['HOME'], $_SERVER['HTTP_HOST'], getProtocol().':
 
 $authentication = new Authentication($app['googleClient'],$app['facebookClient'], $app['loginService']);
 $loginController = new LoginController($app['googleClient'],$app['facebookClient'], $app['twig'], $app['loginService']);
+$registrationController = new RegistrationController($app['imageStorageService']);
 $sessionController = new SessionController($app['twig']);
 
 /** @var RouteCollection $loginRouteCollection */
 $loginRouteCollection = $app['collection_factory'];
+
+/** @var RouteCollection $professorRegistrationRouteCollection */
+$professorRegistrationRouteCollection = $app['collection_factory']->prefix('/professor');
+
+/** @var RouteCollection $studentRegistrationRouteCollection */
+$studentRegistrationRouteCollection = $app['collection_factory']->prefix('/student');
 
 $loginRouteCollection->get('/',                     [$loginController, 'index']);
 $loginRouteCollection->get('/oauth2callback',       [$loginController, 'clientLogin'])
@@ -52,6 +60,13 @@ $app->get('/profile', [$sessionController, 'profile'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->isLoggedIn($app, $request);
     });
+// registration routes
+$professorRegistrationRouteCollection->post('/image', [$registrationController, "uploadProfessorImage"]);
+$app->get('/signup', [$loginController, 'signup']);
+$app->get('/signup-professor', [$loginController, 'signupProfessors']);
 
 $app->addRouteCollection($loginRouteCollection);
+$app->addRouteCollection($studentRegistrationRouteCollection);
+$app->addRouteCollection($professorRegistrationRouteCollection);
+
 $app->run();

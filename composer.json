@@ -3,6 +3,7 @@
     "cicada/cicada": "@stable",
     "robmorgan/phinx": "^0.8.0",
     "php-activerecord/php-activerecord": "^1.1",
+    "eventviva/php-image-resize": "1.6.*",
     "twig/twig": "~2.0",
     "google/apiclient": "^2.0",
     "facebook/graph-sdk": "^5.5"

@@ -6,6 +6,7 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 module.exports = {
     entry: {
         'login': './/resources/vue/Login/component.js',
+        'registration': './/resources/vue/Registration/professor.js',
     },
     output: { path: __dirname + '/front-end/js/vue-components', filename: '[name].chunk.js' },
     module: {
@@ -21,6 +22,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new CommonsChunkPlugin("commons.chunk.js")
+        new CommonsChunkPlugin("commons")
     ]
 };

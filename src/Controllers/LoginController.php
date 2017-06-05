@@ -68,4 +68,12 @@ class LoginController
         $fbUrl = $this->facebookClient->fbHelper->getLoginUrl($this->facebookClient->getRedirectUrl(), $this->facebookClient->getPermissions());
         return ['gp' => $gpUrl, 'fb' => $fbUrl];
     }
+
+    public function signup(){
+        return $this->twig->render('signup.twig');
+    }
+
+    public function signupProfessors(){
+        return $this->twig->render('signup-professor.twig');
+    }
 }
