@@ -39,7 +39,7 @@ class ProfessorMigration extends AbstractMigration
                 'update'=> 'CASCADE'
             ])
             ->addColumn('user_id', 'integer')
-            ->addForeignKey('user_id', 'user', 'id', [
+            ->addForeignKey('user_id', 'users', 'id', [
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])

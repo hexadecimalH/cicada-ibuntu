@@ -29,7 +29,7 @@ $app = new Application($_SERVER['HOME'], $_SERVER['HTTP_HOST'], getProtocol().':
 
 $authentication = new Authentication($app['googleClient'],$app['facebookClient'], $app['loginService']);
 $loginController = new LoginController($app['googleClient'],$app['facebookClient'], $app['twig'], $app['loginService']);
-$registrationController = new RegistrationController($app['imageStorageService']);
+$registrationController = new RegistrationController($app['imageStorageService'], $app['registrationService'], $app['twig']);
 $sessionController = new SessionController($app['twig']);
 
 /** @var RouteCollection $loginRouteCollection */
@@ -60,10 +60,16 @@ $app->get('/profile', [$sessionController, 'profile'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->isLoggedIn($app, $request);
     });
+
 // registration routes
-$professorRegistrationRouteCollection->post('/image', [$registrationController, "uploadProfessorImage"]);
+$professorRegistrationRouteCollection->post('/image',           [$registrationController, "uploadProfessorImage"]);
+$professorRegistrationRouteCollection->post('/university',      [$registrationController, "registerUniversity"]);
+$professorRegistrationRouteCollection->get('/university/all',   [$registrationController, "getAllUniversities"]);
+$professorRegistrationRouteCollection->post('/faculty',         [$registrationController, "registerFaculty"]);
+$professorRegistrationRouteCollection->post('/department',      [$registrationController, "registerDepartment"]);
+$professorRegistrationRouteCollection->get('/signup',           [$registrationController, 'signupProfessors']);
 $app->get('/signup', [$loginController, 'signup']);
-$app->get('/signup-professor', [$loginController, 'signupProfessors']);
+
 
 $app->addRouteCollection($loginRouteCollection);
 $app->addRouteCollection($studentRegistrationRouteCollection);

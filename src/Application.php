@@ -15,6 +15,7 @@ use Ibuntu\Middleware\Authentication;
 use Ibuntu\Libraries\ImageManipulationLibrary;
 use Ibuntu\Services\ImageStorageService;
 use Ibuntu\Services\LoginService;
+use Ibuntu\Services\RegistrationService;
 use Twig_Environment;
 use Twig_SimpleFunction;
 use Twig_Loader_Filesystem;
@@ -29,6 +30,7 @@ class Application extends \Cicada\Application
     {
         parent::__construct();
         $this->configure($configPath);
+
         $this->configureDatabase();
         $this->setupLibraries();
         $this->setupServices();
@@ -58,6 +60,11 @@ class Application extends \Cicada\Application
         $this['loginService'] = function (){
             return new LoginService();
         };
+
+        $this['registrationService'] = function () {
+            return new RegistrationService();
+        };
+
         $this['imageStorageService'] = function () {
             return new ImageStorageService($this->basePath, $this->protocol, $this->domain, $this['imageManipulationLibrary']);
         };

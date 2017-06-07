@@ -50,7 +50,7 @@ class FacebookClient extends Facebook
             // When Graph returns an error
             var_dump($this->fbHelper->getError());
             echo 'Graph returned an error: ' . $e->getMessage();
-            exit;
+            exit;die();
         } catch(FacebookSDKException $e) {
             // There was an error communicating with Graph
             echo $e->getMessage();

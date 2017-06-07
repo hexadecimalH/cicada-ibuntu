@@ -44,6 +44,7 @@ class LoginController
 
     public function index(Application $app, Request $request){
         $urls = $this->getClientUrl();
+
         return $this->twig->render("index.twig", ['google' => $urls['gp'], 'fb' => $urls['fb']]);
 
     }
@@ -73,7 +74,4 @@ class LoginController
         return $this->twig->render('signup.twig');
     }
 
-    public function signupProfessors(){
-        return $this->twig->render('signup-professor.twig');
-    }
 }

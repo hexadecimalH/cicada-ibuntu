@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class UniversityMigration extends AbstractMigration
+class FacultyMigration extends AbstractMigration
 {
     /**
      * Change Method.
@@ -29,7 +29,10 @@ class UniversityMigration extends AbstractMigration
     {
         $table = $this->table('faculty');
         $table->addColumn('name', 'text')
+            ->addColumn('university_id', 'integer')
+            ->addForeignKey('university_id', 'university', 'id')
             ->addColumn('info', 'text')
+            ->addColumn('branch', 'text')
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->create();
     }

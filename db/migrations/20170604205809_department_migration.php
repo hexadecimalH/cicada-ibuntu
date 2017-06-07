@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class ProfessorMigration extends AbstractMigration
+class DepartmentMigration extends AbstractMigration
 {
     /**
      * Change Method.
@@ -38,6 +38,7 @@ class ProfessorMigration extends AbstractMigration
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
+            ->addColumn('name', 'text')
             ->addColumn('info', 'text')
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('modified', 'datetime', ['null' => true])

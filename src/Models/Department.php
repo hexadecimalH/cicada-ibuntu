@@ -1,18 +1,17 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: haris
- * Date: 31.5.17
- * Time: 00:17
+ * Date: 7.6.17
+ * Time: 02:15
  */
 
 namespace Ibuntu\Models;
 
+
 use ActiveRecord\Model;
 
-class User extends Model
+class Department extends Model
 {
-    static $table_name = 'users';
-
+    static $table_name = "department";
 }

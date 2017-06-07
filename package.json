@@ -17,6 +17,7 @@
   "license": "ISC",
   "homepage": "",
   "dependencies": {
+    "axios": "^0.16.2",
     "vue": "^2.2.6",
     "vuejs-datepicker": "^0.7.5"
   },
