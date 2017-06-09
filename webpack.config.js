@@ -7,6 +7,7 @@ module.exports = {
     entry: {
         'login': './/resources/vue/Login/component.js',
         'registration': './/resources/vue/Registration/professor.js',
+        'student-registration': './/resources/vue/Registration/student.js',
     },
     output: { path: __dirname + '/front-end/js/vue-components', filename: '[name].chunk.js' },
     module: {
@@ -20,6 +21,11 @@ module.exports = {
                 }
             }
         ]
+    },
+    resolve: {
+        alias: {
+            vue: 'vue/dist/vue.js'
+        }
     },
     plugins: [
         new CommonsChunkPlugin("commons")

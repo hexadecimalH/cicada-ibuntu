@@ -15,4 +15,7 @@ class User extends Model
 {
     static $table_name = 'users';
 
+    public function serialize(){
+        return $this->to_array();
+    }
 }

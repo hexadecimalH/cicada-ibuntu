@@ -45,6 +45,15 @@ class ImageStorageService
 
     private function storeImageContents($path, $content){
         file_put_contents($this->basePath.$path, $content);
+        chmod($this->basePath.$path, 0777);
         return $path;
+    }
+
+    public function moveAndRenameImage($folderName, $url, $id){
+        $digits = 5;
+        $random = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
+        $newUrl = "/uploads"."/".$folderName.'/'.$id."_".$random.".jpg";
+        rename($this->basePath.$url, $this->basePath.$newUrl );
+        return $newUrl;
     }
 }

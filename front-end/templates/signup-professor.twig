@@ -10,331 +10,345 @@
     <h2 class="header"><a href="index.html">Ibuntu</a></h2>
     <div class="grid-form1 custom-grid">
         <h3 class="sign-up-heading">Professor Sign Up</h3>
-        <div class="tab-content">
-            <form action="" class="form-horizontal" novalidate>
-                <div class="tab-pane active" id="horizontal-form">
-                    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-                        <ul id="myTab" class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#" id="home-tab" role="tab" >Personal Info</a></li>
-                            <li role="presentation"><a href="#" role="tab" id="profile-tab">Study Info</a></li>
-                        </ul>
-                        <div id="myTabContent" class="tab-content" >
-                            <div role="tabpanel" class="tab-pane fade " id="home" aria-labelledby="home-tab">
-                                <div class="form-group">
-                                    <div class="col-sm-3 col-sm-offset-4 profile-pic">
-                                        <div class="gallery-img">
-                                            <a href="#" class="b-link-stripe b-animate-go  swipebox"  title="Image Title" >
-                                                <img class="img-responsive " v-bind:src="image" alt="" />
-                                                <span class="zoom-icon"> </span> </a>
-                                            </a>
-                                        </div>
-                                        <div class="text-gallery">
-                                            <button class="btn-danger btn" onclick="document.getElementById('uploadInput').click(function(e){e.preventDefault()}); return false;">Upload</button>
-                                            <input type="file" class="hidden" id="uploadInput" name="profile_picture" v-on:change="uploadImage($event)">
-                                            <input type="text" class="hidden" v-bind:value="imageUrl" name="image_url">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div  v-bind:class="nameClass">
-                                    <label for="focusedinput" class="col-sm-2 control-label">First Name</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" v-model="name" class="form-control1" id="focusedinput" name="first_name" placeholder="Name">
-                                    </div>
-                                </div>
-                                <div  v-bind:class="surnameClass">
-                                    <label for="focusedinput" class="col-sm-2 control-label">Last Name</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" v-model="surname" class="form-control1" id="focusedinput" name="last_name" placeholder="Surname">
-                                    </div>
-                                </div>
-                                <div  v-bind:class="emailClass">
-                                    <label for="focusedinput" class="col-sm-2 control-label">Email</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" v-model="email" class="form-control1" id="focusedinput" name="last_name" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="radio" class="col-sm-2 control-label">Gender</label>
-                                    <div class="col-sm-8">
-                                        <div class="radio block"><label><input type="radio" name="gender" value="male" > Male</label></div>
-                                        <div class="radio block"><label><input type="radio" name="gender" value="female" > Female</label></div>
-                                    </div>
-                                </div>
-                                <div v-bind:class="labelClass">
-                                    <label for="inputPassword" class="col-sm-2 control-label">Password</label>
-                                    <div class="col-sm-8">
-                                        <input type="password" v-model="password" class="form-control1" id="inputPassword" name="password" placeholder="Enter Your Password" >
-                                    </div>
-                                </div>
-                                <div v-bind:class="labelClass">
-                                    <label for="inputPassword" class="col-sm-2 control-label">Repeat Password</label>
-                                    <div class="col-sm-8">
-                                        <input type="password" v-model="rePassword" class="form-control1" id="re-inputPassword"  placeholder="Re-Enter Your Password">
-                                    </div>
-                                </div>
-                                <div class="form-group submit-custom-right">
-                                    <div class="col-sm-4 col-sm-offset-6 right">
-                                        <button class="btn-danger btn" v-bind:href="buttonHref" id="profile-tab" data-toggle="tab" aria-controls="profile" v-on:click="checkFirstStepFields()">Next Step</button>
-                                    </div>
-                                </div>
+        <tabs v-model="activeTab" nav-style="tabs" justified>
+            {% if customSignup == "custom" %}
+            <tab header="Personal Info"  disabled>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-3 col-sm-offset-4 profile-pic">
+                            <div class="gallery-img">
+                                <a href="#" class="b-link-stripe b-animate-go  swipebox"  title="Image Title" >
+                                    <img class="img-responsive " v-bind:src="image" alt="" />
+                                    <span class="zoom-icon"> </span>
+                                </a>
+                                </a>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade in active" id="profile" aria-labelledby="profile-tab">
-                                <div class="form-group">
-                                    <label for="focusedinput" class="col-sm-2 control-label">University</label>
-                                    <div class="col-sm-8">
-                                        <select name="selector1" id="selector1" class="form-control1" >
-                                            <option>Please select University</option>
-                                            <option v-for="university in universities" :value="university.id">
-                                                ${ university.name}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-2" style="text-align:center">
-                                        <img src="/uploads/images/icons/info.svg" alt="" data-toggle="tooltip" data-placement="top" title="If University is not offered please register your University" width="35%">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="focusedinput" class="col-sm-2 control-label"></label>
-                                    <div class="col-sm-8">
-                                        <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#universityModal">Enter New University</button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="selector1" class="col-sm-2 control-label">Faculty</label>
-                                    <div class="col-sm-8">
-                                        <select name="selector1" id="selector1" class="form-control1" >
-                                            <option>Please select Faculty</option>
-                                            <option v-for="faculty in faculties" :value="faculty.id">
-                                                ${ faculty.name }
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-2" style="text-align:center">
-                                        <img src="/uploads/images/icons/info.svg" alt="" data-toggle="tooltip" data-placement="top" title="If Faculty is not offered please register your Faculty" width="35%">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="focusedinput" class="col-sm-2 control-label"></label>
-                                    <div class="col-sm-8">
-                                        <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#facultyModal">Enter New Faculty</button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="selector1" class="col-sm-2 control-label">Department</label>
-                                    <div class="col-sm-8">
-                                        <select name="selector1" id="selector1" class="form-control1" >
-                                            <option>Please select Department</option>
-                                            <option v-for="department in departments" :value="department.id">
-                                                ${ department.name }
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-2" style="text-align:center">
-                                        <img src="/uploads/images/icons/info.svg" alt="" data-toggle="tooltip" data-placement="top" title="If Department is not offered please register your Department" width="35%">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="focusedinput" class="col-sm-2 control-label"></label>
-                                    <div class="col-sm-8">
-                                        <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#departmentModal">Enter New Department</button>
-                                    </div>
-                                </div>
-                                <div class="form-group submit-custom">
-                                    <div class="col-sm-4 col-sm-offset-6 right">
-                                        <button class="btn-danger btn" href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" v-on:click="checkFirstStepFields()">Back</button>
-                                        <button class="btn-primary btn">Submit</button>
-                                    </div>
-                                </div>
-                                <!-- University Modal Start -->
-                                <div class="modal fade" id="universityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h2 class="modal-title">Create new University</h2>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div v-bind:class="universityNameClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">Name</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control1" id="focusedinput" v-model="university_name" placeholder="University Offical Name" required="required">
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="universityAddressClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">Address</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control1" id="focusedinput" v-model="university_address" placeholder="University Registered Addres" required="required">
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="universityCityClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">City</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control1" id="focusedinput" v-model="university_city" placeholder="City" required="required">
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="universityCountryClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">Country</label>
-                                                    <div class="col-sm-8">
-                                                        <select name="university_country" v-model="university_country" id="selector1" class="form-control1" >
-                                                            <option value="">Click to pick</option>
-                                                            <option value="macedonia">Macedonia</option>
-                                                            <option value="albania">Albania</option>
-                                                            <option value="serbia">Serbia</option>
-                                                            <option value="kosovo">Kosovo</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="universityEmailClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">Email</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="email" class="form-control1" id="focusedinput" v-model="university_email" placeholder="uni@uni.edu.*" required="required">
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="universitySiteClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">University Website</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="url" class="form-control1" id="focusedinput" v-model="university_site" placeholder="www.uni.edu.*" required="required">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
-                                                <button type="button" class="btn btn-primary" v-on:click="registerUniversity()">Create</button>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                    <!-- University Modal End -->
-                                </div>
-                                <!-- Faculty Modal Start -->
-                                <div class="modal fade" id="facultyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h2 class="modal-title">Create new Faculty</h2>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div v-bind:class="facultyBelongsToUniversityClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">University</label>
-                                                    <div class="col-sm-8">
-                                                        <select v-model="facultyBelongsToUniversity" id="selector1" class="form-control1" required="required">
-                                                            <option>Please select University</option>
-                                                            <option v-for="university in universities" :value="university.id">
-                                                                ${ university.name}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="facultyNameClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">Name</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control1" id="focusedinput" v-model="facultyName" placeholder="Faculty Offical Name" required="required">
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="facultyBranchClass">
-                                                    <label class="col-sm-2 control-label">Faculty Branch</label>
-                                                    <div class="col-sm-8">
-                                                        <select class="form-control1" v-model="facultyBranch">
-                                                            <option>Option 1</option>
-                                                            <option>Option 2</option>
-                                                            <option>Option 3</option>
-                                                            <option>Option 4</option>
-                                                            <option>Option 5</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="facultyInfoClass" >
-                                                    <label for="txtarea1" class="col-sm-2 control-label">Faculty Info</label>
-                                                    <div class="col-sm-8"><textarea v-model="facultyInfo" id="txtarea1" cols="50" rows="6" class="form-control1"></textarea></div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Dissmis</button>
-                                                <button type="button" class="btn btn-primary" v-on:click="createFaculty()">Create</button>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div>
-                                <!-- Faculty Modal End -->
-                                <!-- Department Modal Start -->
-                                <div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                <h2 class="modal-title">Create new Department</h2>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div v-bind:class="departmentNameClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">Name</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control1" id="focusedinput" v-model="departmentName" placeholder="Department Offical Name" required="required">
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="departmentBelongsToUniversityClass">
-                                                    <label for="focusedinput" class="col-sm-2 control-label">University</label>
-                                                    <div class="col-sm-8">
-                                                        <select v-model="departmentBelongsToUniversity" id="selector1" class="form-control1" >
-                                                            <option>Please select University</option>
-                                                            <option v-for="university in universities" :value="university.id">
-                                                                ${ university.name}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="departmentBelongsToFacultyClass">
-                                                    <label for="selector1" class="col-sm-2 control-label">Faculty</label>
-                                                    <div class="col-sm-8">
-                                                        <select v-model="departmentBelongsToFaculty" id="selector1" class="form-control1" required="required">
-                                                            <option>Please select Faculty</option>
-                                                            <option v-for="faculty in faculties" :value="faculty.id">
-                                                                ${ faculty.name }
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div v-bind:class="departmentInfoClass">
-                                                    <label for="txtarea1" class="col-sm-2 control-label">Department Info</label>
-                                                    <div class="col-sm-8"><textarea v-model="departmentInfo" id="txtarea1" cols="50" rows="6" class="form-control1"></textarea></div>
-                                                </div>
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" v-on:click="createDepartment()">Create</button>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                    <!-- Department Modal End -->
-                                </div>
-
-                            </div>
-                            <!-- Department Modal Start -->
-                            <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="background: red;">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h2 class="modal-title">Error</h2>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Sorry the picture hasn't been uploaded succesfully please try again or contact support</p>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div><!-- /.modal-content -->
-                                </div><!-- /.modal-dialog -->
-                                <!-- Department Modal End -->
+                            <div class="text-gallery">
+                                <button class="btn-danger btn" onclick="document.getElementById('uploadInput').click(function(e){e.preventDefault()}); return false;">Upload</button>
+                                <input type="file" class="hidden" id="uploadInput" name="profile_picture" v-on:change="uploadImage($event)">
+                                <input type="text" class="hidden" v-bind:value="imageUrl" name="image_url">
                             </div>
                         </div>
                     </div>
+                    <div  :class=" {'form-group': true , 'form-group has-error' : errors.has('name')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">First Name</label>
+                        <div class="col-sm-8 ">
+                            <input type="text" v-model="name" name="name" data-vv-name="name"  v-validate="'required|alpha'" class="form-control1" placeholder="Name">
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('surname')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">Last Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" v-model="surname"  class="form-control1" data-vv-name="surname" v-validate="'required|alpha'"   placeholder="Surname">
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('email')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="text" v-model="email" class="form-control1" data-vv-name="email" v-validate="'required|email'"   placeholder="E-mail">
+                        </div>
+                    </div>
+                    <div :class="passwordClass">
+                        <label for="inputPassword"  class="col-sm-2 control-label">Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" v-model="password" class="form-control1" data-vv-name="password" v-validate="'required|alpha'" id="inputPassword" name="password" placeholder="Enter Your Password" >
+                        </div>
+                    </div>
+                    <div :class="passwordClass">
+                        <label for="inputPassword" class="col-sm-2 control-label">Repeat Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" v-model="rePassword" class="form-control1" id="re-inputPassword"  placeholder="Re-Enter Your Password" >
+                        </div>
+                    </div>
+                    <div class="form-group submit-custom-right">
+                        <div class="col-sm-4 col-sm-offset-6 right">
+                            <button class="btn-danger btn" id="profile-tab" v-on:click="nextTab" >Next Step</button>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+            {% endif %}
+            <tab header="Study Info" disabled>
+                <form action="" class="form-horizontal" >
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('uni')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">University</label>
+                        <div class="col-sm-8">
+                            <select name="selector1" id="selector1" class="form-control1" v-model="university" data-vv-name="university" v-validate="'required|alpha_num'">
+                                <option value="" disabled>Please select University</option>
+                                <option v-for="university in universities" :value="university.id">
+                                    ${ university.name}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" style="text-align:center">
+                            <img src="/uploads/images/icons/info.svg" alt="" data-toggle="tooltip" data-placement="top" title="If University is not offered please register your University" width="35%">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label"></label>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#universityModal">Enter New University</button>
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('faculty')}">
+                        <label for="selector1" class="col-sm-2 control-label">Faculty</label>
+                        <div class="col-sm-8">
+                            <select name="selector1" id="selector1" class="form-control1" v-model="faculty"  data-vv-name="faculty" v-validate="'required|alpha_num'">
+                                <option value="" disabled>Please select Faculty</option>
+                                <option v-for="faculty in faculties" :value="faculty.id">
+                                    ${ faculty.name }
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" style="text-align:center">
+                            <img src="/uploads/images/icons/info.svg" alt="" data-toggle="tooltip" data-placement="top" title="If Faculty is not offered please register your Faculty" width="35%">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label"></label>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#facultyModal">Enter New Faculty</button>
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('department')}">
+                        <label for="selector1" class="col-sm-2 control-label">Department</label>
+                        <div class="col-sm-8">
+                            <select name="selector1" id="selector1" class="form-control1" v-model="department" data-vv-name="department" v-validate="'required|alpha_num'">
+                                <option value="" disabled>Please select Department</option>
+                                <option v-for="department in departments" :value="department.id">
+                                    ${ department.name }
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" style="text-align:center">
+                            <img src="/uploads/images/icons/info.svg" alt="" data-toggle="tooltip" data-placement="top" title="If Department is not offered please register your Department" width="35%">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="focusedinput" class="col-sm-2 control-label"></label>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-primary btn" data-toggle="modal" data-target="#departmentModal">Enter New Department</button>
+                        </div>
+                    </div>
+                    <div class="form-group submit-custom">
+                        <div class="col-sm-4 col-sm-offset-6 right">
+                            {% if customSignup == "custom" %}
+                                <button class="btn-danger btn"  v-on:click="toFirstTab">Back</button>
+                            {% endif %}
+                            <button class="btn-primary btn" v-on:click="submitData">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+        </tabs>
+    </div>
+
+<!-- University Modal Start -->
+<div class="modal fade" id="universityModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" >
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h2 class="modal-title">Create University</h2>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-horizontal">
+                    <div :class=" { 'form-group': true , 'form-group has-error' : errors.has('university_name')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control1" id="focusedinput" v-model="university_name" data-vv-name="university_name" v-validate="'required|alpha'" placeholder="University Offical Name" >
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('university_address')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control1" id="focusedinput" v-model="university_address" data-vv-name="university_address" v-validate="'required|alpha'" placeholder="University Registered Addres" >
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('university_city')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">City</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control1" id="focusedinput" v-model="university_city" data-vv-name="university_city" v-validate="'required|alpha'" placeholder="City" >
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('university_country')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">Country</label>
+                        <div class="col-sm-8">
+                            <select name="university_country" v-model="university_country" id="selector1" data-vv-name="university_country" v-validate="'required|alpha'" class="form-control1" >
+                                <option value="">Click to pick</option>
+                                <option value="macedonia">Macedonia</option>
+                                <option value="albania">Albania</option>
+                                <option value="serbia">Serbia</option>
+                                <option value="kosovo">Kosovo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('university_email')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control1" id="focusedinput" v-model="university_email" data-vv-name="university_email" v-validate="'required|email'" placeholder="uni@uni.edu.*" >
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('university_site')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">University Website</label>
+                        <div class="col-sm-8">
+                            <input type="url" class="form-control1" id="focusedinput" v-model="university_site" data-vv-name="university_site" v-validate="'required|url'" placeholder="www.uni.edu.*" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+                <button type="button" class="btn btn-primary" v-on:click="registerUniversity">Create</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+
+    <!-- University Modal End -->
+    <!-- Faculty Modal Start -->
+    <div class="modal fade" id="facultyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class=""></form>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h2 class="modal-title">Create new Faculty</h2>
                 </div>
-            </form>
-        </div>
+                <div class="modal-body">
+                    <form action="" class="form-horizontal">
+                        <div :class=" {'form-group': true , 'form-group has-error' : errors.has('facultyBelongsToUniversity')}">
+                            <label for="focusedinput" class="col-sm-2 control-label">University</label>
+                            <div class="col-sm-8">
+                                <select v-model="facultyBelongsToUniversity" id="selector1" class="form-control1" data-vv-name="facultyBelongsToUniversity" v-validate="'required|alpha_num'" >
+                                    <option value="">Click to select University</option>
+                                    <option v-for="university in universities" :value="university.id">
+                                        ${ university.name}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div :class=" {'form-group': true , 'form-group has-error' : errors.has('facultyName')}">
+                            <label for="focusedinput" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control1" id="focusedinput" v-model="facultyName" placeholder="Faculty Offical Name" data-vv-name="facultyName" v-validate="'required|alpha'" >
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label for="txtarea1" class="col-sm-2 control-label">Faculty Info</label>
+                            <div class="col-sm-8"><textarea v-model="facultyInfo" id="txtarea1" cols="50" rows="6" class="form-control1"></textarea></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Dissmis</button>
+                    <button type="button" class="btn btn-primary" v-on:click="registerFaculty">Create</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- Faculty Modal End -->
+    <!-- Department Modal Start -->
+    <div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h2 class="modal-title">Create new Department</h2>
+                </div>
+
+                <div class="modal-body">
+                    <form action="" class="form-horizontal">
+                        <div :class=" {'form-group': true , 'form-group has-error' : errors.has('departmentName')}">
+                            <label for="focusedinput" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control1" id="focusedinput" v-model="departmentName" data-vv-name="departmentName" v-validate="'required|alpha'"  placeholder="Department Offical Name" >
+                            </div>
+                        </div>
+                        <div :class=" {'form-group': true , 'form-group has-error' : errors.has('departmentBelongsToUniversity')}">
+                            <label for="focusedinput" class="col-sm-2 control-label">University</label>
+                            <div class="col-sm-8">
+                                <select v-model="departmentBelongsToUniversity" id="selector1" class="form-control1" data-vv-name="departmentBelongsToUniversity" v-validate="'required|alpha_num'" >
+                                    <option value="">Click to select University</option>
+                                    <option v-for="university in universities" :value="university.id">
+                                        ${ university.name}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div :class=" {'form-group': true , 'form-group has-error' : errors.has('departmentBelongsToFaculty')}">
+                            <label for="selector1" class="col-sm-2 control-label">Faculty</label>
+                            <div class="col-sm-8">
+                                <select v-model="departmentBelongsToFaculty" id="selector1" class="form-control1" data-vv-name="departmentBelongsToFaculty" v-validate="'required|alpha_num'" >
+                                    <option value="">Click to select Faculty</option>
+                                    <option v-for="faculty in faculties" :value="faculty.id">
+                                        ${ faculty.name }
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtarea1" class="col-sm-2 control-label">Department Info</label>
+                            <div class="col-sm-8"><textarea v-model="departmentInfo" id="txtarea1" cols="50" rows="6" class="form-control1"></textarea></div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+                    <button type="button" class="btn btn-primary" v-on:click="registerDepartment">Create</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- Department Modal End -->
+    {#hidden form#}
+    <form action="/profile" method="POST" class="hidden" id="hiddenFormSubmit">
+        {% if customSignup == "non-custom" %}
+        <input type="text" name="email" value="{{ user.email }}" class="hidden">
+        <input type="password" name="password" class="hidden">
+        {% else %}
+        <input type="text" name="email" v-model="user_email" class="hidden">
+        <input type="password" name="password" class="hidden">
+        {% endif %}
+    </form>
+    {#hidden form#}
+
+    <!-- Loading Modal Start -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="/uploads/loading/loading.gif" alt="" id="loading">
+                    <p id="loadingParagraph">Loading</p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- Loading Modal End -->
+    <!-- Error Modal Start -->
+    <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: red;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h2 class="modal-title">Error</h2>
+                </div>
+                <div class="modal-body">
+                    <p >Sorry the picture hasn't been uploaded succesfully please try again or contact support</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
 </div>
+<!-- Error Modal End -->
 <!---->
 <div class="copy-right">
     <p> &copy; 2016 Minimal. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
@@ -344,7 +358,6 @@
 {#<script src="/front-end/js/assets/jquery.nicescroll.js"></script>#}
 <script src="/front-end/js/assets/scripts.js"></script>
 <script src="/front-end/js/vue-components/commons.chunk.js"></script>
-<script src="https://unpkg.com/vue"></script>
 <script src="/front-end/js/vue-components/registration.chunk.js"></script>
 <!--//scrolling js-->
 </body>

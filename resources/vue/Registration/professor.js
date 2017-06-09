@@ -1,56 +1,56 @@
 import axios from 'axios';
+import Vue from 'vue';
+import {tabset,tabs, tab, radio} from 'vue-strap';
 
+import VeeValidate from 'vee-validate';
+Vue.use(VeeValidate);
 var Registartion = new Vue({
     el: '#root',
+    components: {
+        tabset,
+        tabs,
+        tab,
+        radio
+    },
     data: {
-        nameClass:'form-group',
-        surnameClass:'form-group',
-        emailClass:'form-group',
+        activeTab:1,
+        name: '',
+        surname:'',
+        email:'',
         password: '',
+        passwordClass:'form-group',
+        gender:'',
+        university:'',
+        department:'',
+        faculty:'',
+        errorMsg:'Sorry the picture has NOT been uploaded succesfully please try again or contact support',
         university_name:'',
-        universityNameClass:'form-group',
         university_email:'',
-        universityEmailClass:'form-group',
         university_number:'',
-        universityNumberClass:'form-group',
         university_city:'',
-        universityCityClass:'form-group',
         university_address:'',
-        universityAddressClass:'form-group',
         university_country:'',
-        universityCountryClass:'form-group',
         university_mail:'',
-        universityMailClass:'form-group',
         university_site:'',
-        universitySiteClass:'form-group',
         universities:[],
         rePassword:'',
         buttonHref:'#profile',
         input: '#hello',
         labelClass: "form-group",
-        name: '',
-        surname:'',
-        email:'',
-        image:'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-        imageUrl:'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+        image:'/uploads/chunk/avatar.png',
+        imageUrl:'/uploads/chunk/avatar.png',
         facultyBelongsToUniversity:'',
-        facultyBelongsToUniversityClass:'form-group',
         facultyName:'',
-        facultyNameClass:'form-group',
         facultyBranch:'',
-        facultyBranchClass:'form-group',
         facultyInfo:'',
-        facultyInfoClass:'form-group',
         faculties:[],
         departmentBelongsToUniversity:'',
-        departmentBelongsToUniversityClass:'form-group',
         departmentBelongsToFaculty:'',
-        departmentBelongsToFacultyClass:'form-group',
         departmentName:'',
-        departmentNameClass:'form-group',
         departmentInfo:'',
-        departmentInfoClass:'form-group',
-        departments:[]
+        departments:[],
+        userId:'',
+        userEmail:''
     },
     computed: {
 
@@ -58,143 +58,107 @@ var Registartion = new Vue({
     methods: {
         checkEquality(pass, val){
             if(pass == val){
-                this.labelClass = "form-group has-success"
+                this.passwordClass = "form-group has-success"
             }
             else{
-                this.labelClass = "form-group has-error"
+                this.passwordClass = "form-group has-error"
             }
-        },
-        // checking validity of first step YELLS FOR REFACTORING
-        checkFirstStepFields(){
-            let value = false;
-            if(this.name == ""){
-                this.nameClass = "form-group has-error";
-                value = true;
-            }
-            else{
-                this.nameClass = "form-group";
-            }
-            if(this.surname == ""){
-                this.surnameClass =  "form-group has-error";
-                value = true;
-            }
-            else{
-                this.surnameClass =  "form-group";
-            }
-            if(this.email == ""){
-                this.emailClass = "form-group has-error";
-                value = true;
-            }
-            else{
-                // validating email with regex
-                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                if(!re.test(this.email)){
-                    value = true;
-                    this.emailClass = "form-group has-error";
-                }
-                else{
-                    this.emailClass = "form-group";
-                }
-
-            }
-            (value) ? this.returnPreviousTab() : this.changeTabs();
-        },
-        changeTabs(){
-            this.buttonHref = "#profile"
-            var tabs = $('li[role="presentation"]');
-            $(tabs).each(function(){
-                if($(this).hasClass('active')){
-                    $(this).removeClass('active');
-                }
-                else{
-                    $(this).addClass('active');
-                }
-            })
-        },
-        returnPreviousTab(){
-            $("button#home-tab").click();
-            this.buttonHref = ""
         },
         uploadImage(event){
             const config = {
                 headers: { 'content-type': 'multipart/form-data' }
-            }
-            var file = event.target.files[0];
+            };
+            let file = event.target.files[0];
             let data = new FormData();
             data.append('image',file);
             axios.post('/professor/image',data,config).then(response => {
                 this.image = response.data;
                 this.imageUrl = response.data;
-                console.log(response.data);
             }).catch( error => {
                 $('#failModal').modal("show");
             })
         },
-        validateUniversityInput(){
-
-            let value = false;
-            if(this.university_name == ""){
-                this.universityNameClass = "form-group has-error";
-                value = true;
-            }
-            else{
-                this.universityNameClass = "form-group";
-            }
-            if(this.university_address == ""){
-                this.universityAddressClass =  "form-group has-error";
-                value = true;
-            }
-            else{
-                this.universityAddressClass =  "form-group";
-            }
-            if(this.university_city == ""){
-                this.universityCityClass =  "form-group has-error";
-                value = true;
-            }
-            else{
-                this.universityCityClass=  "form-group";
-            }
-            if(this.university_country == ""){
-                this.universityCountryClass =  "form-group has-error";
-                value = true;
-            }
-            else{
-                this.universityCountryClass=  "form-group";
-            }
-            if(this.university_site == ""){
-                this.universitySiteClass =  "form-group has-error";
-                value = true;
-            }
-            else{
-                // validating email with regex
-                var re = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-                var regex = new RegExp(re);
-                if(!(this.university_site.match(regex))){
-                    value = true;
-                    this.universitySiteClass = "form-group has-error";
-                }
-                else{
-                    this.universitySiteClass = "form-group";
-                }
-            }
-            if(this.university_email == ""){
-                value = true;
-                this.universityEmailClass = "form-group has-error";
-            }
-            else{
-                // validating email with regex
-                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                if(!re.test(this.university_email)){
-                    value = true;
-                    this.universityEmailClass = "form-group has-error";
-                }
-                else{
-                    this.universityEmailClass = "form-group";
-                }
-            }
-            if(!value){
+        toFirstTab(event){
+            event.preventDefault();
+            this.activeTab = 0;
+        },
+        registerUniversity(){
+            this.$validator.validateAll({
+                university_name:this.university_name,
+                university_address:this.university_address,
+                university_city:this.university_city,
+                university_country:this.university_country,
+                university_email:this.university_email,
+                university_site:this.university_site
+            }).then( response => {
+                console.log('valid');
                 this.sendUniversityData();
-            }
+            }).catch(error => {
+                console.log('not valid')
+            });
+        },
+        registerFaculty(){
+            this.$validator.validateAll({
+                facultyBelongsToUniversity:this.facultyBelongsToUniversity,
+                facultyName:this.facultyName,
+            }).then( response => {
+                console.log('valid');
+                this.sendFacultyData();
+            }).catch(error => {
+                console.log('not valid')
+            });
+        },
+        registerDepartment(){
+            this.$validator.validateAll({
+                departmentBelongsToFaculty:this.departmentBelongsToFaculty,
+                departmentBelongsToUniversity:this.departmentBelongsToUniversity,
+                departmentName:this.departmentName
+            }).then( response => {
+                console.log('valid');
+                this.sendDepartmentData();
+            }).catch(error => {
+                console.log('not valid')
+            });
+        },
+        sendFacultyData(){
+            let data = new FormData();
+            data.append('university_id',this.facultyBelongsToUniversity);
+            data.append('faculty_name',this.facultyName);
+            data.append('faculty_branch',this.facultyBranch);
+            data.append('faculty_info',this.facultyInfo);
+
+            axios.post('/professor/faculty', data, []).then( response =>{
+                this.faculties.push(response.data);
+                this.facultyBelongsToUniversity = "";
+                this.facultyName = "";
+                this.facultyBranch = "";
+                this.facultyInfo = "";
+                $('#facultyModal').modal('hide');
+            }).catch( error => {
+                console.log(error);
+                $('#failModal').modal("show");
+            });
+        },
+        sendDepartmentData(){
+            let data = new FormData();
+
+            data.append('department_name', this.departmentName);
+            data.append('university_id', this.departmentBelongsToUniversity);
+            data.append('faculty_id', this.departmentBelongsToFaculty);
+            data.append('department_info', this.departmentInfo);
+
+            axios.post('/professor/department', data, []).then( response => {
+                this.departments.push(response.data);
+                this.departmentName = "";
+                this.departmentBelongsToUniversity = "";
+                this.departmentBelongsToFaculty = "";
+                this.departmentInfo = "";
+                $('#departmentModal').modal('hide');
+
+            }).catch( error => {
+                console.log(error);
+                $("#failModal").modal('show');
+            });
         },
         sendUniversityData(){
             let data = new FormData();
@@ -207,104 +171,21 @@ var Registartion = new Vue({
 
             axios.post('/professor/university',data, []).then(response => {
                 this.universities.push(response.data);
+                this.university_name = "";
+                this.university_address = "";
+                this.university_country = "";
+                this.university_city = "";
+                this.university_site = "";
+                this.university_email = "";
+
+                $("#universityModal").modal('hide');
             }).catch( error => {
+                // implment Error message showing
                 $('#failModal').modal("show");
             })
         },
-        registerUniversity(){
-            this.validateUniversityInput();
-        },
-        createFaculty(){
-            this.facultyCheckValidity();
-        },
-        facultyCheckValidity(){
-            let value = false;
-            if(this.facultyBelongsToUniversity == ""){
-                this.facultyBelongsToUniversityClass = "form-group has-error";
-                value = true;
-            }
-            else{
-                this.facultyBelongsToUniversityClass = "form-group";
-            }
-            if(this.facultyName == ""){
-                this.facultyNameClass =  "form-group has-error";
-                value = true;
-            }
-            else{
-                this.facultyNameClass =  "form-group";
-            }
-            if(this.facultyBranch == ""){
-                this.facultyBranchClass = "form-group has-error";
-                value = true;
-            }
-            else{
-                this.facultyBranchClass=  "form-group";
-            }
-            if(!value){
-                this.storeFacultyData();
-            }
-        },
-        storeFacultyData(){
-            let data = new FormData();
-            data.append('university_id',this.facultyBelongsToUniversity);
-            data.append('faculty_name',this.facultyName);
-            data.append('faculty_branch',this.facultyBranch);
-            data.append('faculty_info',this.facultyInfo);
-
-            axios.post('/professor/faculty', data, []).then( response =>{
-                console.log(response.data);
-                this.faculties.push(response.data);
-            }).catch( error => {
-                console.log(error);
-            });
-        },
-        createDepartment(){
-            this.departmentValidityCheck();
-        },
-        departmentValidityCheck(){
-            let value = false;
-            if(this.departmentName == ""){
-                this.departmentNameClass = "form-group has-error";
-                value = true;
-            }
-            else{
-                this.departmentNameClass = "form-group";
-            }
-            if(this.departmentBelongsToUniversity == ""){
-                this.departmentBelongsToUniversityClass =  "form-group has-error";
-                value = true;
-            }
-            else{
-                this.departmentBelongsToUniversityClass =  "form-group";
-            }
-            if(this.departmentBelongsToFaculty == ""){
-                this.departmentBelongsToFacultyClass = "form-group has-error";
-                value = true;
-            }
-            else{
-                this.departmentBelongsToFacultyClass=  "form-group";
-            }
-            if(!value){
-                this.storeDepartmentData();
-            }
-        },
-        storeDepartmentData(){
-            let data = new FormData();
-
-            data.append('department_name', this.departmentName);
-            data.append('university_id', this.departmentBelongsToUniversity);
-            data.append('faculty_id', this.departmentBelongsToFaculty);
-            data.append('department_info', this.departmentInfo);
-
-            axios.post('/professor/department', data, []).then( response =>{
-                console.log(response.data);
-            }).catch( error => {
-                console.log(error);
-            });
-        },
         getUniversities(){
             axios.get('/professor/university/all').then(response => {
-                console.log(response.data);
                 this.universities = response.data;
                 this.universities.forEach( university => {
                     university.faculty.forEach( faculty => {
@@ -318,6 +199,71 @@ var Registartion = new Vue({
             }).catch( error => {
                 console.log(error);
             });
+        },
+        storeUserInformation(){
+            let data = new FormData();
+            data.append('image_url', this.imageUrl);
+            data.append('user_name', this.name );
+            data.append('user_surname', this.surname);
+            data.append('user_email', this.email );
+            data.append('type', "student");
+
+            axios.post('/user/create', data, []).then( response => {
+                this.userId = response.data.id;
+            }).catch( error => {
+                $("#failModal").modal('show');
+                this.errorMsg = error.message;
+            })
+        },
+        nextTab(event){
+            event.preventDefault();
+            this.$validator.validateAll({
+                name: this.name,
+                email: this.email,
+                surname:this.surname,
+                password:this.password
+            }).then( response =>{
+                this.activeTab = 1;
+                console.log('auth');
+                this.storeUserInformation();
+                return false;
+            }).catch(error => {
+                console.log(error);
+                $("#failModal").modal('show');
+                this.errorMsg = "Please fill out with correct data ";
+                return false;
+            });
+            return false;
+        },
+        submitData(event){
+            event.preventDefault();
+            this.$validator.validateAll({
+                university:this.university,
+                faculty:this.faculty,
+                department:this.department
+            }).then( response => {
+                console.log('valid');
+                this.sendDataToDb();
+            }).catch(error =>{
+                console.log('not valid')
+                return false;
+            })
+        },
+        sendDataToDb(){
+            var data = new FormData();
+            data.append('university', this.university);
+            data.append('faculty', this.faculty);
+            data.append('department', this.department);
+            data.append('user_id', this.userId);
+            data.append('type', "professor");
+
+            axios.post('/academic/create', data, []).then( response => {
+                this.userEmail = response.data.email;
+                $('#hiddenFormSubmit').submit();
+            }).catch( error => {
+                $("#failModal").modal('show');
+                this.errorMsg = error.message;
+            })
         }
     },
     beforeMount(){

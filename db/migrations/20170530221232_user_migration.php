@@ -28,13 +28,13 @@ class UserMigration extends AbstractMigration
     public function change()
     {
         $table = $this->table('users');
-        $table->addColumn('oauth_provider', 'text')
-            ->addColumn('oauth_uid', 'text')
+        $table->addColumn('oauth_provider', 'text', ['null' => true])
+            ->addColumn('oauth_uid', 'text', ['null' => true])
             ->addColumn('first_name', 'text')
             ->addColumn('last_name', 'text')
             ->addColumn('email', 'text')
-            ->addColumn('link', 'text')
-            ->addColumn('picture', 'text')
+            ->addColumn('link', 'text', ['null' => true])
+            ->addColumn('picture', 'text', ['null' => true])
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('modified', 'datetime', ['null' => true])
             ->create();

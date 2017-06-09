@@ -12,8 +12,19 @@ var Login = new Vue({
         }
     },
     methods: {
-        update: function (e) {
-            this.input = e.target.value
+        openLoadingModal: function(event){
+            event.preventDefault();
+            console.log(event);
+            $('#loadingModal').modal('show');
+        },
+        toCustomSignUp:function(event){
+            event.preventDefault();
+            if(window.location.href.includes('professor')){
+                window.location.href = '/professor/signup'
+            }
+            else{
+                window.location.href = '/student/signup'
+            }
         }
     },
     delimiters: ['${', '}']

@@ -39,7 +39,7 @@ class DepartmentMigration extends AbstractMigration
                 'update'=> 'CASCADE'
             ])
             ->addColumn('name', 'text')
-            ->addColumn('info', 'text')
+            ->addColumn('info', 'text', ['null' => true])
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('modified', 'datetime', ['null' => true])
             ->create();

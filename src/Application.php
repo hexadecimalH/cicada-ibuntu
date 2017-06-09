@@ -57,17 +57,19 @@ class Application extends \Cicada\Application
     }
 
     protected function setupServices(){
+        $this['imageStorageService'] = function () {
+            return new ImageStorageService($this->basePath, $this->protocol, $this->domain, $this['imageManipulationLibrary']);
+        };
+
         $this['loginService'] = function (){
-            return new LoginService();
+            return new LoginService($this['imageStorageService']);
         };
 
         $this['registrationService'] = function () {
             return new RegistrationService();
         };
 
-        $this['imageStorageService'] = function () {
-            return new ImageStorageService($this->basePath, $this->protocol, $this->domain, $this['imageManipulationLibrary']);
-        };
+
 
     }
 
@@ -87,14 +89,16 @@ class Application extends \Cicada\Application
 
     protected function createClients(){
         $googleCredentials = $this['config']->getGoogleCredentials();
-        $this['googleClient'] = function() use ($googleCredentials) {
-            return new GoogleClient($googleCredentials);
+        $googleProfessorRedirect = $this['config']->getGoogleProfessorRedirect();
+        $this['googleClient'] = function() use ($googleCredentials, $googleProfessorRedirect) {
+            return new GoogleClient($googleCredentials, $googleProfessorRedirect);
         };
 
         $facebookCredentials = $this['config']->getFacebookCredentials();
         $facebookRedirectLoginUrl = $this['config']->getFacebookRedirectUrl();
-        $this['facebookClient'] = function() use ($facebookCredentials, $facebookRedirectLoginUrl) {
-            return new FacebookClient($facebookCredentials, $facebookRedirectLoginUrl);
+        $facebookProfessorRedirect = $this['config']->getFacebookProfessorRedirectUrl();
+        $this['facebookClient'] = function() use ($facebookCredentials, $facebookRedirectLoginUrl, $facebookProfessorRedirect) {
+            return new FacebookClient($facebookCredentials, $facebookRedirectLoginUrl, $facebookProfessorRedirect);
         };
     }
 

@@ -38,12 +38,17 @@ class ProfessorMigration extends AbstractMigration
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
+            ->addColumn('department_id', 'integer')
+            ->addForeignKey('department_id', 'department', 'id', [
+                'delete'=> 'CASCADE',
+                'update'=> 'CASCADE'
+            ])
             ->addColumn('user_id', 'integer')
             ->addForeignKey('user_id', 'users', 'id', [
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
-            ->addColumn('bio', 'text')
+            ->addColumn('bio', 'text', ['null' => true ])
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('modified', 'datetime', ['null' => true])
             ->create();

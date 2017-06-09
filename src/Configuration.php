@@ -32,11 +32,19 @@ class Configuration
         return $this->config['google-api'];
     }
 
+    public function getGoogleProfessorRedirect(){
+        return $this->config['google-professor-redirect'];
+    }
+
     public function getFacebookCredentials(){
         return $this->config['facebook-api'];
     }
 
     public function getFacebookRedirectUrl(){
         return $this->config['facebook-api-redirect-url'];
+    }
+
+    public function getFacebookProfessorRedirectUrl(){
+        return $this->config['facebook-professor-redirect'];
     }
 }

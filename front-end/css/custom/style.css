@@ -22,3 +22,11 @@
 .login-submit-custom{
     margin-top:.5em;
 }
+#loading{
+    display:block;
+    margin:auto;
+}
+#loadingParagraph{
+    text-align: center;
+    color:#ff5e00;
+}

@@ -31,8 +31,8 @@ class FacultyMigration extends AbstractMigration
         $table->addColumn('name', 'text')
             ->addColumn('university_id', 'integer')
             ->addForeignKey('university_id', 'university', 'id')
-            ->addColumn('info', 'text')
-            ->addColumn('branch', 'text')
+            ->addColumn('info', 'text', ['null' => true])
+            ->addColumn('branch', 'text', ['null' => true])
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->create();
     }

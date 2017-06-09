@@ -11,12 +11,25 @@ namespace Ibuntu\Services;
 
 use Ibuntu\Models\Department;
 use Ibuntu\Models\Faculty;
+use Ibuntu\Models\Professor;
+use Ibuntu\Models\Student;
 use Ibuntu\Models\University;
+use Ibuntu\Models\User;
 
 class RegistrationService
 {
     function __construct()
     {
+    }
+
+    public function getUniversities(){
+        /** @var University[] $universities */
+        $universities = University::find('all', ['include' => ['faculty' => ['include' => 'department']]]);
+        $serializedUniversities = [];
+        foreach($universities as $university){
+            $serializedUniversities[] = $university->serialize();
+        }
+        return $serializedUniversities;
     }
 
     public function createUniversity($uniName, $uniAddress, $uniCity, $uniCountry, $uniSite, $uniEmail){
@@ -32,16 +45,6 @@ class RegistrationService
         return $university->serialize();
     }
 
-    public function getUniversities(){
-        /** @var University[] $universities */
-        $universities = University::find('all', ['include' => ['faculty' => ['include' => 'department']]]);
-        $serializedUniversities = [];
-        foreach($universities as $university){
-            $serializedUniversities[] = $university->serialize();
-        }
-        return $serializedUniversities;
-    }
-
     public function createFaculty($uniId, $facultyName, $facultyBranch, $facultyInfo){
         /** @var Faculty $faculty */
         $faculty = Faculty::create([
@@ -55,7 +58,7 @@ class RegistrationService
     }
 
     public function createDepartment($uniId, $facultyId, $departmentName, $departmentInfo){
-        /** @var Department $faculty */
+        /** @var Department $department */
         $department = Department::create([
             "university_id" => $uniId,
             "faculty_id" => $facultyId,
@@ -64,5 +67,38 @@ class RegistrationService
         ]);
 
         return $department->serialize();
+    }
+    public function createCustomUser($imageUrl, $name, $surname, $password, $email){
+        /** @var User $user */
+        $user = User::create([
+            "first_name" => $name,
+            "last_name" => $surname,
+            "email" => $email,
+            "picture" => $imageUrl
+        ]);
+        return $user;
+    }
+
+    public function createProfessor($universityId, $facultyId, $departmentId, $userId){
+        /** @var Professor $professor */
+        $professor = Professor::create([
+            "university_id" => $universityId,
+            "faculty_id" => $facultyId,
+            "department_id" => $departmentId,
+            "user_id" => $userId
+        ]);
+
+
+        //implent response
+    }
+    public function createStudent($universityId, $facultyId, $departmentId, $userId){
+        /** @var Student $professor */
+        $student = Student::create([
+            "university_id" => $universityId,
+            "faculty_id" => $facultyId,
+            "department_id" => $departmentId,
+            "user_id" => $userId
+        ]);
+        //implent response
     }
 }

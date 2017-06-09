@@ -11,13 +11,19 @@ namespace  Ibuntu\Services;
 
 use GuzzleHttp\Psr7\Request;
 use Ibuntu\Application;
+use Ibuntu\Models\Professor;
+use Ibuntu\Models\Student;
 use Ibuntu\Models\User;
+use Symfony\Component\HttpFoundation\Response;
 
 class LoginService
 {
-    public function __construct()
-    {
+    /** @var  ImageStorageService $imageStorageService */
+    public $imageStorageService;
 
+    public function __construct($imageStorageService)
+    {
+        $this->imageStorageService = $imageStorageService;
     }
 
     public function checkUser($email){
@@ -35,7 +41,8 @@ class LoginService
             "oauth_provider" => $user['oauth_provider'],
             "oauth_uid" => $user['oauth_uid']
         ]);
-        return $user;
+
+        return $user->to_array();
     }
 
     public function findUser($email){
@@ -44,5 +51,48 @@ class LoginService
         return $user;
     }
 
+    public function getUserAsArray($email){
+        $user = User::first(['conditions' => ['email LIKE ?', $email]]);
+
+        return $user->to_array();
+    }
+
+    public function findStudentByUser($user){
+        $user = $this->findUser($user['email']);
+        /** @var Student $student */
+        $student = Student::first(['conditions' => ['user_id = ?', $user->id]]);
+
+        return $student;
+    }
+
+    public function findProfessorByUser($user)
+    {
+        $user = $this->findUser($user['email']);
+        /** @var Professor $professor */
+        $professor = Professor::first(['conditions' => ['user_id = ?', $user->id]]);
+
+        return $professor;
+    }
+
+    public function customRegisterUser($name,$surname,$email, $gender, $imageUrl, $type){
+        $exists = $this->findUser($email);
+        if(empty($exists)){
+            /** @var User $user */
+            $user = User::create([
+                "first_name" => $name,
+                "last_name" => $surname,
+                "email" => $email
+            ]);
+
+            $url = $this->imageStorageService->moveAndRenameImage($type, $imageUrl, $user->id);
+            $user->picture = $url;
+            $user->save();
+
+            return $user->serialize();
+        }
+
+        return "User with same E-mail already exists";
+    }
 
 }
+

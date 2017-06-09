@@ -20,14 +20,18 @@ class FacebookClient extends Facebook
 
     protected $redirectUrl;
 
+    protected $professorRedirect;
+
     /** @var FacebookRedirectLoginHelper $fbHelper */
     public $fbHelper;
 
-    public function __construct(array $config = [], $redirectUrl)
+    public function __construct(array $config = [], $redirectUrl, $professorRedirect)
     {
         parent::__construct($config);
 
         $this->redirectUrl = $redirectUrl;
+
+        $this->professorRedirect = $professorRedirect;
 
         $this->fbHelper = $this->getRedirectLoginHelper();
     }
@@ -38,6 +42,10 @@ class FacebookClient extends Facebook
 
     public function getRedirectUrl(){
         return $this->redirectUrl;
+    }
+
+    public function setProfessorRedirect(){
+        $this->redirectUrl = $this->professorRedirect;
     }
 
     public function getUserData($state){

@@ -41,35 +41,57 @@ $professorRegistrationRouteCollection = $app['collection_factory']->prefix('/pro
 /** @var RouteCollection $studentRegistrationRouteCollection */
 $studentRegistrationRouteCollection = $app['collection_factory']->prefix('/student');
 
-$loginRouteCollection->get('/',                     [$loginController, 'index']);
-$loginRouteCollection->get('/oauth2callback',       [$loginController, 'clientLogin'])
+
+// start page Log in/ Sign up
+$loginRouteCollection->get('/',                         [$loginController, 'index']);
+$loginRouteCollection->get('/professor',                [$loginController, 'indexProfessor']);
+
+//callback routes after third party client authorization
+$loginRouteCollection->get('/oauth2callback/student',   [$loginController, 'studentLogin'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->authorizeUser($app, $request);
     });
-$loginRouteCollection->post('/login',                [$loginController, 'clientLogin'])
+$loginRouteCollection->get('/oauth2callback/professor', [$loginController, 'professorLogin'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $app['googleClient']->setProfessorRedirect();
+        $app['facebookClient']->setProfessorRedirect();
+        $authentication->authorizeUser($app, $request);
+    });
+
+// login with email and password
+$loginRouteCollection->post('/login',                [$loginController, 'studentLogin'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->checkCredentials($app, $request);
     });
+
+//log out as a client
 $loginRouteCollection->get('/logout',               [$loginController, 'logOut']);
 
 $app->get('/dashboard', [$sessionController, 'index'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->isLoggedIn($app, $request);
     });
-$app->get('/profile', [$sessionController, 'profile'])
+$app->post('/profile', [$sessionController, 'profile'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->isLoggedIn($app, $request);
     });
 
 // registration routes
-$professorRegistrationRouteCollection->post('/image',           [$registrationController, "uploadProfessorImage"]);
+$professorRegistrationRouteCollection->post('/image',           [$registrationController, "uploadImage"]);
 $professorRegistrationRouteCollection->post('/university',      [$registrationController, "registerUniversity"]);
 $professorRegistrationRouteCollection->get('/university/all',   [$registrationController, "getAllUniversities"]);
 $professorRegistrationRouteCollection->post('/faculty',         [$registrationController, "registerFaculty"]);
 $professorRegistrationRouteCollection->post('/department',      [$registrationController, "registerDepartment"]);
-$professorRegistrationRouteCollection->get('/signup',           [$registrationController, 'signupProfessors']);
-$app->get('/signup', [$loginController, 'signup']);
+$professorRegistrationRouteCollection->post('/create',          [$registrationController, "registerProfessor"]);
 
+// custom sign up routes for student and professor
+$professorRegistrationRouteCollection->get('/signup',           [$loginController, 'professorCustomSignup']);
+$studentRegistrationRouteCollection->get('/signup',             [$loginController, 'studentCustomSignup']);
+
+// custom sign up create user
+$loginRouteCollection->post('/user/create',                     [$loginController, "createCustomUser"]);
+
+$loginRouteCollection->post('/academic/create',                 [$registrationController, "registarUserAsProfessorOrStudent"]);
 
 $app->addRouteCollection($loginRouteCollection);
 $app->addRouteCollection($studentRegistrationRouteCollection);

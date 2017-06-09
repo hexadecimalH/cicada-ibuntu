@@ -9,7 +9,9 @@
 namespace Ibuntu\Models;
 
 
-class Student
-{
+use ActiveRecord\Model;
 
+class Student extends Model
+{
+    static $table_name = "student";
 }

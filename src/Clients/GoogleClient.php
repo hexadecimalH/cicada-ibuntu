@@ -17,10 +17,13 @@ class GoogleClient extends Google_Client
     /** @var Google_Service_Oauth2 $googleAuthService */
     public $googleAuthService;
 
-    public function __construct(array $config = array())
+    public $professorRedirectUrl;
+
+    public function __construct(array $config = array(), $professorRedirectUrl)
     {
         parent::__construct($config);
         $this->setScopes('email');
+        $this->professorRedirectUrl = $professorRedirectUrl;
         $this->googleAuthService = new Google_Service_Oauth2($this);
     }
 
@@ -30,6 +33,10 @@ class GoogleClient extends Google_Client
         $this->setAccessToken($token);
         $data = $this->googleAuthService->userinfo->get();
         return $this->createUserObject($data);
+    }
+
+    public function setProfessorRedirect(){
+        $this->setRedirectUri($this->professorRedirectUrl);
     }
 
     public function createUserObject($data){

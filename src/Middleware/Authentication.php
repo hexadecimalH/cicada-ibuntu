@@ -43,8 +43,10 @@ class Authentication
     public function authorizeUser(Application $app, Request $request){
         $user = !empty($request->get('state')) ? $this->getFacebookUser($request->get('state')) : $this->getGoogleUser($request->get('code'));
         if($this->userExists($user['email'])){
-            $this->loginService->createUser($user);
+            $user = $this->loginService->createUser($user);
         }
+
+        $user = $this->loginService->getUserAsArray($user['email']);
         $this->session->set("user", $user);
         $request->request->set('user', $user);
     }
@@ -52,7 +54,7 @@ class Authentication
     public function checkCredentials(Application $app, Request $request)
     {
         $email = $request->get('email');
-        $user = $this->loginService->findUser($email);
+        $user = $this->loginService->getUserAsArray($email);
 
         $this->session->set("user", $user);
         $request->request->set('user', $user);
@@ -60,10 +62,13 @@ class Authentication
 
     public function isLoggedIn(Application $app, Request $request){
         if(!isset($_SESSION['_sf2_attributes']['user'])){
-            return;
+
+            $this->checkCredentials($app,$request);
         }
-        $user = $_SESSION['_sf2_attributes']['user'];
-        $request->request->set('user', $user);
+        else{
+            $user = $_SESSION['_sf2_attributes']['user'];
+            $request->request->set('user', $user);
+        }
     }
 
     public function getFacebookUser($state){

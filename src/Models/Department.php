@@ -14,4 +14,8 @@ use ActiveRecord\Model;
 class Department extends Model
 {
     static $table_name = "department";
+
+    public function serialize(){
+        return $this->to_array();
+    }
 }

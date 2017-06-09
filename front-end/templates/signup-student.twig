@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Ibuntu | Sign Up  </title>
+    {% include 'parts/head.twig' %}
+    <link rel="stylesheet" href="/front-end/css/custom/signup.css">
+</head>
+<body >
+<div id="root">
+    <h2 class="header"><a href="index.html">Ibuntu</a></h2>
+    <div class="grid-form1 custom-grid">
+        <h3 class="sign-up-heading">Student Sign Up</h3>
+        <tabs v-model="activeTab" nav-style="tabs" justified>
+            {% if customSignup == "custom" %}
+            <tab header="Personal Info"  disabled>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-3 col-sm-offset-4 profile-pic">
+                            <div class="gallery-img">
+                                <a href="#" class="b-link-stripe b-animate-go  swipebox"  title="Image Title" >
+                                    <img class="img-responsive " v-bind:src="image" alt="" />
+                                    <span class="zoom-icon"> </span>
+                                </a>
+                            </a>
+                            </div>
+                            <div class="text-gallery">
+                                <button class="btn-danger btn" onclick="document.getElementById('uploadInput').click(function(e){e.preventDefault()}); return false;">Upload</button>
+                                <input type="file" class="hidden" id="uploadInput" name="profile_picture" v-on:change="uploadImage($event)">
+                                <input type="text" class="hidden" v-bind:value="imageUrl" name="image_url">
+                            </div>
+                        </div>
+                    </div>
+                    <div  :class=" {'form-group': true , 'form-group has-error' : errors.has('name')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">First Name</label>
+                        <div class="col-sm-8 ">
+                            <input type="text" v-model="name" name="name" data-vv-name="name"  v-validate="'required|alpha'" class="form-control1" placeholder="Name">
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('surname')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">Last Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" v-model="surname"  class="form-control1" data-vv-name="surname" v-validate="'required|alpha'"   placeholder="Surname">
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('email')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="text" v-model="email" class="form-control1" data-vv-name="email" v-validate="'required|email'"   placeholder="E-mail">
+                        </div>
+                    </div>
+                    <div :class="passwordClass">
+                        <label for="inputPassword"  class="col-sm-2 control-label">Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" v-model="password" class="form-control1" data-vv-name="password" v-validate="'required|alpha'" id="inputPassword" name="password" placeholder="Enter Your Password" >
+                        </div>
+                    </div>
+                    <div :class="passwordClass">
+                        <label for="inputPassword" class="col-sm-2 control-label">Repeat Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" v-model="rePassword" class="form-control1" id="re-inputPassword"  placeholder="Re-Enter Your Password" >
+                        </div>
+                    </div>
+                    <div class="form-group submit-custom-right">
+                        <div class="col-sm-4 col-sm-offset-6 right">
+                            <button class="btn-danger btn" id="profile-tab" v-on:click="nextTab" >Next Step</button>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+            {% endif %}
+            <tab header="Study Info" disabled>
+                <form action="" class="form-horizontal" >
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('uni')}">
+                        <label for="focusedinput" class="col-sm-2 control-label">University</label>
+                        <div class="col-sm-8">
+                            <select name="selector1" id="selector1" class="form-control1" v-model="university" data-vv-name="university" v-validate="'required|alpha_num'">
+                                <option value="" disabled>Please select University</option>
+                                <option v-for="university in universities" :value="university.id">
+                                ${ university.name}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" style="text-align:center">
+                            <img src="/uploads/images/icons/info.svg" alt="" data-toggle="tooltip" data-placement="top" title="If University is not offered please register your University" width="35%">
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('faculty')}">
+                        <label for="selector1" class="col-sm-2 control-label">Faculty</label>
+                        <div class="col-sm-8">
+                            <select name="selector1" id="selector1" class="form-control1" v-model="faculty"  data-vv-name="faculty" v-validate="'required|alpha_num'">
+                                <option value="" disabled>Please select Faculty</option>
+                                <option v-for="faculty in faculties" :value="faculty.id">
+                                ${ faculty.name }
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" style="text-align:center">
+                            <img src="/uploads/images/icons/info.svg" alt="" data-toggle="tooltip" data-placement="top" title="If Faculty is not offered please register your Faculty" width="35%">
+                        </div>
+                    </div>
+                    <div :class=" {'form-group': true , 'form-group has-error' : errors.has('faculty')}">
+                        <label for="selector1" class="col-sm-2 control-label">Department</label>
+                        <div class="col-sm-8">
+                            <select name="selector1" id="selector1" class="form-control1" v-model="department" data-vv-name="department" v-validate="'required|alpha_num'">
+                                <option value="" disabled>Please select Department</option>
+                                <option v-for="department in departments" :value="department.id">
+                                ${ department.name }
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" style="text-align:center">
+                            <img src="/uploads/images/icons/info.svg" alt="" data-toggle="tooltip" data-placement="top" title="If Department is not offered please register your Department" width="35%">
+                        </div>
+                    </div>
+                    <div class="form-group submit-custom">
+                        <div class="col-sm-4 col-sm-offset-6 right">
+                            {% if customSignup == "custom" %}
+                            <button class="btn-danger btn"  v-on:click="toFirstTab">Back</button>
+                            {% endif %}
+                            <button class="btn-primary btn" v-on:click="submitData">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+        </tabs>
+    </div>
+    {#hidden form#}
+    <form action="/profile" method="POST" class="hidden" id="hiddenFormSubmit">
+        {% if customSignup == "non-custom" %}
+            <input type="text" name="email" value="{{ user.email }}" class="hidden">
+            <input type="password" name="password" class="hidden">
+        {% else %}
+            <input type="text" name="email" v-model="userEmail" class="hidden">
+            <input type="password" name="password" class="hidden">
+        {% endif %}
+    </form>
+    {#hidden form#}
+</div>
+<!-- Loading Modal Start -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="/uploads/loading/loading.gif" alt="" id="loading">
+                <p id="loadingParagraph">Loading</p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- Loading Modal End -->
+<!-- Error Modal Start -->
+<div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background: red;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h2 class="modal-title">Error</h2>
+            </div>
+            <div class="modal-body">
+                <p v-model="errorMsg">Sorry the picture hasn't been uploaded succesfully please try again or contact support</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- Error Modal End -->
+<!---->
+<div class="copy-right">
+    <p> &copy; 2016 Minimal. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+</div>
+<!---->
+<!--scrolling js-->
+{#<script src="/front-end/js/assets/jquery.nicescroll.js"></script>#}
+<script src="/front-end/js/assets/scripts.js"></script>
+<script src="/front-end/js/vue-components/commons.chunk.js"></script>
+{#<script src="https://unpkg.com/vue"></script>#}
+<script src="/front-end/js/vue-components/student-registration.chunk.js"></script>
+<!--//scrolling js-->
+</body>
+</html>

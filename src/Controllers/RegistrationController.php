@@ -14,6 +14,7 @@ namespace Ibuntu\Controllers;
 
 use Ibuntu\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,26 +42,26 @@ class RegistrationController
         return $this->twig->render('signup-professor.twig');
     }
 
-    public function uploadProfessorImage(Application $app, Request $request){
+    public function uploadImage(Application $app, Request $request){
         $image = $request->files->get('image');
 
-        $path = $this->imageStorageService->storeImage($image,'professor', 500, 500);
-        if(strpos($path, '/uploads/professor') === false){
+        $path = $this->imageStorageService->storeImage($image,'chunk', 500, 500);
+        if(strpos($path, '/uploads/chunk') === false){
             return new Response($path, 500);
         }
         return new Response($path);
     }
 
     public function registerUniversity(Application $app, Request $request){
-        $univarsityName = $request->request->get('university_name');
-        $univarsityAddress = $request->request->get('university_address');
-        $univarsityEmail = $request->request->get('university_email');
-        $univarsitySite = $request->request->get('university_site');
-        $univarsityCountry = $request->request->get('university_country');
-        $univarsityCity = $request->request->get('university_city');
+        $universityName = $request->request->get('university_name');
+        $universityAddress = $request->request->get('university_address');
+        $universityEmail = $request->request->get('university_email');
+        $universitySite = $request->request->get('university_site');
+        $universityCountry = $request->request->get('university_country');
+        $universityCity = $request->request->get('university_city');
 
-        $university = $this->registrationService->createUniversity($univarsityName,$univarsityAddress,$univarsityCity,
-                                                    $univarsityCountry, $univarsityEmail, $univarsitySite);
+        $university = $this->registrationService->createUniversity($universityName,$universityAddress,$universityEmail,
+                                                            $universityCountry, $universityCity, $universitySite);
 
         return new JsonResponse($university);
     }
@@ -90,6 +91,29 @@ class RegistrationController
         $department = $this->registrationService->createDepartment($universityId, $facultyId, $departmentName, $departmentInfo);
 
         return new JsonResponse($department);
+    }
+
+    public function registarUserAsProfessorOrStudent(Application $app, Request $request){
+        $universityId = $request->request->get("university");
+        $facultyId = $request->request->get('faculty');
+        $departmentId = $request->request->get('department');
+        $type = $request->request->get('type');
+
+        $userId = $request->request->get('user_id');
+
+        if( $userId == ""){
+            $user = $_SESSION['_sf2_attributes']['user'];
+            $userId = $user['id'];
+
+        }
+        if($type == "student"){
+            $this->registrationService->createStudent($universityId, $facultyId, $departmentId, $userId);
+        }
+        else{
+            $this->registrationService->createProfessor($universityId, $facultyId, $departmentId, $userId);
+        }
+
+
     }
 
 }

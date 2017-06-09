@@ -5,14 +5,14 @@
     {% include 'parts/head.twig' %}
 </head>
 <body>
-<div >
+<div id="root">
     <h2 class="header"><a href="index.html">Ibuntu</a></h2>
     <div class="login-bottom">
-        <form action="/login" method="post">
+        <form action="" method="post">
             <h2 class="header">Login</h2>
             <div class="col-md-12">
                 <div class="login-mail">
-                    <input type="text" placeholder="Email" name="email" required="">
+                    <input type="text" placeholder="Email" name="email">
                     <i class="fa fa-envelope"></i>
                 </div>
                 <div class="login-mail">
@@ -21,26 +21,44 @@
                 </div>
             </div>
             <div class="col-md-12 login-do">
+                <label class="hvr-shutter-in-horizontal login-sub">
+                    <input type="submit" value="Submit" v-on:click="openLoadingModal">
+                </label>
+                <hr>
                 <p class="center" >Login With</p>
                 <label class="hvr-shutter-in-horizontal login-sub">
-                    <input type="submit" value="Google" onclick="window.location='{{ google }}';" >
+                    <input type="submit" value="Google"  v-on:click="openLoadingModal" onclick="window.location='{{ google }}';" >
                 </label>
                 <p class="center" >Or</p>
 
                 <label class="hvr-shutter-in-horizontal login-sub fb-login" >
-                    <input type="submit" value="Facebook" onclick="window.location='{{ fb }}';">
+                    <input type="submit" value="Facebook" v-on:click="openLoadingModal" onclick="window.location='{{ fb }}';">
+                </label>
+
+                <p class="center" >Or</p>
+
+                <label class="hvr-shutter-in-horizontal login-sub " >
+                    <input type="submit" value="Custom Sign In"  v-on:click="toCustomSignUp">
                 </label>
 
                 {#<a href="signup.html" class="hvr-shutter-in-horizontal">Signup</a>#}
             </div>
             <hr>
-            <div class="col-sm-12 login-do login-submit-custom">
-                <label class="hvr-shutter-in-horizontal login-sub">
-                    <input type="submit" value="Submit">
-                </label>
-            </div>
+
             <div class="clearfix"> </div>
         </form>
+        <!-- Loading Modal Start -->
+        <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="/uploads/loading/loading.gif" alt="" id="loading">
+                        <p id="loadingParagraph">Loading</p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        <!-- Loading Modal End -->
     </div>
 
 </div>
@@ -51,6 +69,9 @@
 <!--scrolling js-->
 <script src="/front-end/js/assets/jquery.nicescroll.js"></script>
 <script src="/front-end/js/assets/scripts.js"></script>
+<script src="/front-end/js/vue-components/commons.chunk.js"></script>
+<script src="https://unpkg.com/vue"></script>
+<script src="/front-end/js/vue-components/login.chunk.js"></script>
 <!--//scrolling js-->
 </body>
 </html>
