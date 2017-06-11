@@ -82,17 +82,16 @@ class RegistrationService
     public function createProfessor($universityId, $facultyId, $departmentId, $userId){
         /** @var Professor $professor */
         $professor = Professor::create([
-            "university_id" => $universityId,
-            "faculty_id" => $facultyId,
-            "department_id" => $departmentId,
-            "user_id" => $userId
+            "university_id" => (int)$universityId,
+            "faculty_id" => (int)$facultyId,
+            "department_id" => (int)$departmentId,
+            "user_id" => (int)$userId
         ]);
-
 
         //implent response
     }
     public function createStudent($universityId, $facultyId, $departmentId, $userId){
-        /** @var Student $professor */
+        /** @var Student $student */
         $student = Student::create([
             "university_id" => $universityId,
             "faculty_id" => $facultyId,

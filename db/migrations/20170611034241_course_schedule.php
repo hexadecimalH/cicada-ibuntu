@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class UserMigration extends AbstractMigration
+class CourseSchedule extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,15 +27,14 @@ class UserMigration extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('users');
-        $table->addColumn('oauth_provider', 'text', ['null' => true])
-            ->addColumn('oauth_uid', 'text', ['null' => true])
-            ->addColumn('first_name', 'text')
-            ->addColumn('last_name', 'text')
-            ->addColumn('email', 'text')
-            ->addColumn('link', 'text', ['null' => true])
-            ->addColumn('type','text')
-            ->addColumn('picture', 'text', ['null' => true])
+        $table = $this->table('course_schedule');
+        $table->addColumn('day', 'text')
+            ->addColumn('course_id', 'text')
+            ->addForeignKey('course_id', 'course', 'id', [
+                'delete'=> 'CASCADE',
+                'update'=> 'CASCADE'
+            ])
+            ->addColumn('duration', 'text')
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('modified', 'datetime', ['null' => true])
             ->create();

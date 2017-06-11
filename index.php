@@ -7,6 +7,7 @@ require 'vendor/autoload.php';
 
 
 use Ibuntu\Application;
+use Ibuntu\Controllers\DashboardController;
 use Ibuntu\Controllers\LoginController;
 use Cicada\Routing\RouteCollection;
 use Ibuntu\Controllers\RegistrationController;
@@ -30,6 +31,7 @@ $app = new Application($_SERVER['HOME'], $_SERVER['HTTP_HOST'], getProtocol().':
 $authentication = new Authentication($app['googleClient'],$app['facebookClient'], $app['loginService']);
 $loginController = new LoginController($app['googleClient'],$app['facebookClient'], $app['twig'], $app['loginService']);
 $registrationController = new RegistrationController($app['imageStorageService'], $app['registrationService'], $app['twig']);
+$dashboardController = new DashboardController($app['dashboardService']);
 $sessionController = new SessionController($app['twig']);
 
 /** @var RouteCollection $loginRouteCollection */
@@ -41,21 +43,26 @@ $professorRegistrationRouteCollection = $app['collection_factory']->prefix('/pro
 /** @var RouteCollection $studentRegistrationRouteCollection */
 $studentRegistrationRouteCollection = $app['collection_factory']->prefix('/student');
 
-
+$dashboardRouteCollection = $app['collection_factory']->prefix('/dashboard');
+// dashboard routes for creating and managing academic data
+$dashboardRouteCollection->post('/course/create', [$dashboardController, 'createCourse'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
 // start page Log in/ Sign up
 $loginRouteCollection->get('/',                         [$loginController, 'index']);
 $loginRouteCollection->get('/professor',                [$loginController, 'indexProfessor']);
 
 //callback routes after third party client authorization
-$loginRouteCollection->get('/oauth2callback/student',   [$loginController, 'studentLogin'])
+$loginRouteCollection->get('/oauth2callback/student',   [$loginController, 'login'])
     ->before(function(Application $app, Request $request) use ($authentication){
-        $authentication->authorizeUser($app, $request);
+        $authentication->authorizeUser($app, $request,'student');
     });
-$loginRouteCollection->get('/oauth2callback/professor', [$loginController, 'professorLogin'])
+$loginRouteCollection->get('/oauth2callback/professor', [$loginController, 'login'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $app['googleClient']->setProfessorRedirect();
         $app['facebookClient']->setProfessorRedirect();
-        $authentication->authorizeUser($app, $request);
+        $authentication->authorizeUser($app, $request,'professor');
     });
 
 // login with email and password
@@ -71,7 +78,7 @@ $app->get('/dashboard', [$sessionController, 'index'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->isLoggedIn($app, $request);
     });
-$app->post('/profile', [$sessionController, 'profile'])
+$app->post('/profile', [$loginController, 'profile'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->isLoggedIn($app, $request);
     });
@@ -94,6 +101,7 @@ $loginRouteCollection->post('/user/create',                     [$loginControlle
 $loginRouteCollection->post('/academic/create',                 [$registrationController, "registarUserAsProfessorOrStudent"]);
 
 $app->addRouteCollection($loginRouteCollection);
+$app->addRouteCollection($dashboardRouteCollection);
 $app->addRouteCollection($studentRegistrationRouteCollection);
 $app->addRouteCollection($professorRegistrationRouteCollection);
 

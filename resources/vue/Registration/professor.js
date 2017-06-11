@@ -13,7 +13,7 @@ var Registartion = new Vue({
         radio
     },
     data: {
-        activeTab:1,
+        activeTab:0,
         name: '',
         surname:'',
         email:'',
@@ -206,10 +206,11 @@ var Registartion = new Vue({
             data.append('user_name', this.name );
             data.append('user_surname', this.surname);
             data.append('user_email', this.email );
-            data.append('type', "student");
+            data.append('type', "professor");
 
             axios.post('/user/create', data, []).then( response => {
                 this.userId = response.data.id;
+                this.userEmail = response.data.email;
             }).catch( error => {
                 $("#failModal").modal('show');
                 this.errorMsg = error.message;
@@ -259,8 +260,10 @@ var Registartion = new Vue({
 
             axios.post('/academic/create', data, []).then( response => {
                 this.userEmail = response.data.email;
+                console.log(response);
                 $('#hiddenFormSubmit').submit();
             }).catch( error => {
+                console.log(error);
                 $("#failModal").modal('show');
                 this.errorMsg = error.message;
             })

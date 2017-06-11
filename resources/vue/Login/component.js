@@ -12,6 +12,11 @@ var Login = new Vue({
         }
     },
     methods: {
+        submitFormEmail:function(event){
+            event.preventDefault();
+            $('#loadingModal').modal('show');
+            $("#logInForm").submit();
+        },
         openLoadingModal: function(event){
             event.preventDefault();
             console.log(event);

@@ -45,8 +45,8 @@ class LoginController
 
     public function index(Application $app, Request $request){
         $urls = $this->getClientUrl();
-
-        return $this->twig->render("index.twig", ['google' => $urls['gp'], 'fb' => $urls['fb'], 'professor' => false]);
+        $message = $request->query->get('message');
+        return $this->twig->render("index.twig", ['google' => $urls['gp'], 'fb' => $urls['fb'], 'professor' => false, 'message'=> $message]);
 
     }
 
@@ -59,32 +59,57 @@ class LoginController
 
     }
 
-    public function studentLogin(Application $app, Request $request){
+    public function profile(Application $app, Request $request){
+        $user = $request->request->get('user');
+        if($user['type'] == 'student'){
+            $academic = $this->loginService->findStudentByUserId($user['id']);
+        }
+        else{
+            $academic = $this->loginService->findProfessorByUserId($user['id']);
+        }
+        if(empty($academic)){
+            return $this->twig->render( $user['type'].'/signup.twig', ['customSignup' => "non-custom", "user" => $user]);
+        }
+        if(gettype($user) == "string" ){
+            return new RedirectResponse('/?message='.$user.'');
+        }
+        return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, 'active' => 0]);
+    }
+
+    public function login(Application $app, Request $request){
         $user = $request->request->get('user');
         if(empty($user)){
             $urls = $this->getClientUrl();
             return $this->twig->render('index.twig', ['google' => $urls['gp'], 'fb' => $urls['fb'],'message' => "Wrong Credentials"]);
         }
-        $student = $this->loginService->findStudentByUser($user);
-        if(empty($student)){
-            return $this->twig->render('signup-student.twig', ['customSignup' => "non-custom", "user" => $user]);
-        }
-        return $this->twig->render('landing.twig', ['user' => $user, 'active' => 0]);
-    }
 
-    public function professorLogin(Application $app, Request $request){
-        $user = $request->request->get('user');
-        if(empty($user)){
-            $urls = $this->getClientUrl();
-            return $this->twig->render('index.twig', ['google' => $urls['gp'], 'fb' => $urls['fb'],'message' => "Wrong Credentials"]);
+        if($user['type'] == 'student'){
+            $academic = $this->loginService->findStudentByUserId($user['id']);
+        }
+        else{
+            $academic = $this->loginService->findProfessorByUserId($user['id']);
         }
 
-        $professor = $this->loginService->findProfessorByUser($user);
-        if(empty($professor)){
-            return $this->twig->render('signup-professor.twig', ['customSignup' => "non-custom", "user" => $user]);
+        if(empty($academic)){
+            return $this->twig->render($user['type'].'/signup.twig', ['customSignup' => "non-custom", "user" => $user]);
         }
-        return $this->twig->render('landing.twig', ['user' => $user, 'active' => 0]);
+
+        return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, 'active' => 0]);
     }
+
+//    public function professorLogin(Application $app, Request $request){
+//        $user = $request->request->get('user');
+//        if(empty($user)){
+//            $urls = $this->getClientUrl();
+//            return $this->twig->render('index.twig', ['google' => $urls['gp'], 'fb' => $urls['fb'],'message' => "Wrong Credentials"]);
+//        }
+//
+//        $professor = $this->loginService->findProfessorByUser($user);
+//        if(empty($professor)){
+//            return $this->twig->render('professor/signup.twig', ['customSignup' => "non-custom", "user" => $user]);
+//        }
+//        return $this->twig->render('professor/landing.twig', ['user' => $user, 'active' => 0]);
+//    }
 
 
     public function logOut(Application $app, Request $request){
@@ -99,22 +124,21 @@ class LoginController
     }
 
     public function studentCustomSignup(Application $app, Request $request){
-        return $this->twig->render('signup-student.twig', ['customSignup' => "custom"]);
+        return $this->twig->render('student/signup.twig', ['customSignup' => "custom"]);
     }
 
     public function professorCustomSignup(Application $app, Request $request){
-        return $this->twig->render('signup-professor.twig', ['customSignup' => "custom"]);
+        return $this->twig->render('professor/signup.twig', ['customSignup' => "custom"]);
     }
 
     public function createCustomUser(Application $app, Request $request){
         $name = $request->request->get('user_name');
         $surname = $request->request->get('user_surname');
         $email = $request->request->get('user_email');
-        $gender = $request->request->get('gender');
         $imageUrl = $request->request->get('image_url');
         $type = $request->request->get('type');
 
-        $responseData = $this->loginService->customRegisterUser($name,$surname,$email, $gender, $imageUrl, $type);
+        $responseData = $this->loginService->customRegisterUser($name,$surname,$email, $imageUrl, $type);
         if(gettype($responseData) == "string"){
             return new Response($responseData, Response::HTTP_CONFLICT);
         }

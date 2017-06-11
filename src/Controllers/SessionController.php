@@ -31,11 +31,5 @@ class SessionController
         return $this->twig->render('dashboard.twig', [ 'user' => $user, 'active' => 1]);
     }
 
-    public function profile(Application $app, Request $request){
-        $user = $request->request->get('user');
-        if(empty($user)){
-            return new RedirectResponse('/');
-        }
-        return $this->twig->render('landing.twig', ['user' => $user, 'active' => 0]);
-    }
+
 }

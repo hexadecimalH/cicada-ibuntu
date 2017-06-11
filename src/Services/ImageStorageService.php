@@ -50,10 +50,14 @@ class ImageStorageService
     }
 
     public function moveAndRenameImage($folderName, $url, $id){
-        $digits = 5;
-        $random = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
-        $newUrl = "/uploads"."/".$folderName.'/'.$id."_".$random.".jpg";
-        rename($this->basePath.$url, $this->basePath.$newUrl );
-        return $newUrl;
+        if(strpos($url, 'avatar.png') !== false){
+            $digits = 5;
+            $random = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
+            $newUrl = "/uploads"."/".$folderName.'/'.$id."_".$random.".jpg";
+            rename($this->basePath.$url, $this->basePath.$newUrl );
+            return $newUrl;
+        }
+        return $url;
+
     }
 }

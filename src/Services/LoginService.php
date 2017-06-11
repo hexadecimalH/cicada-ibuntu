@@ -31,7 +31,7 @@ class LoginService
         return empty($user);
     }
 
-    public function createUser($user){
+    public function createUser($user, $type){
         $user = User::create([
             "first_name" => $user['first_name'],
             "last_name" => $user['last_name'],
@@ -39,7 +39,8 @@ class LoginService
             "link" => $user['link'],
             "picture" => $user['picture'],
             "oauth_provider" => $user['oauth_provider'],
-            "oauth_uid" => $user['oauth_uid']
+            "oauth_uid" => $user['oauth_uid'],
+            "type" => $type
         ]);
 
         return $user->to_array();
@@ -54,6 +55,9 @@ class LoginService
     public function getUserAsArray($email){
         $user = User::first(['conditions' => ['email LIKE ?', $email]]);
 
+        if(empty($user)){
+            return "Wrong Credentials";
+        }
         return $user->to_array();
     }
 
@@ -65,6 +69,17 @@ class LoginService
         return $student;
     }
 
+    public function findStudentByUserId($id){
+        $student = Student::first(['conditions' =>['user_id = ?', $id ]]);
+        return $student;
+    }
+
+    public function findProfessorByUserId($id){
+        $professor = Professor::first(['conditions' =>['user_id = ?', $id ]]);
+
+        return $professor;
+    }
+
     public function findProfessorByUser($user)
     {
         $user = $this->findUser($user['email']);
@@ -74,14 +89,15 @@ class LoginService
         return $professor;
     }
 
-    public function customRegisterUser($name,$surname,$email, $gender, $imageUrl, $type){
+    public function customRegisterUser($name, $surname, $email, $imageUrl, $type){
         $exists = $this->findUser($email);
         if(empty($exists)){
             /** @var User $user */
             $user = User::create([
                 "first_name" => $name,
                 "last_name" => $surname,
-                "email" => $email
+                "email" => $email,
+                "type" => $type
             ]);
 
             $url = $this->imageStorageService->moveAndRenameImage($type, $imageUrl, $user->id);

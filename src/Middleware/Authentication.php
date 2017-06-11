@@ -12,6 +12,7 @@ namespace Ibuntu\Middleware;
 use Ibuntu\Application;
 use Ibuntu\Clients\GoogleClient;
 use Ibuntu\Clients\FacebookClient;
+use Ibuntu\Models\User;
 use Ibuntu\Services\LoginService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,13 +41,17 @@ class Authentication
         $this->session->start();
 
     }
-    public function authorizeUser(Application $app, Request $request){
+    public function authorizeUser(Application $app, Request $request, $type){
+        // get user information from Third party
         $user = !empty($request->get('state')) ? $this->getFacebookUser($request->get('state')) : $this->getGoogleUser($request->get('code'));
         if($this->userExists($user['email'])){
-            $user = $this->loginService->createUser($user);
+            /** @var User $user */
+            $user = $this->loginService->createUser($user, $type);
+        }
+        else{
+            $user = $this->loginService->getUserAsArray($user['email']);
         }
 
-        $user = $this->loginService->getUserAsArray($user['email']);
         $this->session->set("user", $user);
         $request->request->set('user', $user);
     }
@@ -55,11 +60,12 @@ class Authentication
     {
         $email = $request->get('email');
         $user = $this->loginService->getUserAsArray($email);
-
-        $this->session->set("user", $user);
+        if(gettype($user) == "array"){
+            $this->session->set("user", $user);
+        }
         $request->request->set('user', $user);
-    }
 
+    }
     public function isLoggedIn(Application $app, Request $request){
         if(!isset($_SESSION['_sf2_attributes']['user'])){
 
@@ -69,6 +75,18 @@ class Authentication
             $user = $_SESSION['_sf2_attributes']['user'];
             $request->request->set('user', $user);
         }
+    }
+
+    public function validateUser(Application $app, Request $request){
+        if(!isset($_SESSION['_sf2_attributes']['user'])){
+            $request->request->set('user',"User not Authorised to make changes please login as a Professor");
+        }
+        else{
+            $user = $_SESSION['_sf2_attributes']['user'];
+            var_dump($user);
+        }
+
+
     }
 
     public function getFacebookUser($state){
@@ -84,7 +102,9 @@ class Authentication
     }
 
     public function userExists($email){
-         return $this->loginService->checkUser($email);
+         $user = $this->loginService->findUser($email);
+
+         return empty($user);
     }
 
 }

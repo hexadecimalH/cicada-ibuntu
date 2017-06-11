@@ -5,3 +5,9 @@
 content-top-1{
     width:25% !important;
 }
+.active-button{
+    background-color: #1f4f77;
+}
+.active-button:hover{
+    background-color:#122b40;
+}

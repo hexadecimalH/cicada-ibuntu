@@ -1,35 +1,3 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#{% include 'parts/head.twig' %}#}
-    {#<body>#}
-        {#<div class="container-fluid" id="root" >#}
-            {#<div class="row">#}
-                {#<div class="col-sm-12">#}
-                    {#{% include 'parts/header.twig' with  {'active': active } %}#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-        {#<div class="container">#}
-            {#<div class="row">#}
-                {#<div class="col-sm-6 col-md-4">#}
-                    {#<div class="thumbnail">#}
-                        {#<img src="{{ user.picture }}" alt="Profile Picture" title="User Picture" >#}
-                        {#<div class="caption">#}
-                            {#<h3>{{ user.first_name }} {{ user.last_name }}</h3>#}
-                            {#<p>E-mail {{ user.email }}</p>#}
-                            {#<p>#}
-                                {#<a href="{{ user.link }}" class="btn btn-primary" role="button" target="_blank">Profile Link</a>#}
-                            {#</p>#}
-                        {#</div>#}
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
-        {#</div>#}
-        {#{% include 'parts/include-scripts.twig' %}#}
-    {#</body>#}
-{#</html>#}
-
-
 <!--
 Author: W3layouts
 Author URL: http://w3layouts.com
@@ -139,12 +107,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class=" border-bottom">
             <div class="full-left">
                 <section class="full-top">
-                    <button id="toggle"><i class="fa fa-arrows-alt"></i></button>
+                    <span>Professor Dashboard</span>
                 </section>
-                <form class=" navbar-left-right">
-                    <input type="text"  value="Search..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search...';}">
-                    <input type="submit" value="" class="fa fa-search">
-                </form>
+
                 <div class="clearfix"> </div>
             </div>
 
@@ -290,7 +255,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </ul>
                 </div>
             </div>
+        </div>
     </nav>
+
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="content-main">
 
@@ -309,6 +276,150 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
                 <div class="col-md-12 ">
+                    <div class="tab-pane active text-style" id="tab1">
+                        <div class="inbox-right">
+                            <div class="mailbox-content">
+                                <div class="mail-toolbar clearfix">
+                                    <div class="float-left">
+                                        <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+                                            <span>List of Courses</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table">
+                                    <tbody>
+                                    <tr class="table-row" v-for="course in courses">
+                                        <td class="table-text">
+                                            <h6> ${course.name}</h6>
+                                            <p>${ course.department }</p>
+                                        </td>
+                                        <td>
+
+                                            <span class="fam">Status</span>
+                                        </td>
+                                        <td class="march">
+                                            <span v-for="day in course_schedule">${day.day}</span>
+                                        </td>
+
+                                        <td>
+                                            <i class="fa fa-star-half-o icon-state-warning"></i>
+
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row">
+                                        <td class="table-text">
+                                            <h6> Lorem ipsum</h6>
+                                            <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+                                        </td>
+                                        <td>
+                                            <span class="mar">Market</span>
+                                        </td>
+                                        <td class="march">
+                                            in 5 days
+                                        </td>
+
+                                        <td>
+                                            <i class="fa fa-star-half-o icon-state-warning"></i>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row">
+                                        <td class="table-text">
+                                            <h6> Lorem ipsum</h6>
+                                            <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
+                                        </td>
+                                        <td>
+                                            <span class="work">work</span>
+                                        </td>
+                                        <td class="march">
+                                            in 5 days
+                                        </td>
+
+                                        <td>
+                                            <i class="fa fa-star-half-o icon-state-warning"></i>
+                                        </td>
+                                    </tr>
+                                    <tr class="table-row">
+                                        <td class="" colspan="4">
+                                            <button class="btn btn-success btn-block" data-toggle="modal" data-target="#newCourse">Create New Course</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Course Modal Start -->
+                    <div class="modal fade" id="newCourse" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header" >
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h2 class="modal-title">Create Course</h2>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="" class="form-horizontal">
+                                        <div :class=" { 'form-group': true , 'form-group has-error' : errors.has('courseName')}">
+                                            <label for="focusedinput" class="col-sm-2 control-label">Name</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control1" id="focusedinput" v-model="courseName" data-vv-name="courseName" v-validate="'required|alpha_spaces'" placeholder="Course Name" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-2 control-label" >Working Days</label>
+                                            <div class="col-sm-8">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary" data-info="monday" v-on:click="daysCheckbox">Monday</button>
+                                                    <button type="button" class="btn btn-primary" data-info="tuesday" v-on:click="daysCheckbox">Tuesday</button>
+                                                    <button type="button" class="btn btn-primary" data-info="wednesday" v-on:click="daysCheckbox">Wednesday</button>
+                                                    <button type="button" class="btn btn-primary" data-info="thursday" v-on:click="daysCheckbox">Thursday</button>
+                                                    <button type="button" class="btn btn-primary" data-info="friday" v-on:click="daysCheckbox">Friday</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" v-for="day in days">
+                                            <label for="" class="col-sm-2 control-label">${ dayLabel(day) }</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control1" id="focusedinput" :v-model="day"  placeholder="from 10:00 to 12:00, from 14:00 to 16:00" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="col-sm-2 control-label">Smester</label>
+                                            <div class="col-sm-8">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" >
+                                                        ${semester} <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                                                        <li role="presentation">
+                                                            <a role="menuitem" tabindex="-1" href="#" v-on:click="setSemester" data-info="Summer">Summer</a>
+                                                        </li>
+                                                        <li role="presentation">
+                                                            <a role="menuitem" tabindex="-1" href="#" v-on:click="setSemester" data-info="Winter">Winter</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" >
+                                                        ${year} <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                                                        <li role="presentation" v-for="year in years">
+                                                            <a role="menuitem" tabindex="-1" href="#" v-on:click="setYear" :data-info="year">${year}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
+                                    <button type="button" class="btn btn-primary" v-on:click="pileUserData">Create</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+                    <!-- New Course Modal END -->
                     <div class="content-top-1">
                         <div class="col-md-6 top-content">
                             <h5>Tasks</h5>
@@ -344,13 +455,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                 <div class="col-md-5">
                     <div class="cal1 cal_2"><div class="clndr"><div class="clndr-controls"><div class="clndr-control-button"><p class="clndr-previous-button">previous</p></div><div class="month">July 2015</div><div class="clndr-control-button rightalign"><p class="clndr-next-button">next</p></div></div><table class="clndr-table" border="0" cellspacing="0" cellpadding="0"><thead><tr class="header-days"><td class="header-day">S</td><td class="header-day">M</td><td class="header-day">T</td><td class="header-day">W</td><td class="header-day">T</td><td class="header-day">F</td><td class="header-day">S</td></tr></thead><tbody><tr><td class="day adjacent-month last-month calendar-day-2015-06-28"><div class="day-contents">28</div></td><td class="day adjacent-month last-month calendar-day-2015-06-29"><div class="day-contents">29</div></td><td class="day adjacent-month last-month calendar-day-2015-06-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-01"><div class="day-contents">1</div></td><td class="day calendar-day-2015-07-02"><div class="day-contents">2</div></td><td class="day calendar-day-2015-07-03"><div class="day-contents">3</div></td><td class="day calendar-day-2015-07-04"><div class="day-contents">4</div></td></tr><tr><td class="day calendar-day-2015-07-05"><div class="day-contents">5</div></td><td class="day calendar-day-2015-07-06"><div class="day-contents">6</div></td><td class="day calendar-day-2015-07-07"><div class="day-contents">7</div></td><td class="day calendar-day-2015-07-08"><div class="day-contents">8</div></td><td class="day calendar-day-2015-07-09"><div class="day-contents">9</div></td><td class="day calendar-day-2015-07-10"><div class="day-contents">10</div></td><td class="day calendar-day-2015-07-11"><div class="day-contents">11</div></td></tr><tr><td class="day calendar-day-2015-07-12"><div class="day-contents">12</div></td><td class="day calendar-day-2015-07-13"><div class="day-contents">13</div></td><td class="day calendar-day-2015-07-14"><div class="day-contents">14</div></td><td class="day calendar-day-2015-07-15"><div class="day-contents">15</div></td><td class="day calendar-day-2015-07-16"><div class="day-contents">16</div></td><td class="day calendar-day-2015-07-17"><div class="day-contents">17</div></td><td class="day calendar-day-2015-07-18"><div class="day-contents">18</div></td></tr><tr><td class="day calendar-day-2015-07-19"><div class="day-contents">19</div></td><td class="day calendar-day-2015-07-20"><div class="day-contents">20</div></td><td class="day calendar-day-2015-07-21"><div class="day-contents">21</div></td><td class="day calendar-day-2015-07-22"><div class="day-contents">22</div></td><td class="day calendar-day-2015-07-23"><div class="day-contents">23</div></td><td class="day calendar-day-2015-07-24"><div class="day-contents">24</div></td><td class="day calendar-day-2015-07-25"><div class="day-contents">25</div></td></tr><tr><td class="day calendar-day-2015-07-26"><div class="day-contents">26</div></td><td class="day calendar-day-2015-07-27"><div class="day-contents">27</div></td><td class="day calendar-day-2015-07-28"><div class="day-contents">28</div></td><td class="day calendar-day-2015-07-29"><div class="day-contents">29</div></td><td class="day calendar-day-2015-07-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-31"><div class="day-contents">31</div></td><td class="day adjacent-month next-month calendar-day-2015-08-01"><div class="day-contents">1</div></td></tr></tbody></table></div></div>
-                    <!----Calender -------->
-                    <link rel="stylesheet" href="/front-end/css/clndr.css" type="text/css" />
-                    <script src="/front-end/js/assets/underscore-min.js" type="text/javascript"></script>
-                    <script src="/front-end/js/assets/moment-2.2.1.js" type="text/javascript"></script>
-                    <script src="/front-end/js/assets/clndr.js" type="text/javascript"></script>
-                    <script src="/front-end/js/assets/site.js" type="text/javascript"></script>
-                    <!----End Calender -------->
+
                 </div>
                 <div class="col-md-7 mid-content-top">
                     <div class="middle-content">
@@ -381,22 +486,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                         </div>
                     </div>
-                    <!--//sreen-gallery-cursual---->
-                    <!-- requried-jsfiles-for owl -->
-                    <link href="/front-end/css/owl.carousel.css" rel="stylesheet">
-                    <script src="/front-end/js/assets/owl.carousel.js"></script>
-                    <script>
-                        $(document).ready(function() {
-                            $("#owl-demo").owlCarousel({
-                                items : 3,
-                                lazyLoad : true,
-                                autoPlay : true,
-                                pagination : true,
-                                nav:true,
-                            });
-                        });
-                    </script>
-                    <!-- //requried-jsfiles-for owl -->
+                    {#<!--//sreen-gallery-cursual---->#}
+                    {#<!-- requried-jsfiles-for owl -->#}
+                    {#<link href="/front-end/css/owl.carousel.css" rel="stylesheet">#}
+                    {#<script src="/front-end/js/assets/owl.carousel.js"></script>#}
+                    {#<script>#}
+                        {#$(document).ready(function() {#}
+                            {#$("#owl-demo").owlCarousel({#}
+                                {#items : 3,#}
+                                {#lazyLoad : true,#}
+                                {#autoPlay : true,#}
+                                {#pagination : true,#}
+                                {#nav:true,#}
+                            {#});#}
+                        {#});#}
+                    {#</script>#}
+                    {#<!-- //requried-jsfiles-for owl -->#}
                 </div>
                 <div class="clearfix"> </div>
             </div>
@@ -411,43 +516,43 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <ul class="icon">
 
 
-                                <div  class="post-file">
-                                    <i class="fa fa-location-arrow"></i>
-                                    <input id="input-1" name="input1[]" type="file" multiple="" class="">
-                                </div>
-                                <div  class="post-file">
-                                    <i class="fa fa-camera"></i>
-                                    <input id="input-2" name="input2[]" type="file" multiple="" class="">
-                                </div>
-                                <div  class="post-file">
-                                    <i class="fa fa-video-camera"></i>
-                                    <input id="input-3" name="input3[]" type="file" multiple="" class="">
-                                </div>
-                                <div  class="post-file">
-                                    <i class="fa fa-microphone"></i>
-                                    <input id="input-4" name="input4[]" type="file" multiple="" class="">
-                                </div>
+                                {#<div  class="post-file">#}
+                                    {#<i class="fa fa-location-arrow"></i>#}
+                                    {#<input id="input-1" name="input1[]" type="file" multiple="" class="">#}
+                                {#</div>#}
+                                {#<div  class="post-file">#}
+                                    {#<i class="fa fa-camera"></i>#}
+                                    {#<input id="input-2" name="input2[]" type="file" multiple="" class="">#}
+                                {#</div>#}
+                                {#<div  class="post-file">#}
+                                    {#<i class="fa fa-video-camera"></i>#}
+                                    {#<input id="input-3" name="input3[]" type="file" multiple="" class="">#}
+                                {#</div>#}
+                                {#<div  class="post-file">#}
+                                    {#<i class="fa fa-microphone"></i>#}
+                                    {#<input id="input-4" name="input4[]" type="file" multiple="" class="">#}
+                                {#</div>#}
 
-                                <script>
-                                    $(document).on('ready', function() {
-                                        $("#input-1").fileinput({showCaption: false});
-                                    });
-                                </script>
-                                <script>
-                                    $(document).on('ready', function() {
-                                        $("#input-2").fileinput({showCaption: false});
-                                    });
-                                </script>
-                                <script>
-                                    $(document).on('ready', function() {
-                                        $("#input-3").fileinput({showCaption: false});
-                                    });
-                                </script>
-                                <script>
-                                    $(document).on('ready', function() {
-                                        $("#input-4").fileinput({showCaption: false});
-                                    });
-                                </script>
+                                {#<script>#}
+                                    {#$(document).on('ready', function() {#}
+                                        {#$("#input-1").fileinput({showCaption: false});#}
+                                    {#});#}
+                                {#</script>#}
+                                {#<script>#}
+                                    {#$(document).on('ready', function() {#}
+                                        {#$("#input-2").fileinput({showCaption: false});#}
+                                    {#});#}
+                                {#</script>#}
+                                {#<script>#}
+                                    {#$(document).on('ready', function() {#}
+                                        {#$("#input-3").fileinput({showCaption: false});#}
+                                    {#});#}
+                                {#</script>#}
+                                {#<script>#}
+                                    {#$(document).on('ready', function() {#}
+                                        {#$("#input-4").fileinput({showCaption: false});#}
+                                    {#});#}
+                                {#</script>#}
                             </ul>
                             <form class="text-sub">
                                 <input type="submit" value="post">
@@ -470,157 +575,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div>
                 <div class="col-md-6">
                     <div class="weather">
-                        <div class="weather-top">
-                            <div class="weather-top-left">
-                                <div class="degree">
-                                    <figure class="icons">
-                                        <canvas id="partly-cloudy-day" width="64" height="64">
-                                        </canvas>
-                                    </figure>
-                                    <span>37°</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <script>
-                                    var icons = new Skycons({"color": "#1ABC9C"}),
-                                        list  = [
-                                            "clear-night", "partly-cloudy-day",
-                                            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                            "fog"
-                                        ],
-                                        i;
-
-                                    for(i = list.length; i--; )
-                                        icons.set(list[i], list[i]);
-
-                                    icons.play();
-                                </script>
-                                <p>FRIDAY
-                                    <label>13</label>
-                                    <sup>th</sup>
-                                    AUG
-                                </p>
-                            </div>
-                            <div class="weather-top-right">
-                                <p><i class="fa fa-map-marker"></i>lorem ipsum</p>
-                                <label>lorem ipsum</label>
-                            </div>
-                            <div class="clearfix"> </div>
-                        </div>
-                        <div class="weather-bottom">
-                            <div class="weather-bottom1">
-                                <div class="weather-head">
-                                    <h4>Cloudy</h4>
-                                    <figure class="icons">
-                                        <canvas id="cloudy" width="58" height="58"></canvas>
-                                    </figure>
-                                    <script>
-                                        var icons = new Skycons({"color": "#999"}),
-                                            list  = [
-                                                "clear-night", "cloudy",
-                                                "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                                "fog"
-                                            ],
-                                            i;
-
-                                        for(i = list.length; i--; )
-                                            icons.set(list[i], list[i]);
-
-                                        icons.play();
-                                    </script>
-                                    <h6>20°</h6>
-                                    <div class="bottom-head">
-                                        <p>August 16</p>
-                                        <p>Monday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weather-bottom1 ">
-                                <div class="weather-head">
-                                    <h4>Sunny</h4>
-                                    <figure class="icons">
-                                        <canvas id="clear-day" width="58" height="58">
-                                        </canvas>
-                                    </figure>
-                                    <script>
-                                        var icons = new Skycons({"color": "#999"}),
-                                            list  = [
-                                                "clear-night", "clear-day",
-                                                "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                                "fog"
-                                            ],
-                                            i;
-
-                                        for(i = list.length; i--; )
-                                            icons.set(list[i], list[i]);
-
-                                        icons.play();
-                                    </script>
-                                    <h6>37°</h6>
-                                    <div class="bottom-head">
-                                        <p>August 17</p>
-                                        <p>Tuesday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weather-bottom1">
-                                <div class="weather-head">
-                                    <h4>Rainy</h4>
-                                    <figure class="icons">
-                                        <canvas id="sleet" width="58" height="58">
-                                        </canvas>
-                                    </figure>
-                                    <script>
-                                        var icons = new Skycons({"color": "#999"}),
-                                            list  = [
-                                                "clear-night", "clear-day",
-                                                "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                                "fog"
-                                            ],
-                                            i;
-
-                                        for(i = list.length; i--; )
-                                            icons.set(list[i], list[i]);
-
-                                        icons.play();
-                                    </script>
-
-                                    <h6>7°</h6>
-                                    <div class="bottom-head">
-                                        <p>August 18</p>
-                                        <p>Wednesday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weather-bottom1 ">
-                                <div class="weather-head">
-                                    <h4>Snowy</h4>
-                                    <figure class="icons">
-                                        <canvas id="snow" width="58" height="58">
-                                        </canvas>
-                                    </figure>
-                                    <script>
-                                        var icons = new Skycons({"color": "#999"}),
-                                            list  = [
-                                                "clear-night", "clear-day",
-                                                "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                                "fog"
-                                            ],
-                                            i;
-
-                                        for(i = list.length; i--; )
-                                            icons.set(list[i], list[i]);
-
-                                        icons.play();
-                                    </script>
-                                    <h6>-10°</h6>
-                                    <div class="bottom-head">
-                                        <p>August 16</p>
-                                        <p>Thursday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="clearfix"> </div>
-                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
 
                     </div>
                 </div>
@@ -638,7 +594,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="clearfix"> </div>
     </div>
 </div>
+</div>
+<!----Calender -------->
+<link rel="stylesheet" href="/front-end/css/clndr.css" type="text/css" />
+<script src="/front-end/js/assets/underscore-min.js" type="text/javascript"></script>
+<script src="/front-end/js/assets/moment-2.2.1.js" type="text/javascript"></script>
+<script src="/front-end/js/assets/clndr.js" type="text/javascript"></script>
+<script src="/front-end/js/assets/site.js" type="text/javascript"></script>
+<!----End Calender -------->
 <!---->
+<script src="/front-end/js/vue-components/commons.chunk.js"></script>
+<script src="/front-end/js/vue-components/dashboard.chunk.js"></script>
 <!--scrolling js-->
 <script src="/front-end/js/assets/jquery.nicescroll.js"></script>
 <script src="/front-end/js/assets/scripts.js"></script>

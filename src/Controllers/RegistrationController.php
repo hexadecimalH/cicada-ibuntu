@@ -13,6 +13,8 @@ namespace Ibuntu\Controllers;
 
 
 use Ibuntu\Application;
+use Ibuntu\Services\ImageStorageService;
+use Ibuntu\Services\RegistrationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,10 +39,6 @@ class RegistrationController
     }
 
     // '/professor' Routes
-
-    public function signupProfessors(){
-        return $this->twig->render('signup-professor.twig');
-    }
 
     public function uploadImage(Application $app, Request $request){
         $image = $request->files->get('image');
@@ -100,7 +98,6 @@ class RegistrationController
         $type = $request->request->get('type');
 
         $userId = $request->request->get('user_id');
-
         if( $userId == ""){
             $user = $_SESSION['_sf2_attributes']['user'];
             $userId = $user['id'];

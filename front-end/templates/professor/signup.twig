@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Ibuntu | Sign Up </title>
-    {% include 'parts/head.twig' %}
+    {% include '/parts/head.twig' %}
     <link rel="stylesheet" href="/front-end/css/custom/signup.css">
 </head>
 <body >
@@ -156,25 +156,25 @@
                     <div :class=" { 'form-group': true , 'form-group has-error' : errors.has('university_name')}">
                         <label for="focusedinput" class="col-sm-2 control-label">Name</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control1" id="focusedinput" v-model="university_name" data-vv-name="university_name" v-validate="'required|alpha'" placeholder="University Offical Name" >
+                            <input type="text" class="form-control1" id="focusedinput" v-model="university_name" data-vv-name="university_name" v-validate="'required|alpha_spaces'" placeholder="University Offical Name" >
                         </div>
                     </div>
                     <div :class=" {'form-group': true , 'form-group has-error' : errors.has('university_address')}">
                         <label for="focusedinput" class="col-sm-2 control-label">Address</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control1" id="focusedinput" v-model="university_address" data-vv-name="university_address" v-validate="'required|alpha'" placeholder="University Registered Addres" >
+                            <input type="text" class="form-control1" id="focusedinput" v-model="university_address" data-vv-name="university_address" v-validate="'required|alpha_spaces'" placeholder="University Registered Addres" >
                         </div>
                     </div>
                     <div :class=" {'form-group': true , 'form-group has-error' : errors.has('university_city')}">
                         <label for="focusedinput" class="col-sm-2 control-label">City</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control1" id="focusedinput" v-model="university_city" data-vv-name="university_city" v-validate="'required|alpha'" placeholder="City" >
+                            <input type="text" class="form-control1" id="focusedinput" v-model="university_city" data-vv-name="university_city" v-validate="'required|alpha_spaces'" placeholder="City" >
                         </div>
                     </div>
                     <div :class=" {'form-group': true , 'form-group has-error' : errors.has('university_country')}">
                         <label for="focusedinput" class="col-sm-2 control-label">Country</label>
                         <div class="col-sm-8">
-                            <select name="university_country" v-model="university_country" id="selector1" data-vv-name="university_country" v-validate="'required|alpha'" class="form-control1" >
+                            <select name="university_country" v-model="university_country" id="selector1" data-vv-name="university_country" v-validate="'required|alpha_spaces'" class="form-control1" >
                                 <option value="">Click to pick</option>
                                 <option value="macedonia">Macedonia</option>
                                 <option value="albania">Albania</option>
@@ -234,7 +234,7 @@
                         <div :class=" {'form-group': true , 'form-group has-error' : errors.has('facultyName')}">
                             <label for="focusedinput" class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control1" id="focusedinput" v-model="facultyName" placeholder="Faculty Offical Name" data-vv-name="facultyName" v-validate="'required|alpha'" >
+                                <input type="text" class="form-control1" id="focusedinput" v-model="facultyName" placeholder="Faculty Offical Name" data-vv-name="facultyName" v-validate="'required|alpha_spaces'" >
                             </div>
                         </div>
                         <div class="form-group" >
@@ -265,7 +265,7 @@
                         <div :class=" {'form-group': true , 'form-group has-error' : errors.has('departmentName')}">
                             <label for="focusedinput" class="col-sm-2 control-label">Name</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control1" id="focusedinput" v-model="departmentName" data-vv-name="departmentName" v-validate="'required|alpha'"  placeholder="Department Offical Name" >
+                                <input type="text" class="form-control1" id="focusedinput" v-model="departmentName" data-vv-name="departmentName" v-validate="'required|alpha_spaces'"  placeholder="Department Offical Name" >
                             </div>
                         </div>
                         <div :class=" {'form-group': true , 'form-group has-error' : errors.has('departmentBelongsToUniversity')}">
@@ -311,7 +311,7 @@
         <input type="text" name="email" value="{{ user.email }}" class="hidden">
         <input type="password" name="password" class="hidden">
         {% else %}
-        <input type="text" name="email" v-model="user_email" class="hidden">
+        <input type="text" name="email" v-model="userEmail" class="hidden">
         <input type="password" name="password" class="hidden">
         {% endif %}
     </form>

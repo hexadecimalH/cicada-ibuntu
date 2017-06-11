@@ -101,6 +101,8 @@ var Registartion = new Vue({
 
             axios.post('/user/create', data, []).then( response => {
                 this.userId = response.data.id;
+                this.userEmail = response.data.email;
+                console.log(response);
             }).catch( error => {
                 $("#failModal").modal('show');
                 this.errorMsg = error.message;

@@ -13,6 +13,7 @@ use Ibuntu\Clients\FacebookClient;
 use Ibuntu\Clients\GoogleClient;
 use Ibuntu\Middleware\Authentication;
 use Ibuntu\Libraries\ImageManipulationLibrary;
+use Ibuntu\Services\DashboardService;
 use Ibuntu\Services\ImageStorageService;
 use Ibuntu\Services\LoginService;
 use Ibuntu\Services\RegistrationService;
@@ -69,6 +70,9 @@ class Application extends \Cicada\Application
             return new RegistrationService();
         };
 
+        $this['dashboardService'] = function() {
+            return new DashboardService();
+        };
 
 
     }

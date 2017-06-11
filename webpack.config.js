@@ -8,6 +8,7 @@ module.exports = {
         'login': './/resources/vue/Login/component.js',
         'registration': './/resources/vue/Registration/professor.js',
         'student-registration': './/resources/vue/Registration/student.js',
+        'dashboard': './/resources/vue/Dashboard/professor.js',
     },
     output: { path: __dirname + '/front-end/js/vue-components', filename: '[name].chunk.js' },
     module: {
