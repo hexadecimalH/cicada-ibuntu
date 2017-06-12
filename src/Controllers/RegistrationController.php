@@ -13,8 +13,6 @@ namespace Ibuntu\Controllers;
 
 
 use Ibuntu\Application;
-use Ibuntu\Services\ImageStorageService;
-use Ibuntu\Services\RegistrationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

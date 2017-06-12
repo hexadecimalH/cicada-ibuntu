@@ -15,7 +15,20 @@ class User extends Model
 {
     static $table_name = 'users';
 
+    static $has_many = [
+        [
+            'professor',
+            'class_name' => 'Professor'
+        ]
+    ];
+
     public function serialize(){
         return $this->to_array();
+    }
+
+    public function serializeWithProfessor(){
+        return $this->to_array([
+            'include'=> ['professor']
+        ]);
     }
 }

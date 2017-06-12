@@ -22,6 +22,7 @@
     "vee-validate": "^2.0.0-rc.5",
     "vue": "^2.2.6",
     "vue-strap": "github:wffranco/vue-strap",
+    "vue-tinymce": "^1.0.5",
     "vue-validator": "^3.0.0-alpha.2",
     "vuejs-datepicker": "^0.7.5"
   },

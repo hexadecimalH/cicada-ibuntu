@@ -31,7 +31,7 @@ $app = new Application($_SERVER['HOME'], $_SERVER['HTTP_HOST'], getProtocol().':
 $authentication = new Authentication($app['googleClient'],$app['facebookClient'], $app['loginService']);
 $loginController = new LoginController($app['googleClient'],$app['facebookClient'], $app['twig'], $app['loginService']);
 $registrationController = new RegistrationController($app['imageStorageService'], $app['registrationService'], $app['twig']);
-$dashboardController = new DashboardController($app['dashboardService']);
+$dashboardController = new DashboardController($app['dashboardService'], $app['twig']);
 $sessionController = new SessionController($app['twig']);
 
 /** @var RouteCollection $loginRouteCollection */
@@ -46,6 +46,16 @@ $studentRegistrationRouteCollection = $app['collection_factory']->prefix('/stude
 $dashboardRouteCollection = $app['collection_factory']->prefix('/dashboard');
 // dashboard routes for creating and managing academic data
 $dashboardRouteCollection->post('/course/create', [$dashboardController, 'createCourse'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+$dashboardRouteCollection->get('/course/professor', [$dashboardController, 'getProfessorCourses'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+$dashboardRouteCollection->get('/course/{courseId}', [$dashboardController, 'toCoursePage'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->validateUser($app,$request);
     });
@@ -82,6 +92,11 @@ $app->post('/profile', [$loginController, 'profile'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->isLoggedIn($app, $request);
     });
+$app->get('/profile', [$loginController, 'profile'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->isLoggedIn($app, $request);
+    });
+
 
 // registration routes
 $professorRegistrationRouteCollection->post('/image',           [$registrationController, "uploadImage"]);

@@ -109,6 +109,12 @@ class LoginService
 
         return "User with same E-mail already exists";
     }
+    public function getUserWithDepartment($user){
+        /** @var User $user */
+        $user = User::find($user['id'],['include' => [ 'professor']]);
+
+        return $user->serializeWithProfessor();
+    }
 
 }
 

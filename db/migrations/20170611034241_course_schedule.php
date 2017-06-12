@@ -29,7 +29,7 @@ class CourseSchedule extends AbstractMigration
     {
         $table = $this->table('course_schedule');
         $table->addColumn('day', 'text')
-            ->addColumn('course_id', 'text')
+            ->addColumn('course_id', 'integer')
             ->addForeignKey('course_id', 'course', 'id', [
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'

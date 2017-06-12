@@ -83,10 +83,9 @@ class Authentication
         }
         else{
             $user = $_SESSION['_sf2_attributes']['user'];
-            var_dump($user);
+            $user = $this->loginService->getUserWithDepartment($user);
+            $request->request->set('user', $user);
         }
-
-
     }
 
     public function getFacebookUser($state){

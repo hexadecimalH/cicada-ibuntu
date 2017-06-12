@@ -73,7 +73,7 @@ class LoginController
         if(gettype($user) == "string" ){
             return new RedirectResponse('/?message='.$user.'');
         }
-        return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, 'active' => 0]);
+        return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, "page" => 'dashboard']);
     }
 
     public function login(Application $app, Request $request){
@@ -94,23 +94,8 @@ class LoginController
             return $this->twig->render($user['type'].'/signup.twig', ['customSignup' => "non-custom", "user" => $user]);
         }
 
-        return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, 'active' => 0]);
+        return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, "page" => 'dashboard']);
     }
-
-//    public function professorLogin(Application $app, Request $request){
-//        $user = $request->request->get('user');
-//        if(empty($user)){
-//            $urls = $this->getClientUrl();
-//            return $this->twig->render('index.twig', ['google' => $urls['gp'], 'fb' => $urls['fb'],'message' => "Wrong Credentials"]);
-//        }
-//
-//        $professor = $this->loginService->findProfessorByUser($user);
-//        if(empty($professor)){
-//            return $this->twig->render('professor/signup.twig', ['customSignup' => "non-custom", "user" => $user]);
-//        }
-//        return $this->twig->render('professor/landing.twig', ['user' => $user, 'active' => 0]);
-//    }
-
 
     public function logOut(Application $app, Request $request){
         session_unset();

@@ -46,8 +46,10 @@ var Dashboard = new Vue({
             console.log(this.days);
 
         },
-        dayLabel:function(day){
-            return "Working Hours for "+  this.capitalize(day);
+        daysContains:function(day){
+            let value;
+            (this.days.includes(day)) ? value = true : value = false;
+            return value;
         },
         capitalize:function(word){
             return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -64,22 +66,61 @@ var Dashboard = new Vue({
             this.years.push(this.year + 1);
             this.years.push(this.year + 2);
         },
+        coursePath:function(id){
+            return "/dashboard/course/"+id;
+        },
+        ajustNameToShow:function(name){
+            if(name.length < 23){
+                return name;
+            }
+            else{
+                return name;
+
+            }
+        },
         pileUserData(){
-            console.log(this);
             let data = new FormData();
 
             data.append("course_name", this.courseName);
-            data.append("scheduled_days", this.days);
-            data.append("semester", this.days);
-            data.append("year", this.days);
-            this.days.foreach(day => {
-                data.append(day, this.get(day));
-            });
+            data.append("scheduled_days", this.days );
+            data.append("semester", this.semester);
+            data.append("year", this.year);
+            data.append("monday", this.monday);
+            data.append("tuesday", this.tuesday);
+            data.append("wednesday", this.wednesday);
+            data.append("thursday", this.thursday);
+            data.append("friday", this.friday);
 
+            axios.post('/dashboard/course/create',data, []).then(response => {
+                console.log(response.data);
+                this.courses.push(response.data);
+                $('#newCourse').modal('hide');
+                this.courseName = "";
+                this.days = [];
+                this.semester = '';
+                this.year = '';
+                this.monday = '';
+                this.tuesday = '';
+                this.wednesday = '';
+                this.thursday = '';
+                this.friday = '';
+            }).catch(error =>{
+                $('#failModal').modal('show');
+                console.log(error);
+            });
+        },
+        getProfessorsCourses(){
+            axios.get('/dashboard/course/professor').then(response => {
+                console.log(response.data);
+                this.courses = response.data;
+            }).catch( error => {
+                console.log(error);
+            })
         }
     },
     beforeMount(){
         this.fillUpYearsContainer();
+        this.getProfessorsCourses();
     },
     delimiters: ['${', '}']
 });

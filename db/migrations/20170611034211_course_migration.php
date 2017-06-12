@@ -29,12 +29,18 @@ class CourseMigration extends AbstractMigration
     {
         $table = $this->table('course');
         $table->addColumn('course_name', 'text')
-            ->addColumn('department_id', 'text')
+            ->addColumn('department_id', 'integer')
             ->addForeignKey('department_id', 'department', 'id', [
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
+            ->addColumn('professor_id', 'integer')
+            ->addForeignKey('professor_id', 'professor', 'id',[
+                'delete'=> 'CASCADE',
+                'update'=> 'CASCADE'
+            ])
             ->addColumn('semester', 'text')
+            ->addColumn('year', 'integer')
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('modified', 'datetime', ['null' => true])
             ->create();

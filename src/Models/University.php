@@ -24,12 +24,15 @@ class University extends Model
 
     public function serialize(){
         return $this->to_array([
-            'include' => [ 'faculty' =>
-                [
-                    'include' =>
-                        ['department']
+            'include' =>
+                [ 'faculty' =>
+                    [
+                        'include' =>
+                            [
+                                'department'
+                            ]
+                    ]
                 ]
-            ]
-        ]);
+            ]);
     }
 }

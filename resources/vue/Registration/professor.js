@@ -149,11 +149,11 @@ var Registartion = new Vue({
 
             axios.post('/professor/department', data, []).then( response => {
                 this.departments.push(response.data);
+                $('#departmentModal').modal('hide');
                 this.departmentName = "";
                 this.departmentBelongsToUniversity = "";
                 this.departmentBelongsToFaculty = "";
                 this.departmentInfo = "";
-                $('#departmentModal').modal('hide');
 
             }).catch( error => {
                 console.log(error);
@@ -170,6 +170,7 @@ var Registartion = new Vue({
             data.append('university_email',this.university_email);
 
             axios.post('/professor/university',data, []).then(response => {
+                console.log(response.data);
                 this.universities.push(response.data);
                 this.university_name = "";
                 this.university_address = "";
@@ -180,6 +181,7 @@ var Registartion = new Vue({
 
                 $("#universityModal").modal('hide');
             }).catch( error => {
+                console.log(error);
                 // implment Error message showing
                 $('#failModal').modal("show");
             })
