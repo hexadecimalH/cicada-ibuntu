@@ -11,6 +11,7 @@ namespace Ibuntu;
 
 use Ibuntu\Clients\FacebookClient;
 use Ibuntu\Clients\GoogleClient;
+use Ibuntu\Libraries\FileZipper;
 use Ibuntu\Middleware\Authentication;
 use Ibuntu\Libraries\ImageManipulationLibrary;
 use Ibuntu\Services\DashboardService;
@@ -55,6 +56,10 @@ class Application extends \Cicada\Application
         $this['imageManipulationLibrary'] = function () {
             return new ImageManipulationLibrary();
         };
+
+        $this['fileZipper'] = function (){
+            return new FileZipper($this->basePath);
+        };
     }
 
     protected function setupServices(){
@@ -71,7 +76,7 @@ class Application extends \Cicada\Application
         };
 
         $this['dashboardService'] = function() {
-            return new DashboardService();
+            return new DashboardService($this['fileZipper']);
         };
 
 

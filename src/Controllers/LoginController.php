@@ -61,6 +61,7 @@ class LoginController
 
     public function profile(Application $app, Request $request){
         $user = $request->request->get('user');
+
         if($user['type'] == 'student'){
             $academic = $this->loginService->findStudentByUserId($user['id']);
         }

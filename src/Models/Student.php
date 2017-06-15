@@ -14,4 +14,13 @@ use ActiveRecord\Model;
 class Student extends Model
 {
     static $table_name = "student";
+
+    static $belongs_to = [
+        [
+            'department'
+        ],
+        [
+            'user'
+        ]
+    ];
 }

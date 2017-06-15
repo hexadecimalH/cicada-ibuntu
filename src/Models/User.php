@@ -19,6 +19,10 @@ class User extends Model
         [
             'professor',
             'class_name' => 'Professor'
+        ],
+        [
+            'student',
+            'class_name' => 'Student'
         ]
     ];
 
@@ -29,6 +33,11 @@ class User extends Model
     public function serializeWithProfessor(){
         return $this->to_array([
             'include'=> ['professor']
+        ]);
+    }
+    public function serializeWithStudent(){
+        return $this->to_array([
+            'include'=> ['student']
         ]);
     }
 }

@@ -111,9 +111,14 @@ class LoginService
     }
     public function getUserWithDepartment($user){
         /** @var User $user */
-        $user = User::find($user['id'],['include' => [ 'professor']]);
+        $user = User::find($user['id'],['include' => [ $user['type']]]);
+        if($user->type == "student"){
+            return $user->serializeWithStudent();
+        }
+        else{
+            return $user->serializeWithProfessor();
+        }
 
-        return $user->serializeWithProfessor();
     }
 
 }

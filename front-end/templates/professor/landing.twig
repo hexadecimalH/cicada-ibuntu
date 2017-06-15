@@ -88,6 +88,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </script>
     <!--skycons-icons-->
     <script src="/front-end/js/assets/skycons.js"></script>
+    <script src="/front-end/js/tinymce/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector:'#tinymce',
+            plugins: "image, advlist, table, advlist, link, link image code",
+            toolbar: "image, bullist, numlist, table, link",
+            convert_urls: false,
+            advlist_bullet_styles: "square",
+            setup : function(ed) {
+                ed.on("change", function(e){
+                    $('#content').html(tinymce.activeEditor.getContent());
+                });
+                ed.on("keyup", function(){
+                    $('#content').html(tinymce.activeEditor.getContent());
+                });
+            }
+    });</script>
     <!--//skycons-icons-->
 </head>
 <body>
@@ -210,7 +227,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <li>
                             <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-indent nav_icon"></i> <span class="nav-label">Courses</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li v-for="course in courses"><a :href="coursePath(course.id)" class=" hvr-bounce-to-right"> <i class="fa fa-play nav_icon"></i><span class="span-icon">${ajustNameToShow(course.course_name)}</span></a></li>
+                                <li  v-for="course in courses"><a :href="coursePath(course.id)" class=" hvr-bounce-to-right"> <i class="fa fa-play nav_icon"></i><span class="span-icon">${ajustNameToShow(course.course_name)}</span></a></li>
 
                             </ul>
                         </li>
@@ -301,38 +318,38 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                                         </td>
                                     </tr>
-                                    <tr class="table-row">
-                                        <td class="table-text">
-                                            <h6> Lorem ipsum</h6>
-                                            <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
-                                        </td>
-                                        <td>
-                                            <span class="mar">Market</span>
-                                        </td>
-                                        <td class="march">
-                                            in 5 days
-                                        </td>
+                                    {#<tr class="table-row">#}
+                                        {#<td class="table-text">#}
+                                            {#<h6> Lorem ipsum</h6>#}
+                                            {#<p>Nullam quis risus eget urna mollis ornare vel eu leo</p>#}
+                                        {#</td>#}
+                                        {#<td>#}
+                                            {#<span class="mar">Market</span>#}
+                                        {#</td>#}
+                                        {#<td class="march">#}
+                                            {#in 5 days#}
+                                        {#</td>#}
 
-                                        <td>
-                                            <i class="fa fa-star-half-o icon-state-warning"></i>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row">
-                                        <td class="table-text">
-                                            <h6> Lorem ipsum</h6>
-                                            <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
-                                        </td>
-                                        <td>
-                                            <span class="work">work</span>
-                                        </td>
-                                        <td class="march">
-                                            in 5 days
-                                        </td>
+                                        {#<td>#}
+                                            {#<i class="fa fa-star-half-o icon-state-warning"></i>#}
+                                        {#</td>#}
+                                    {#</tr>#}
+                                    {#<tr class="table-row">#}
+                                        {#<td class="table-text">#}
+                                            {#<h6> Lorem ipsum</h6>#}
+                                            {#<p>Nullam quis risus eget urna mollis ornare vel eu leo</p>#}
+                                        {#</td>#}
+                                        {#<td>#}
+                                            {#<span class="work">work</span>#}
+                                        {#</td>#}
+                                        {#<td class="march">#}
+                                            {#in 5 days#}
+                                        {#</td>#}
 
-                                        <td>
-                                            <i class="fa fa-star-half-o icon-state-warning"></i>
-                                        </td>
-                                    </tr>
+                                        {#<td>#}
+                                            {#<i class="fa fa-star-half-o icon-state-warning"></i>#}
+                                        {#</td>#}
+                                    {#</tr>#}
                                     <tr class="table-row">
                                         <td class="" colspan="4">
                                             <button class="btn btn-success btn-block" data-toggle="modal" data-target="#newCourse">Create New Course</button>
@@ -653,7 +670,115 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <div class="blank-page">
                         <h1>{{ course.course_name }}</h1>
                         <h3 class="sub-heading">{{ department.name }}</h3>
-                        <tinymce id="editor" v-model="editor" :options="options" @change="change" :content='content'></tinymce>
+                        <tabs v-model="activeTab" nav-style="tabs" justified>
+                            <tab header="Course Info">
+                                <div class="col-sm-12 content-block" id="content">
+
+                                </div>
+                                <div class="col-sm-12" v-bind:class="{ 'not-shown': !editMode }">
+                                    <textarea name="" id="tinymce" cols="30" rows="10"></textarea>
+                                </div>
+                                <div class="col-sm-12">
+                                    <p class="button-holder">
+                                        <button class="btn btn-default"  v-on:click="toggleEdit" v-if="!editMode">Edit</button>
+                                        <button class="btn btn-success"  v-on:click="sendCourseInfo" :data-id="courseId" v-if="editMode">Save Changes</button>
+                                        <button class="btn btn-primary"  v-on:click="getCourseData" v-if="editMode">Undo Changes</button>
+                                        <button class="btn btn-info"  v-on:click="toggleEdit" v-if="editMode">Cancel Edit</button>
+                                    </p>
+                                </div>
+
+
+                                <div class="clearfix"></div>
+
+                            </tab>
+                            <tab header="Requests">
+                                <table class="table">
+                                    <tbody>
+                                    <th>Picture</th>
+                                    <th>Student Info</th>
+                                    <th>Request Status</th>
+                                    <th>Action</th>
+                                    <tr class="table-row" v-for="request in requests">
+                                        <td class="table-img">
+                                            <img :src="request.users.picture" alt="" width="60px">
+                                        </td>
+                                        <td class="table-text">
+                                            <h6>${request.users.first_name} ${request.users.last_name}</h6>
+                                            <p>${request.users.email}</p>
+                                        </td>
+                                        <td class="table-text">
+                                            <span class="mar" v-if="request.status == 'pending'"> ${request.status}</span>
+                                            <span class="work" v-else-if="request.status =='approved'"> Approved </span>
+                                        </td>
+
+                                        <td>
+                                            <button class="btn btn-success" v-if="request.status == 'pending'" v-on:click="acceptStudentRequest" :data-id="request.id">Accept Request</button>
+                                            <button class="btn btn-danger" v-if="request.status == 'pending'" v-on:click="deleteStudentRequest" :data-id="request.id">Delete Request</button>
+                                            <button class="btn btn-danger" v-if="request.status == 'approved'" v-on:click="deleteStudentRequest" :data-id="request.id">Remove Student</button>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </tab>
+                            <tab header="Course Resources">
+                                <h2>Upload files for {{ course.course_name }}</h2>
+                                <h3 class="sub-heading">{{ department.name }}</h3>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-3 back-file " v-for="file in courseFiles">
+                                        <div class="gallery-img">
+                                            <a href="#" class="b-link-stripe b-animate-go  swipebox"  title="Image Title" >
+                                                <img class="img-responsive download-img" src="/uploads/chunk/zip.svg" alt="" />
+                                                <span class="zoom-icon"> </span>
+                                            </a>
+                                            </a>
+                                        </div>
+                                        <div class="text-gallery gallery-file">
+                                            <p class="align">${file.file_name}</p>
+
+                                            <p class="align">
+                                                <form :action="file.url" method="get" style="display:inline">
+                                                    <button class="btn-primary btn download-btn" type="submit">Download Files</button>
+                                                </form>
+                                                <button class="btn-danger btn download-btn" v-on:click="deleteStoredFiles(file.id)">Delete Files</button>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 content-block" id="files">
+                                    <h3 class="sub-heading">Upload new files for {{ course.course_name }}</h3>
+                                    <div class="col-sm-12 form-upload">
+                                        <form action="" class="form-horizontal">
+                                            <div :class=" {'form-group': true , 'form-group has-error' : errors.has('fileName')}">
+                                                <label for="focusedinput" class="col-sm-2 control-label">Files for </label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control1" id="focusedinput" v-model="fileName" data-vv-name="fileName" v-validate="'required|alpha_spaces'"  placeholder="Files Purpose" >
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="selector1" class="col-sm-2 control-label">Faculty</label>
+                                                <div class="col-sm-8">
+                                                    <button class="btn btn-primary"  v-on:click="openUpload" >Upload Files</button>
+                                                    <input type="file" name="files[]" class="hidden" id="upload" v-on:change="storeFilesInVar" accept="audio/*,video/*,image/*,media_type" multiple>
+                                                    <p >${uploadedFilesNames}</p>
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                    <p class="storage-but">
+                                        <button v-on:click="storeFiles" class="btn btn-success" >Store Files</button>
+                                    </p>
+
+                                </div>
+
+
+                                <div class="clearfix"></div>
+
+                            </tab>
+                        </tabs>
                     </div>
 
                 </div>
@@ -679,7 +804,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 {% if page == "dashboard" %}
 <script src="/front-end/js/vue-components/dashboard.chunk.js"></script>
 {% else %}
-<script src="/front-end/js/vue-components/course.chunk.js"></script>
+
+    <script src="/front-end/js/vue-components/course.chunk.js"></script>
 {% endif %}
 <!--scrolling js-->
 <script src="/front-end/js/assets/jquery.nicescroll.js"></script>

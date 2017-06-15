@@ -10,6 +10,7 @@ namespace Ibuntu\Controllers;
 
 
 use Ibuntu\Application;
+use Ibuntu\Models\Course;
 use Ibuntu\Services\DashboardService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,6 +49,14 @@ class DashboardController
         return new JsonResponse($courses);
     }
 
+    public function getStudentCourses(Application $app, Request $request){
+        $user = $this->checkIfAuthorised($request);
+        $departmentId = $user['student'][0]['department_id'];
+        $courses = $this->dashboardService->retrieveStudentCourses($departmentId, $user['id']);
+
+        return new JsonResponse($courses);
+    }
+
     protected function checkIfAuthorised($request){
         $user = $request->get('user');
         if(gettype($user) == 'string'){
@@ -58,10 +67,75 @@ class DashboardController
     }
 
     public function toCoursePage(Application $app, Request $request, $courseId){
-        $user = $request->request->get('user');
+        $user = $this->checkIfAuthorised($request);
         $course = $this->dashboardService->getCourse($courseId);
 
         return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, "page" => "course", "course" => $course, "department" => $course->department]);
     }
+
+    public function createRequest(Application $app, Request $request, $courseId){
+        $user = $this->checkIfAuthorised($request);
+
+        $courseRequest = $this->dashboardService->storeRequest($user['id'], $courseId);
+
+        return new JsonResponse($courseRequest);
+    }
+
+    public function removeCourseRequest(Application $app, Request $request, $requestId){
+        $user = $this->checkIfAuthorised($request);
+        $this->dashboardService->removeRequest($requestId);
+
+        return new JsonResponse("Request Succesfully Deleted" , 200);
+    }
+
+    public function getRequestsForCourse(Application $app, Request $request, $courseId){
+        $user = $this->checkIfAuthorised($request);
+
+        $requests = $this->dashboardService->getRequestsForCourse($courseId);
+
+        return new JsonResponse($requests);
+    }
+
+    public function approveRequest(Application $app, Request $request, $requestId){
+        $user = $this->checkIfAuthorised($request);
+
+        $courseRequest = $this->dashboardService->approveRequestForCourse($requestId);
+
+        return new JsonResponse($courseRequest);
+    }
+
+    public function setCourseInfo(Application $app, Request $request, $courseId){
+        $user = $this->checkIfAuthorised($request);
+        $info = $request->request->get('info');
+
+        $course = $this->dashboardService->storeCourseInfo($info, $courseId);
+
+        return new JsonResponse($course);
+    }
+
+    public function getCourseData(Application $app, Request $request, $courseId){
+        $user = $this->checkIfAuthorised($request);
+        /** @var Course $course */
+        $course = $this->dashboardService->getCourse($courseId);
+
+        return new JsonResponse($course->serializeWithScheduleAndDepartment());
+    }
+
+    public function uploadFiles(Application $app, Request $request, $courseId){
+        $user = $this->checkIfAuthorised($request);
+
+        $files = $request->files->all();
+        $fileName = $request->request->get('file_name');
+        $zippedFile = $this->dashboardService->storeFiles($courseId, $files['file'], $fileName);
+
+        return new JsonResponse($zippedFile);
+    }
+
+    public function deleteFiles(Application $app, Request $request, $fileId){
+        $user = $this->checkIfAuthorised($request);
+
+        $zippedFile = $this->dashboardService->deleteFile($fileId);
+    }
+
 
 }

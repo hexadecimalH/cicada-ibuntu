@@ -43,6 +43,7 @@ $professorRegistrationRouteCollection = $app['collection_factory']->prefix('/pro
 /** @var RouteCollection $studentRegistrationRouteCollection */
 $studentRegistrationRouteCollection = $app['collection_factory']->prefix('/student');
 
+/** @var RouteCollection $dashboardRouteCollection */
 $dashboardRouteCollection = $app['collection_factory']->prefix('/dashboard');
 // dashboard routes for creating and managing academic data
 $dashboardRouteCollection->post('/course/create', [$dashboardController, 'createCourse'])
@@ -55,10 +56,56 @@ $dashboardRouteCollection->get('/course/professor', [$dashboardController, 'getP
         $authentication->validateUser($app,$request);
     });
 
+$dashboardRouteCollection->get('/course/student', [$dashboardController, 'getStudentCourses'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
 $dashboardRouteCollection->get('/course/{courseId}', [$dashboardController, 'toCoursePage'])
     ->before(function(Application $app, Request $request) use ($authentication){
         $authentication->validateUser($app,$request);
     });
+
+$dashboardRouteCollection->post('/course/info/{courseId}', [$dashboardController, 'setCourseInfo'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+$dashboardRouteCollection->get('/course-info/{courseId}', [$dashboardController, 'getCourseData'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+$dashboardRouteCollection->post('/request/{courseId}', [$dashboardController, 'createRequest'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+$dashboardRouteCollection->put('/request/approve/{requestId}', [$dashboardController, 'approveRequest'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+$dashboardRouteCollection->get('/request/{courseId}', [$dashboardController, 'getRequestsForCourse'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+$dashboardRouteCollection->delete('/request/{requestId}', [$dashboardController, 'removeCourseRequest'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+$dashboardRouteCollection->post('/upload/{courseId}', [$dashboardController, 'uploadFiles'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+$dashboardRouteCollection->delete('/files/{fileId}', [$dashboardController, 'deleteFiles'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
 // start page Log in/ Sign up
 $loginRouteCollection->get('/',                         [$loginController, 'index']);
 $loginRouteCollection->get('/professor',                [$loginController, 'indexProfessor']);

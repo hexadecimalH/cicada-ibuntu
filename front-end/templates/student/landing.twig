@@ -91,7 +91,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!--//skycons-icons-->
 </head>
 <body>
-<div id="wrapper">
+<div id="wrapper" v-cloak>
 
     <!----->
     <nav class="navbar-default navbar-static-top" role="navigation">
@@ -109,6 +109,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <section class="full-top">
                     <span>Student Dashboard</span>
                 </section>
+
                 <div class="clearfix"> </div>
             </div>
 
@@ -203,26 +204,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <ul class="nav" id="side-menu">
 
                         <li>
-                            <a href="index.html" class=" hvr-bounce-to-right"><i class="fa fa-dashboard nav_icon "></i><span class="nav-label">Dashboards</span> </a>
+                            <a href="/profile" class=" hvr-bounce-to-right"><i class="fa fa-dashboard nav_icon "></i><span class="nav-label">Dashboards</span> </a>
                         </li>
 
                         <li>
-                            <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-indent nav_icon"></i> <span class="nav-label">Menu Levels</span><span class="fa arrow"></span></a>
+                            <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-indent nav_icon"></i> <span class="nav-label">Courses</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li><a href="graphs.html" class=" hvr-bounce-to-right"> <i class="fa fa-area-chart nav_icon"></i>Graphs</a></li>
-
-                                <li><a href="maps.html" class=" hvr-bounce-to-right"><i class="fa fa-map-marker nav_icon"></i>Maps</a></li>
-
-                                <li><a href="typography.html" class=" hvr-bounce-to-right"><i class="fa fa-file-text-o nav_icon"></i>Typography</a></li>
+                                <li v-if="course.request.status == 'approved'" v-for="course in courses"><a :href="coursePath(course.id)" class=" hvr-bounce-to-right"> <i class="fa fa-play nav_icon"></i><span class="span-icon">${ajustNameToShow(course.course_name)}</span></a></li>
 
                             </ul>
                         </li>
                         <li>
-                            <a href="inbox.html" class=" hvr-bounce-to-right"><i class="fa fa-inbox nav_icon"></i> <span class="nav-label">Inbox</span> </a>
+                            <a href="inbox.html" class=" hvr-bounce-to-right"><i class="fa fa-inbox nav_icon"></i> <span class="nav-label">Requests</span> </a>
                         </li>
 
                         <li>
-                            <a href="gallery.html" class=" hvr-bounce-to-right"><i class="fa fa-picture-o nav_icon"></i> <span class="nav-label">Gallery</span> </a>
+                            <a href="gallery.html" class=" hvr-bounce-to-right"><i class="fa fa-picture-o nav_icon"></i> <span class="nav-label">Submited Data</span> </a>
                         </li>
                         <li>
                             <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-desktop nav_icon"></i> <span class="nav-label">Pages</span><span class="fa arrow"></span></a>
@@ -232,452 +229,390 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <li><a href="blank.html" class=" hvr-bounce-to-right"><i class="fa fa-file-o nav_icon"></i>Blank</a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="layout.html" class=" hvr-bounce-to-right"><i class="fa fa-th nav_icon"></i> <span class="nav-label">Grid Layouts</span> </a>
-                        </li>
-
-                        <li>
-                            <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-list nav_icon"></i> <span class="nav-label">Forms</span><span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li><a href="forms.html" class=" hvr-bounce-to-right"><i class="fa fa-align-left nav_icon"></i>Basic forms</a></li>
-                                <li><a href="validation.html" class=" hvr-bounce-to-right"><i class="fa fa-check-square-o nav_icon"></i>Validation</a></li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-cog nav_icon"></i> <span class="nav-label">Settings</span><span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li><a href="signin.html" class=" hvr-bounce-to-right"><i class="fa fa-sign-in nav_icon"></i>Signin</a></li>
-                                <li><a href="signup.html" class=" hvr-bounce-to-right"><i class="fa fa-sign-in nav_icon"></i>Singup</a></li>
-                            </ul>
-                        </li>
                     </ul>
                 </div>
             </div>
+        </div>
     </nav>
-    <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="content-main">
+    {% if page == "dashboard" %}
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="content-main">
 
-            <!--banner-->
-            <div class="banner">
+                <!--banner-->
+                <div class="banner">
 
-                <h2>
-                    <a href="index.html">Home</a>
-                    <i class="fa fa-angle-right"></i>
-                    <span>Dashboard</span>
-                </h2>
+                    <h2>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-angle-right"></i>
+                        <span>Dashboard</span>
+                    </h2>
+                </div>
+                <!--//banner-->
+                <!--content-->
+                <div class="content-top">
+
+
+                    <div class="col-md-12 ">
+                        <div class="tab-pane active text-style" id="tab1">
+                            <div class="inbox-right">
+                                <div class="mailbox-content">
+                                    <div class="mail-toolbar clearfix">
+                                        <div class="float-left">
+                                            <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
+                                                <span>List of Courses for ${ departmentName}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table">
+                                        <th>Course Name</th>
+                                        <th>Semester</th>
+                                        <th>Professor</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                        <tbody>
+                                        <tr class="table-row" v-for="course in courses">
+                                            <td class="table-text">
+                                                <h6> ${course.course_name}</h6>
+                                                <p>${ course.department.name }</p>
+                                            </td>
+                                            <td class="table-text">
+                                                <p>${course.semester} - ${ course.year} </p>
+                                            </td>
+                                            <td class="table-text">
+                                                <p>${ course.professor.user.first_name} ${ course.professor.user.last_name} </p>
+                                            </td>
+
+                                            <td>
+                                                <span class="mar" v-if="course.request"> ${course.request.status}</span>
+                                                <span class="work" v-else="course.request"> Available </span>
+
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success" v-if="!course.request" v-on:click="requestSubmit" :data-id="course.id">Send Request</button>
+                                                <button class="btn btn-danger" v-else-if="course.request.status == 'pending'" v-on:click="deleteRequest" :data-id="course.id">Delete Request</button>
+                                                <a class="btn btn-success" v-else-if="course.request.status == 'approved'" :href="generateUrl(course)">Open</a>
+
+                                            </td>
+                                        </tr>
+                                        {#<tr class="table-row">#}
+                                            {#<td class="table-text">#}
+                                                {#<h6> Lorem ipsum</h6>#}
+                                                {#<p>Nullam quis risus eget urna mollis ornare vel eu leo</p>#}
+                                            {#</td>#}
+                                            {#<td>#}
+                                                {#<span class="mar">Market</span>#}
+                                            {#</td>#}
+                                            {#<td class="march">#}
+                                                {#in 5 days#}
+                                            {#</td>#}
+
+                                            {#<td>#}
+                                                {#<button class="btn btn-success">Send Request</button>#}
+                                            {#</td>#}
+                                        {#</tr>#}
+                                        {#<tr class="table-row">#}
+                                            {#<td class="table-text">#}
+                                                {#<h6> Lorem ipsum</h6>#}
+                                                {#<p>Nullam quis risus eget urna mollis ornare vel eu leo</p>#}
+                                            {#</td>#}
+                                            {#<td>#}
+                                                {#<span class="work">work</span>#}
+                                            {#</td>#}
+                                            {#<td class="march">#}
+                                                {#in 5 days#}
+                                            {#</td>#}
+
+                                            {#<td>#}
+                                                {#<button class="btn btn-success">Send Request</button>#}
+                                            {#</td>#}
+                                        {#</tr>#}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-top-1">
+                            <div class="col-md-6 top-content">
+                                <h5>Tasks</h5>
+                                <label>8761</label>
+                            </div>
+                            <div class="col-md-6 top-content1">
+                                <div id="demo-pie-1" class="pie-title-center" data-percent="25"> <span class="pie-value"></span> </div>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div class="content-top-1">
+                            <div class="col-md-6 top-content">
+                                <h5>Points</h5>
+                                <label>6295</label>
+                            </div>
+                            <div class="col-md-6 top-content1">
+                                <div id="demo-pie-2" class="pie-title-center" data-percent="50"> <span class="pie-value"></span> </div>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div class="content-top-1">
+                            <div class="col-md-6 top-content">
+                                <h5>Cards</h5>
+                                <label>3401</label>
+                            </div>
+                            <div class="col-md-6 top-content1">
+                                <div id="demo-pie-3" class="pie-title-center" data-percent="75"> <span class="pie-value"></span> </div>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                    <div class="content-mid">
+
+                        <div class="col-md-5">
+                            <div class="cal1 cal_2"><div class="clndr"><div class="clndr-controls"><div class="clndr-control-button"><p class="clndr-previous-button">previous</p></div><div class="month">July 2015</div><div class="clndr-control-button rightalign"><p class="clndr-next-button">next</p></div></div><table class="clndr-table" border="0" cellspacing="0" cellpadding="0"><thead><tr class="header-days"><td class="header-day">S</td><td class="header-day">M</td><td class="header-day">T</td><td class="header-day">W</td><td class="header-day">T</td><td class="header-day">F</td><td class="header-day">S</td></tr></thead><tbody><tr><td class="day adjacent-month last-month calendar-day-2015-06-28"><div class="day-contents">28</div></td><td class="day adjacent-month last-month calendar-day-2015-06-29"><div class="day-contents">29</div></td><td class="day adjacent-month last-month calendar-day-2015-06-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-01"><div class="day-contents">1</div></td><td class="day calendar-day-2015-07-02"><div class="day-contents">2</div></td><td class="day calendar-day-2015-07-03"><div class="day-contents">3</div></td><td class="day calendar-day-2015-07-04"><div class="day-contents">4</div></td></tr><tr><td class="day calendar-day-2015-07-05"><div class="day-contents">5</div></td><td class="day calendar-day-2015-07-06"><div class="day-contents">6</div></td><td class="day calendar-day-2015-07-07"><div class="day-contents">7</div></td><td class="day calendar-day-2015-07-08"><div class="day-contents">8</div></td><td class="day calendar-day-2015-07-09"><div class="day-contents">9</div></td><td class="day calendar-day-2015-07-10"><div class="day-contents">10</div></td><td class="day calendar-day-2015-07-11"><div class="day-contents">11</div></td></tr><tr><td class="day calendar-day-2015-07-12"><div class="day-contents">12</div></td><td class="day calendar-day-2015-07-13"><div class="day-contents">13</div></td><td class="day calendar-day-2015-07-14"><div class="day-contents">14</div></td><td class="day calendar-day-2015-07-15"><div class="day-contents">15</div></td><td class="day calendar-day-2015-07-16"><div class="day-contents">16</div></td><td class="day calendar-day-2015-07-17"><div class="day-contents">17</div></td><td class="day calendar-day-2015-07-18"><div class="day-contents">18</div></td></tr><tr><td class="day calendar-day-2015-07-19"><div class="day-contents">19</div></td><td class="day calendar-day-2015-07-20"><div class="day-contents">20</div></td><td class="day calendar-day-2015-07-21"><div class="day-contents">21</div></td><td class="day calendar-day-2015-07-22"><div class="day-contents">22</div></td><td class="day calendar-day-2015-07-23"><div class="day-contents">23</div></td><td class="day calendar-day-2015-07-24"><div class="day-contents">24</div></td><td class="day calendar-day-2015-07-25"><div class="day-contents">25</div></td></tr><tr><td class="day calendar-day-2015-07-26"><div class="day-contents">26</div></td><td class="day calendar-day-2015-07-27"><div class="day-contents">27</div></td><td class="day calendar-day-2015-07-28"><div class="day-contents">28</div></td><td class="day calendar-day-2015-07-29"><div class="day-contents">29</div></td><td class="day calendar-day-2015-07-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-31"><div class="day-contents">31</div></td><td class="day adjacent-month next-month calendar-day-2015-08-01"><div class="day-contents">1</div></td></tr></tbody></table></div></div>
+
+                        </div>
+                        <div class="col-md-7 mid-content-top">
+                            <div class="middle-content">
+                                <h3>Latest Images</h3>
+                                <!-- start content_slider -->
+                                <div id="owl-demo" class="owl-carousel text-center">
+                                    <div class="item">
+                                        <img class="lazyOwl img-responsive" data-src="/uploads/images/na.jpg" alt="name">
+                                    </div>
+                                    <div class="item">
+                                        <img class="lazyOwl img-responsive" data-src="/uploads/images/na1.jpg" alt="name">
+                                    </div>
+                                    <div class="item">
+                                        <img class="lazyOwl img-responsive" data-src="/uploads/images/na2.jpg" alt="name">
+                                    </div>
+                                    <div class="item">
+                                        <img class="lazyOwl img-responsive" data-src="/uploads/images/na.jpg" alt="name">
+                                    </div>
+                                    <div class="item">
+                                        <img class="lazyOwl img-responsive" data-src="/uploads/images/na1.jpg" alt="name">
+                                    </div>
+                                    <div class="item">
+                                        <img class="lazyOwl img-responsive" data-src="/uploads/images/na2.jpg" alt="name">
+                                    </div>
+                                    <div class="item">
+                                        <img class="lazyOwl img-responsive" data-src="/uploads/images/na.jpg" alt="name">
+                                    </div>
+
+                                </div>
+                            </div>
+                            {#<!--//sreen-gallery-cursual---->#}
+                            {#<!-- requried-jsfiles-for owl -->#}
+                            {#<link href="/front-end/css/owl.carousel.css" rel="stylesheet">#}
+                            {#<script src="/front-end/js/assets/owl.carousel.js"></script>#}
+                            {#<script>#}
+                            {#$(document).ready(function() {#}
+                            {#$("#owl-demo").owlCarousel({#}
+                            {#items : 3,#}
+                            {#lazyLoad : true,#}
+                            {#autoPlay : true,#}
+                            {#pagination : true,#}
+                            {#nav:true,#}
+                            {#});#}
+                            {#});#}
+                            {#</script>#}
+                            {#<!-- //requried-jsfiles-for owl -->#}
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                    <!----->
+                    <div class="content-bottom">
+                        <div class="col-md-6 post-top">
+                            <div class="post">
+                                <form class="text-area">
+                                    <textarea   required="" > What are you doing...</textarea>
+                                </form>
+                                <div class="post-at">
+                                    <ul class="icon">
+
+
+                                        {#<div  class="post-file">#}
+                                        {#<i class="fa fa-location-arrow"></i>#}
+                                        {#<input id="input-1" name="input1[]" type="file" multiple="" class="">#}
+                                        {#</div>#}
+                                        {#<div  class="post-file">#}
+                                        {#<i class="fa fa-camera"></i>#}
+                                        {#<input id="input-2" name="input2[]" type="file" multiple="" class="">#}
+                                        {#</div>#}
+                                        {#<div  class="post-file">#}
+                                        {#<i class="fa fa-video-camera"></i>#}
+                                        {#<input id="input-3" name="input3[]" type="file" multiple="" class="">#}
+                                        {#</div>#}
+                                        {#<div  class="post-file">#}
+                                        {#<i class="fa fa-microphone"></i>#}
+                                        {#<input id="input-4" name="input4[]" type="file" multiple="" class="">#}
+                                        {#</div>#}
+
+                                        {#<script>#}
+                                        {#$(document).on('ready', function() {#}
+                                        {#$("#input-1").fileinput({showCaption: false});#}
+                                        {#});#}
+                                        {#</script>#}
+                                        {#<script>#}
+                                        {#$(document).on('ready', function() {#}
+                                        {#$("#input-2").fileinput({showCaption: false});#}
+                                        {#});#}
+                                        {#</script>#}
+                                        {#<script>#}
+                                        {#$(document).on('ready', function() {#}
+                                        {#$("#input-3").fileinput({showCaption: false});#}
+                                        {#});#}
+                                        {#</script>#}
+                                        {#<script>#}
+                                        {#$(document).on('ready', function() {#}
+                                        {#$("#input-4").fileinput({showCaption: false});#}
+                                        {#});#}
+                                        {#</script>#}
+                                    </ul>
+                                    <form class="text-sub">
+                                        <input type="submit" value="post">
+                                    </form>
+                                    <div class="clearfix"> </div>
+                                </div>
+                            </div>
+                            <div class="post-bottom">
+                                <div class="post-bottom-1">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <p>15k <label>Likes</label></p>
+                                </div>
+                                <div class="post-bottom-2">
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <p>20M <label>Followers</label></p>
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="weather">
+                                <div class="clearfix"> </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <!-- Error Modal Start -->
+                    <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background: red;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h2 class="modal-title">Error</h2>
+                                </div>
+                                <div class="modal-body">
+                                    <p >Sorry the picture hasn't been uploaded succesfully please try again or contact support</p>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+                    <!-- Error Modal End -->
+                </div>
+                <!--//content-->
+
+
+
+                <!---->
+                <div class="copy">
+                    <p> &copy; 2016 Minimal. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+                </div>
             </div>
-            <!--//banner-->
-            <!--content-->
-            <div class="content-top">
-                <div class="col-md-12 ">
-                    <div class="tab-pane active text-style" id="tab1">
-                        <div class="inbox-right">
-                            <div class="mailbox-content">
-                                <div class="mail-toolbar clearfix">
-                                    <div class="float-left">
-                                        <div class="btn-group m-r-sm mail-hidden-options" style="display: inline-block;">
-                                            <span>List of Courses</span>
+            <div class="clearfix"> </div>
+        </div>
+    {% else %}
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="content-main">
+
+                <!--banner-->
+                <div class="banner">
+                    <h2>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-angle-right"></i>
+                        <span>Course</span>
+                        <i class="fa fa-angle-right"></i>
+                        {{ course.course_name }}
+                    </h2>
+                </div>
+                <!--//banner-->
+                <!--faq-->
+                <div class="blank">
+
+
+                    <div class="blank-page">
+                        <h1>{{ course.course_name }}</h1>
+                        <h3 class="sub-heading">{{ department.name }}</h3>
+                        <tabs v-model="activeTab" nav-style="tabs" justified>
+                            <tab header="Course Info">
+
+                                <div class="col-sm-12  content-block" v-html="content">
+
+                                </div>
+
+                                <div class="clearfix"></div>
+
+                            </tab>
+                            <tab header="Course Resources">
+                                <h2>Upload files for {{ course.course_name }}</h2>
+                                <h3 class="sub-heading">{{ department.name }}</h3>
+                                <div class="col-sm-12">
+                                    <div class="col-sm-3 back-file " v-for="file in courseFiles">
+                                        <div class="gallery-img">
+                                            <a href="#" class="b-link-stripe b-animate-go  swipebox"  title="Image Title" >
+                                                <img class="img-responsive download-img" src="/uploads/chunk/zip.svg" alt="" />
+                                                <span class="zoom-icon"> </span>
+                                            </a>
+                                            </a>
+                                        </div>
+                                        <div class="text-gallery gallery-file">
+                                            <p class="align">${file.file_name}</p>
+
+                                            <p class="align">
+                                                <form :action="file.url" method="get" style="display:inline">
+                                                    <button class="btn-primary btn download-btn" type="submit">Download Files</button>
+                                                </form>
+                                            </p>
+
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table">
-                                    <tbody>
-                                    <tr class="table-row">
-                                        <td class="table-img">
-                                            <img src="images/in.jpg" alt="">
-                                        </td>
-                                        <td class="table-text">
-                                            <h6> Lorem ipsum</h6>
-                                            <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
-                                        </td>
-                                        <td>
-                                            <span class="fam">Family</span>
-                                        </td>
-                                        <td class="march">
-                                            in 5 days
-                                        </td>
-
-                                        <td>
-                                            <i class="fa fa-star-half-o icon-state-warning"></i>
-
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row">
-                                        <td class="table-img">
-                                            <img src="images/in1.jpg" alt="">
-                                        </td>
-                                        <td class="table-text">
-                                            <h6> Lorem ipsum</h6>
-                                            <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
-                                        </td>
-                                        <td>
-                                            <span class="mar">Market</span>
-                                        </td>
-                                        <td class="march">
-                                            in 5 days
-                                        </td>
-
-                                        <td>
-                                            <i class="fa fa-star-half-o icon-state-warning"></i>
-                                        </td>
-                                    </tr>
-                                    <tr class="table-row">
-                                        <td class="table-img">
-                                            <img src="images/in2.jpg" alt="">
-                                        </td>
-                                        <td class="table-text">
-                                            <h6> Lorem ipsum</h6>
-                                            <p>Nullam quis risus eget urna mollis ornare vel eu leo</p>
-                                        </td>
-                                        <td>
-                                            <span class="work">work</span>
-                                        </td>
-                                        <td class="march">
-                                            in 5 days
-                                        </td>
-
-                                        <td>
-                                            <i class="fa fa-star-half-o icon-state-warning"></i>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 ">
-                    <div class="content-top-1">
-                        <div class="col-md-6 top-content">
-                            <h5>Tasks</h5>
-                            <label>8761</label>
-                        </div>
-                        <div class="col-md-6 top-content1">
-                            <div id="demo-pie-1" class="pie-title-center" data-percent="25"> <span class="pie-value"></span> </div>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="content-top-1">
-                        <div class="col-md-6 top-content">
-                            <h5>Points</h5>
-                            <label>6295</label>
-                        </div>
-                        <div class="col-md-6 top-content1">
-                            <div id="demo-pie-2" class="pie-title-center" data-percent="50"> <span class="pie-value"></span> </div>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                    <div class="content-top-1">
-                        <div class="col-md-6 top-content">
-                            <h5>Cards</h5>
-                            <label>3401</label>
-                        </div>
-                        <div class="col-md-6 top-content1">
-                            <div id="demo-pie-3" class="pie-title-center" data-percent="75"> <span class="pie-value"></span> </div>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                </div>
-            <div class="content-mid">
-
-                <div class="col-md-5">
-                    <div class="cal1 cal_2"><div class="clndr"><div class="clndr-controls"><div class="clndr-control-button"><p class="clndr-previous-button">previous</p></div><div class="month">July 2015</div><div class="clndr-control-button rightalign"><p class="clndr-next-button">next</p></div></div><table class="clndr-table" border="0" cellspacing="0" cellpadding="0"><thead><tr class="header-days"><td class="header-day">S</td><td class="header-day">M</td><td class="header-day">T</td><td class="header-day">W</td><td class="header-day">T</td><td class="header-day">F</td><td class="header-day">S</td></tr></thead><tbody><tr><td class="day adjacent-month last-month calendar-day-2015-06-28"><div class="day-contents">28</div></td><td class="day adjacent-month last-month calendar-day-2015-06-29"><div class="day-contents">29</div></td><td class="day adjacent-month last-month calendar-day-2015-06-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-01"><div class="day-contents">1</div></td><td class="day calendar-day-2015-07-02"><div class="day-contents">2</div></td><td class="day calendar-day-2015-07-03"><div class="day-contents">3</div></td><td class="day calendar-day-2015-07-04"><div class="day-contents">4</div></td></tr><tr><td class="day calendar-day-2015-07-05"><div class="day-contents">5</div></td><td class="day calendar-day-2015-07-06"><div class="day-contents">6</div></td><td class="day calendar-day-2015-07-07"><div class="day-contents">7</div></td><td class="day calendar-day-2015-07-08"><div class="day-contents">8</div></td><td class="day calendar-day-2015-07-09"><div class="day-contents">9</div></td><td class="day calendar-day-2015-07-10"><div class="day-contents">10</div></td><td class="day calendar-day-2015-07-11"><div class="day-contents">11</div></td></tr><tr><td class="day calendar-day-2015-07-12"><div class="day-contents">12</div></td><td class="day calendar-day-2015-07-13"><div class="day-contents">13</div></td><td class="day calendar-day-2015-07-14"><div class="day-contents">14</div></td><td class="day calendar-day-2015-07-15"><div class="day-contents">15</div></td><td class="day calendar-day-2015-07-16"><div class="day-contents">16</div></td><td class="day calendar-day-2015-07-17"><div class="day-contents">17</div></td><td class="day calendar-day-2015-07-18"><div class="day-contents">18</div></td></tr><tr><td class="day calendar-day-2015-07-19"><div class="day-contents">19</div></td><td class="day calendar-day-2015-07-20"><div class="day-contents">20</div></td><td class="day calendar-day-2015-07-21"><div class="day-contents">21</div></td><td class="day calendar-day-2015-07-22"><div class="day-contents">22</div></td><td class="day calendar-day-2015-07-23"><div class="day-contents">23</div></td><td class="day calendar-day-2015-07-24"><div class="day-contents">24</div></td><td class="day calendar-day-2015-07-25"><div class="day-contents">25</div></td></tr><tr><td class="day calendar-day-2015-07-26"><div class="day-contents">26</div></td><td class="day calendar-day-2015-07-27"><div class="day-contents">27</div></td><td class="day calendar-day-2015-07-28"><div class="day-contents">28</div></td><td class="day calendar-day-2015-07-29"><div class="day-contents">29</div></td><td class="day calendar-day-2015-07-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-31"><div class="day-contents">31</div></td><td class="day adjacent-month next-month calendar-day-2015-08-01"><div class="day-contents">1</div></td></tr></tbody></table></div></div>
-                    <!----Calender -------->
-                    <link rel="stylesheet" href="/front-end/css/clndr.css" type="text/css" />
-                    <script src="/front-end/js/assets/underscore-min.js" type="text/javascript"></script>
-                    <script src="/front-end/js/assets/moment-2.2.1.js" type="text/javascript"></script>
-                    <script src="/front-end/js/assets/clndr.js" type="text/javascript"></script>
-                    <script src="/front-end/js/assets/site.js" type="text/javascript"></script>
-                    <!----End Calender -------->
-                </div>
-                <div class="col-md-7 mid-content-top">
-                    <div class="middle-content">
-                        <h3>Latest Images</h3>
-                        <!-- start content_slider -->
-                        <div id="owl-demo" class="owl-carousel text-center">
-                            <div class="item">
-                                <img class="lazyOwl img-responsive" data-src="/uploads/images/na.jpg" alt="name">
-                            </div>
-                            <div class="item">
-                                <img class="lazyOwl img-responsive" data-src="/uploads/images/na1.jpg" alt="name">
-                            </div>
-                            <div class="item">
-                                <img class="lazyOwl img-responsive" data-src="/uploads/images/na2.jpg" alt="name">
-                            </div>
-                            <div class="item">
-                                <img class="lazyOwl img-responsive" data-src="/uploads/images/na.jpg" alt="name">
-                            </div>
-                            <div class="item">
-                                <img class="lazyOwl img-responsive" data-src="/uploads/images/na1.jpg" alt="name">
-                            </div>
-                            <div class="item">
-                                <img class="lazyOwl img-responsive" data-src="/uploads/images/na2.jpg" alt="name">
-                            </div>
-                            <div class="item">
-                                <img class="lazyOwl img-responsive" data-src="/uploads/images/na.jpg" alt="name">
-                            </div>
-
-                        </div>
-                    </div>
-                    <!--//sreen-gallery-cursual---->
-                    <!-- requried-jsfiles-for owl -->
-                    <link href="/front-end/css/owl.carousel.css" rel="stylesheet">
-                    <script src="/front-end/js/assets/owl.carousel.js"></script>
-                    <script>
-                        $(document).ready(function() {
-                            $("#owl-demo").owlCarousel({
-                                items : 3,
-                                lazyLoad : true,
-                                autoPlay : true,
-                                pagination : true,
-                                nav:true,
-                            });
-                        });
-                    </script>
-                    <!-- //requried-jsfiles-for owl -->
-                </div>
-                <div class="clearfix"> </div>
-            </div>
-            <!----->
-            <div class="content-bottom">
-                <div class="col-md-6 post-top">
-                    <div class="post">
-                        <form class="text-area">
-                            <textarea   required="" > What are you doing...</textarea>
-                        </form>
-                        <div class="post-at">
-                            <ul class="icon">
 
 
-                                <div  class="post-file">
-                                    <i class="fa fa-location-arrow"></i>
-                                    <input id="input-1" name="input1[]" type="file" multiple="" class="">
-                                </div>
-                                <div  class="post-file">
-                                    <i class="fa fa-camera"></i>
-                                    <input id="input-2" name="input2[]" type="file" multiple="" class="">
-                                </div>
-                                <div  class="post-file">
-                                    <i class="fa fa-video-camera"></i>
-                                    <input id="input-3" name="input3[]" type="file" multiple="" class="">
-                                </div>
-                                <div  class="post-file">
-                                    <i class="fa fa-microphone"></i>
-                                    <input id="input-4" name="input4[]" type="file" multiple="" class="">
-                                </div>
+                                <div class="clearfix"></div>
 
-                                <script>
-                                    $(document).on('ready', function() {
-                                        $("#input-1").fileinput({showCaption: false});
-                                    });
-                                </script>
-                                <script>
-                                    $(document).on('ready', function() {
-                                        $("#input-2").fileinput({showCaption: false});
-                                    });
-                                </script>
-                                <script>
-                                    $(document).on('ready', function() {
-                                        $("#input-3").fileinput({showCaption: false});
-                                    });
-                                </script>
-                                <script>
-                                    $(document).on('ready', function() {
-                                        $("#input-4").fileinput({showCaption: false});
-                                    });
-                                </script>
-                            </ul>
-                            <form class="text-sub">
-                                <input type="submit" value="post">
-                            </form>
-                            <div class="clearfix"> </div>
-                        </div>
-                    </div>
-                    <div class="post-bottom">
-                        <div class="post-bottom-1">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <p>15k <label>Likes</label></p>
-                        </div>
-                        <div class="post-bottom-2">
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <p>20M <label>Followers</label></p>
-                        </div>
-                        <div class="clearfix"> </div>
+                            </tab>
+                        </tabs>
+                        <div class="clearfix"></div>
                     </div>
 
                 </div>
-                <div class="col-md-6">
-                    <div class="weather">
-                        <div class="weather-top">
-                            <div class="weather-top-left">
-                                <div class="degree">
-                                    <figure class="icons">
-                                        <canvas id="partly-cloudy-day" width="64" height="64">
-                                        </canvas>
-                                    </figure>
-                                    <span>37°</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <script>
-                                    var icons = new Skycons({"color": "#1ABC9C"}),
-                                        list  = [
-                                            "clear-night", "partly-cloudy-day",
-                                            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                            "fog"
-                                        ],
-                                        i;
 
-                                    for(i = list.length; i--; )
-                                        icons.set(list[i], list[i]);
-
-                                    icons.play();
-                                </script>
-                                <p>FRIDAY
-                                    <label>13</label>
-                                    <sup>th</sup>
-                                    AUG
-                                </p>
-                            </div>
-                            <div class="weather-top-right">
-                                <p><i class="fa fa-map-marker"></i>lorem ipsum</p>
-                                <label>lorem ipsum</label>
-                            </div>
-                            <div class="clearfix"> </div>
-                        </div>
-                        <div class="weather-bottom">
-                            <div class="weather-bottom1">
-                                <div class="weather-head">
-                                    <h4>Cloudy</h4>
-                                    <figure class="icons">
-                                        <canvas id="cloudy" width="58" height="58"></canvas>
-                                    </figure>
-                                    <script>
-                                        var icons = new Skycons({"color": "#999"}),
-                                            list  = [
-                                                "clear-night", "cloudy",
-                                                "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                                "fog"
-                                            ],
-                                            i;
-
-                                        for(i = list.length; i--; )
-                                            icons.set(list[i], list[i]);
-
-                                        icons.play();
-                                    </script>
-                                    <h6>20°</h6>
-                                    <div class="bottom-head">
-                                        <p>August 16</p>
-                                        <p>Monday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weather-bottom1 ">
-                                <div class="weather-head">
-                                    <h4>Sunny</h4>
-                                    <figure class="icons">
-                                        <canvas id="clear-day" width="58" height="58">
-                                        </canvas>
-                                    </figure>
-                                    <script>
-                                        var icons = new Skycons({"color": "#999"}),
-                                            list  = [
-                                                "clear-night", "clear-day",
-                                                "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                                "fog"
-                                            ],
-                                            i;
-
-                                        for(i = list.length; i--; )
-                                            icons.set(list[i], list[i]);
-
-                                        icons.play();
-                                    </script>
-                                    <h6>37°</h6>
-                                    <div class="bottom-head">
-                                        <p>August 17</p>
-                                        <p>Tuesday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weather-bottom1">
-                                <div class="weather-head">
-                                    <h4>Rainy</h4>
-                                    <figure class="icons">
-                                        <canvas id="sleet" width="58" height="58">
-                                        </canvas>
-                                    </figure>
-                                    <script>
-                                        var icons = new Skycons({"color": "#999"}),
-                                            list  = [
-                                                "clear-night", "clear-day",
-                                                "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                                "fog"
-                                            ],
-                                            i;
-
-                                        for(i = list.length; i--; )
-                                            icons.set(list[i], list[i]);
-
-                                        icons.play();
-                                    </script>
-
-                                    <h6>7°</h6>
-                                    <div class="bottom-head">
-                                        <p>August 18</p>
-                                        <p>Wednesday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="weather-bottom1 ">
-                                <div class="weather-head">
-                                    <h4>Snowy</h4>
-                                    <figure class="icons">
-                                        <canvas id="snow" width="58" height="58">
-                                        </canvas>
-                                    </figure>
-                                    <script>
-                                        var icons = new Skycons({"color": "#999"}),
-                                            list  = [
-                                                "clear-night", "clear-day",
-                                                "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                                "fog"
-                                            ],
-                                            i;
-
-                                        for(i = list.length; i--; )
-                                            icons.set(list[i], list[i]);
-
-                                        icons.play();
-                                    </script>
-                                    <h6>-10°</h6>
-                                    <div class="bottom-head">
-                                        <p>August 16</p>
-                                        <p>Thursday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="clearfix"> </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="clearfix"> </div>
-            </div>
-            <!--//content-->
-
-
-
-            <!---->
-            <div class="copy">
-                <p> &copy; 2016 Minimal. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
+                <!--//faq-->
+                <!---->
+                <div class="copy">
+                    <p> &copy; 2016 Minimal. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>	    </div>
             </div>
         </div>
-        <div class="clearfix"> </div>
-    </div>
+    {% endif %}
 </div>
+</div>
+<!----Calender -------->
+<link rel="stylesheet" href="/front-end/css/clndr.css" type="text/css" />
+<script src="/front-end/js/assets/underscore-min.js" type="text/javascript"></script>
+<script src="/front-end/js/assets/moment-2.2.1.js" type="text/javascript"></script>
+<script src="/front-end/js/assets/clndr.js" type="text/javascript"></script>
+<script src="/front-end/js/assets/site.js" type="text/javascript"></script>
+<!----End Calender -------->
 <!---->
+<script src="/front-end/js/vue-components/commons.chunk.js"></script>
+{% if page == "dashboard" %}
+    <script src="/front-end/js/vue-components/student-dashboard.chunk.js"></script>
+{% else %}
+    <script src="/front-end/js/vue-components/student-course.chunk.js"></script>
+{% endif %}
 <!--scrolling js-->
 <script src="/front-end/js/assets/jquery.nicescroll.js"></script>
 <script src="/front-end/js/assets/scripts.js"></script>

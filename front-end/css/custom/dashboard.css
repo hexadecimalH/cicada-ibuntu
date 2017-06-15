@@ -23,3 +23,46 @@ content-top-1{
 .sub-heading{
     color:#999;
 }
+
+.content-block{
+    margin:5% 0;
+}
+
+.button-holder{
+    text-align: center;
+    margin:3% 0;
+}
+
+.form-upload{
+    margin:5% 0;
+}
+.storage-but{
+    text-align: center;
+    margin:3% 0;
+}
+.download-btn{
+    font-size:.7em;
+}
+.download-img{
+    margin:auto;
+}
+
+.back-file{
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding-top: 18px;
+    margin: 5px;
+}
+.gallery-file{
+    background-color: #f7f7f7;
+}
+.align{
+    text-align: center;
+}
+.not-shown{
+    display: none;
+}
+.nav-tabs li a {
+    display: block;
+    padding: 6%;
+}
