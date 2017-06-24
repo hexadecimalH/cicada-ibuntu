@@ -1,10 +1,17 @@
 import axios from 'axios';
+import Vue from 'vue';
+import {alert} from 'vue-strap';
 
 var Login = new Vue({
     el: '#root',
+    components:{
+        alert
+    },
     data: {
         input: '# hello',
-        name: 'haris'
+        name: 'haris',
+        showTop: false,
+        errorMsg :""
     },
     computed: {
         compiledMarkdown: function () {
@@ -30,6 +37,12 @@ var Login = new Vue({
             else{
                 window.location.href = '/student/signup'
             }
+        },
+        setAlertToFalse(){
+            var self = this;
+            setTimeout(function(){
+                self.showTop = false;
+            }, 3000);
         }
     },
     delimiters: ['${', '}']

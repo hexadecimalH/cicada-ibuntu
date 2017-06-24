@@ -4,7 +4,7 @@
 import axios from 'axios';
 
 import Vue from 'vue';
-import {tabset,tabs, tab, radio} from 'vue-strap';
+import {tabset,tabs, tab, radio, alert} from 'vue-strap';
 import VeeValidate from 'vee-validate';
 
 Vue.use(VeeValidate);
@@ -15,7 +15,8 @@ var Registartion = new Vue({
         tabset,
         tabs,
         tab,
-        radio
+        radio,
+        alert
     },
     data: {
         activeTab:0,
@@ -36,7 +37,8 @@ var Registartion = new Vue({
         faculties:[],
         departments:[],
         userId:'',
-        userEmail:''
+        userEmail:'',
+        showTop:false
     },
     computed: {
         passMatch(){
@@ -70,7 +72,8 @@ var Registartion = new Vue({
                 this.image = response.data;
                 this.imageUrl = response.data;
             }).catch( error => {
-                $('#failModal').modal("show");
+                this.showTop = true;
+                this.setAlertToFalse();
             })
         },
         getUniversities(){
@@ -86,7 +89,8 @@ var Registartion = new Vue({
                 });
 
             }).catch( error => {
-                $("#failModal").modal('show');
+                this.showTop = true;
+                this.setAlertToFalse();
                 this.errorMsg = error.message;
             });
         },
@@ -104,7 +108,8 @@ var Registartion = new Vue({
                 this.userEmail = response.data.email;
                 console.log(response);
             }).catch( error => {
-                $("#failModal").modal('show');
+                this.showTop = true;
+                this.setAlertToFalse();
                 this.errorMsg = error.message;
                 this.activeTab = 0;
             })
@@ -121,8 +126,8 @@ var Registartion = new Vue({
                 console.log('auth')
                 this.storeUserInformation();
             }).catch(error => {
-                console.log(error);
-                $("#failModal").modal('show');
+                this.showTop = true;
+                this.setAlertToFalse();
                 this.errorMsg = "Please fill out with correct data ";
             });
         },
@@ -136,7 +141,8 @@ var Registartion = new Vue({
                 console.log('valid');
                 this.sendDataToDb();
             }).catch(error =>{
-                console.log('not valid')
+                this.showTop = true;
+                this.setAlertToFalse();
             })
         },
         sendDataToDb(){
@@ -151,10 +157,16 @@ var Registartion = new Vue({
                 console.log(response);
                 $('#hiddenFormSubmit').submit();
             }).catch( error => {
-                console.log(error);
-                $("#failModal").modal('show');
+                this.showTop = true;
+                this.setAlertToFalse();
                 this.errorMsg = error.message;
             })
+        },
+        setAlertToFalse(){
+            var self = this;
+            setTimeout(function(){
+                self.showTop = false;
+            }, 3000);
         }
     },
     beforeMount(){

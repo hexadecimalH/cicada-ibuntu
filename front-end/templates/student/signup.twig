@@ -135,6 +135,11 @@
         {% endif %}
     </form>
     {#hidden form#}
+    <alert :value="showTop" placement="top" duration="3000" type="danger" width="400px" dismissable>
+        <span class="icon-info-circled alert-icon-float-left"></span>
+        <strong>Heads up!</strong>
+        <p>This alert needs your attention.</p>
+    </alert>
 </div>
 <!-- Loading Modal Start -->
 <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
@@ -149,6 +154,7 @@
 </div>
 <!-- Loading Modal End -->
 <!-- Error Modal Start -->
+
 <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
     <div class="modal-dialog">
         <div class="modal-content">

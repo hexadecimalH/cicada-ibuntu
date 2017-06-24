@@ -21,7 +21,9 @@ var DashboardStudent = new Vue({
     },
     data:{
         courses:[],
-        departmentName: ''
+        departmentName: '',
+        showTop:false,
+        errorMsg:""
     },
     computed:{
 
@@ -45,7 +47,9 @@ var DashboardStudent = new Vue({
                 this.courses = response.data;
                 this.departmentName = response.data[0].department.name;
             }).catch( error => {
-                console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             })
         },
         requestSubmit:function(event){
@@ -58,7 +62,9 @@ var DashboardStudent = new Vue({
                     }
                 });
             }).catch(error => {
-                console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             });
         },
         deleteRequest:function(event){
@@ -73,7 +79,9 @@ var DashboardStudent = new Vue({
             axios.delete('/dashboard/request/'+ requestId).then(response =>{
                 console.log(response.data)
             }).catch(error => {
-                console.log(error.message);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             });
         },
         generateUrl:function(course){
@@ -86,6 +94,12 @@ var DashboardStudent = new Vue({
                 }
             });
         },
+        setAlertToFalse(){
+            var self = this;
+            setTimeout(function(){
+                self.showTop = false;
+            }, 3000);
+        }
 
     },
     beforeMount(){

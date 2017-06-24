@@ -137,5 +137,16 @@ class DashboardController
         $zippedFile = $this->dashboardService->deleteFile($fileId);
     }
 
+    public function createAssignment(Application $app, Request $request, $courseId){
+        $user = $this->checkIfAuthorised($request);
+        $title = $request->request->get('title');
+        $description = $request->request->get('description');
+        $date = $request->request->get('due_date');
+        $files = $request->files->all();
+        $assignment = $this->dashboardService->createCourseAssignment($courseId, $title, $description, $date, $files);
+
+        return new JsonResponse($assignment);
+    }
+
 
 }

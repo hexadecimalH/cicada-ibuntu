@@ -24,6 +24,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script src="/front-end/js/assets/jquery.slimscroll.min.js"></script>
     <!-- Custom and plugin javascript -->
     <link href="/front-end/css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="/front-end/css/style-calendar.css">
     <script src="/front-end/js/assets/custom.js"></script>
     <script src="/front-end/js/assets/screenfull.js"></script>
     <script>
@@ -270,6 +271,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
         </div>
     </nav>
+    <alert :value="showTop" placement="top-right" duration="3000" type="danger" width="400px" dismissable>
+        <span class="icon-info-circled alert-icon-float-left"></span>
+        <strong>Heads up!</strong>
+        <p>${ errorMsg }</p>
+    </alert>
     {% if page == "dashboard" %}
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="content-main">
@@ -287,7 +293,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <!--content-->
             <div class="content-top">
 
-
+                <div class="col-md-12">
+                    <div class="post">
+                        <form class="text-area">
+                            <textarea required="" > What are you doing...</textarea>
+                        </form>
+                        <div class="post-at">
+                            <ul class="icon">
+                            </ul>
+                            <form class="text-sub">
+                                <input type="submit" value="post">
+                            </form>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-md-12 ">
                     <div class="tab-pane active text-style" id="tab1">
                         <div class="inbox-right">
@@ -490,7 +510,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="content-mid">
 
                 <div class="col-md-5">
-                    <div class="cal1 cal_2"><div class="clndr"><div class="clndr-controls"><div class="clndr-control-button"><p class="clndr-previous-button">previous</p></div><div class="month">July 2015</div><div class="clndr-control-button rightalign"><p class="clndr-next-button">next</p></div></div><table class="clndr-table" border="0" cellspacing="0" cellpadding="0"><thead><tr class="header-days"><td class="header-day">S</td><td class="header-day">M</td><td class="header-day">T</td><td class="header-day">W</td><td class="header-day">T</td><td class="header-day">F</td><td class="header-day">S</td></tr></thead><tbody><tr><td class="day adjacent-month last-month calendar-day-2015-06-28"><div class="day-contents">28</div></td><td class="day adjacent-month last-month calendar-day-2015-06-29"><div class="day-contents">29</div></td><td class="day adjacent-month last-month calendar-day-2015-06-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-01"><div class="day-contents">1</div></td><td class="day calendar-day-2015-07-02"><div class="day-contents">2</div></td><td class="day calendar-day-2015-07-03"><div class="day-contents">3</div></td><td class="day calendar-day-2015-07-04"><div class="day-contents">4</div></td></tr><tr><td class="day calendar-day-2015-07-05"><div class="day-contents">5</div></td><td class="day calendar-day-2015-07-06"><div class="day-contents">6</div></td><td class="day calendar-day-2015-07-07"><div class="day-contents">7</div></td><td class="day calendar-day-2015-07-08"><div class="day-contents">8</div></td><td class="day calendar-day-2015-07-09"><div class="day-contents">9</div></td><td class="day calendar-day-2015-07-10"><div class="day-contents">10</div></td><td class="day calendar-day-2015-07-11"><div class="day-contents">11</div></td></tr><tr><td class="day calendar-day-2015-07-12"><div class="day-contents">12</div></td><td class="day calendar-day-2015-07-13"><div class="day-contents">13</div></td><td class="day calendar-day-2015-07-14"><div class="day-contents">14</div></td><td class="day calendar-day-2015-07-15"><div class="day-contents">15</div></td><td class="day calendar-day-2015-07-16"><div class="day-contents">16</div></td><td class="day calendar-day-2015-07-17"><div class="day-contents">17</div></td><td class="day calendar-day-2015-07-18"><div class="day-contents">18</div></td></tr><tr><td class="day calendar-day-2015-07-19"><div class="day-contents">19</div></td><td class="day calendar-day-2015-07-20"><div class="day-contents">20</div></td><td class="day calendar-day-2015-07-21"><div class="day-contents">21</div></td><td class="day calendar-day-2015-07-22"><div class="day-contents">22</div></td><td class="day calendar-day-2015-07-23"><div class="day-contents">23</div></td><td class="day calendar-day-2015-07-24"><div class="day-contents">24</div></td><td class="day calendar-day-2015-07-25"><div class="day-contents">25</div></td></tr><tr><td class="day calendar-day-2015-07-26"><div class="day-contents">26</div></td><td class="day calendar-day-2015-07-27"><div class="day-contents">27</div></td><td class="day calendar-day-2015-07-28"><div class="day-contents">28</div></td><td class="day calendar-day-2015-07-29"><div class="day-contents">29</div></td><td class="day calendar-day-2015-07-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-31"><div class="day-contents">31</div></td><td class="day adjacent-month next-month calendar-day-2015-08-01"><div class="day-contents">1</div></td></tr></tbody></table></div></div>
+                    <div class="cal1 cal_2">
+                        <div class="clndr">
+                            <div class="clndr-controls">
+                                <div class="clndr-control-button">
+                                    <p class="clndr-previous-button">previous</p></div><div class="month">July 2015</div><div class="clndr-control-button rightalign"><p class="clndr-next-button">next</p></div></div><table class="clndr-table" border="0" cellspacing="0" cellpadding="0"><thead><tr class="header-days"><td class="header-day">S</td><td class="header-day">M</td><td class="header-day">T</td><td class="header-day">W</td><td class="header-day">T</td><td class="header-day">F</td><td class="header-day">S</td></tr></thead><tbody><tr><td class="day adjacent-month last-month calendar-day-2015-06-28"><div class="day-contents">28</div></td><td class="day adjacent-month last-month calendar-day-2015-06-29"><div class="day-contents">29</div></td><td class="day adjacent-month last-month calendar-day-2015-06-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-01"><div class="day-contents">1</div></td><td class="day calendar-day-2015-07-02"><div class="day-contents">2</div></td><td class="day calendar-day-2015-07-03"><div class="day-contents">3</div></td><td class="day calendar-day-2015-07-04"><div class="day-contents">4</div></td></tr><tr><td class="day calendar-day-2015-07-05"><div class="day-contents">5</div></td><td class="day calendar-day-2015-07-06"><div class="day-contents">6</div></td><td class="day calendar-day-2015-07-07"><div class="day-contents">7</div></td><td class="day calendar-day-2015-07-08"><div class="day-contents">8</div></td><td class="day calendar-day-2015-07-09"><div class="day-contents">9</div></td><td class="day calendar-day-2015-07-10"><div class="day-contents">10</div></td><td class="day calendar-day-2015-07-11"><div class="day-contents">11</div></td></tr><tr><td class="day calendar-day-2015-07-12"><div class="day-contents">12</div></td><td class="day calendar-day-2015-07-13"><div class="day-contents">13</div></td><td class="day calendar-day-2015-07-14"><div class="day-contents">14</div></td><td class="day calendar-day-2015-07-15"><div class="day-contents">15</div></td><td class="day calendar-day-2015-07-16"><div class="day-contents">16</div></td><td class="day calendar-day-2015-07-17"><div class="day-contents">17</div></td><td class="day calendar-day-2015-07-18"><div class="day-contents">18</div></td></tr><tr><td class="day calendar-day-2015-07-19"><div class="day-contents">19</div></td><td class="day calendar-day-2015-07-20"><div class="day-contents">20</div></td><td class="day calendar-day-2015-07-21"><div class="day-contents">21</div></td><td class="day calendar-day-2015-07-22"><div class="day-contents">22</div></td><td class="day calendar-day-2015-07-23"><div class="day-contents">23</div></td><td class="day calendar-day-2015-07-24"><div class="day-contents">24</div></td><td class="day calendar-day-2015-07-25"><div class="day-contents">25</div></td></tr><tr><td class="day calendar-day-2015-07-26"><div class="day-contents">26</div></td><td class="day calendar-day-2015-07-27"><div class="day-contents">27</div></td><td class="day calendar-day-2015-07-28"><div class="day-contents">28</div></td><td class="day calendar-day-2015-07-29"><div class="day-contents">29</div></td><td class="day calendar-day-2015-07-30"><div class="day-contents">30</div></td><td class="day calendar-day-2015-07-31"><div class="day-contents">31</div></td><td class="day adjacent-month next-month calendar-day-2015-08-01"><div class="day-contents">1</div></td></tr></tbody></table></div></div>
 
                 </div>
                 <div class="col-md-7 mid-content-top">
@@ -543,99 +567,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <!----->
             <div class="content-bottom">
-                <div class="col-md-6 post-top">
-                    <div class="post">
-                        <form class="text-area">
-                            <textarea   required="" > What are you doing...</textarea>
-                        </form>
-                        <div class="post-at">
-                            <ul class="icon">
-
-
-                                {#<div  class="post-file">#}
-                                    {#<i class="fa fa-location-arrow"></i>#}
-                                    {#<input id="input-1" name="input1[]" type="file" multiple="" class="">#}
-                                {#</div>#}
-                                {#<div  class="post-file">#}
-                                    {#<i class="fa fa-camera"></i>#}
-                                    {#<input id="input-2" name="input2[]" type="file" multiple="" class="">#}
-                                {#</div>#}
-                                {#<div  class="post-file">#}
-                                    {#<i class="fa fa-video-camera"></i>#}
-                                    {#<input id="input-3" name="input3[]" type="file" multiple="" class="">#}
-                                {#</div>#}
-                                {#<div  class="post-file">#}
-                                    {#<i class="fa fa-microphone"></i>#}
-                                    {#<input id="input-4" name="input4[]" type="file" multiple="" class="">#}
-                                {#</div>#}
-
-                                {#<script>#}
-                                    {#$(document).on('ready', function() {#}
-                                        {#$("#input-1").fileinput({showCaption: false});#}
-                                    {#});#}
-                                {#</script>#}
-                                {#<script>#}
-                                    {#$(document).on('ready', function() {#}
-                                        {#$("#input-2").fileinput({showCaption: false});#}
-                                    {#});#}
-                                {#</script>#}
-                                {#<script>#}
-                                    {#$(document).on('ready', function() {#}
-                                        {#$("#input-3").fileinput({showCaption: false});#}
-                                    {#});#}
-                                {#</script>#}
-                                {#<script>#}
-                                    {#$(document).on('ready', function() {#}
-                                        {#$("#input-4").fileinput({showCaption: false});#}
-                                    {#});#}
-                                {#</script>#}
-                            </ul>
-                            <form class="text-sub">
-                                <input type="submit" value="post">
-                            </form>
-                            <div class="clearfix"> </div>
-                        </div>
-                    </div>
-                    <div class="post-bottom">
-                        <div class="post-bottom-1">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <p>15k <label>Likes</label></p>
-                        </div>
-                        <div class="post-bottom-2">
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <p>20M <label>Followers</label></p>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-
-                </div>
-                <div class="col-md-6">
-                    <div class="weather">
-                        <div class="clearfix"> </div>
-                    </div>
-
-                    </div>
-                </div>
                 <div class="clearfix"> </div>
                 <!-- Error Modal Start -->
-                <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background: red;">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h2 class="modal-title">Error</h2>
-                            </div>
-                            <div class="modal-body">
-                                <p >Sorry the picture hasn't been uploaded succesfully please try again or contact support</p>
-                            </div>
 
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div>
-                <!-- Error Modal End -->
             </div>
             <!--//content-->
 
@@ -686,7 +620,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                         <button class="btn btn-info"  v-on:click="toggleEdit" v-if="editMode">Cancel Edit</button>
                                     </p>
                                 </div>
+                                <vue-event-calendar :events="demoEvents">
+                                    <template scope="props">
+                                        <div v-for="(event, index) in props.showEvents" class="event-item">
 
+                                            {{event.title}}
+                                        </div>
+                                    </template>
+                                </vue-event-calendar>
 
                                 <div class="clearfix"></div>
 
@@ -720,6 +661,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     </tr>
                                     </tbody>
                                 </table>
+
                             </tab>
                             <tab header="Course Resources">
                                 <h2>Upload files for {{ course.course_name }}</h2>
@@ -757,9 +699,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="selector1" class="col-sm-2 control-label">Faculty</label>
+                                                <label for="selector1" class="col-sm-2 control-label">Files</label>
                                                 <div class="col-sm-8">
-                                                    <button class="btn btn-primary"  v-on:click="openUpload" >Upload Files</button>
+                                                    <button class="btn btn-primary"  v-on:click="openUpload" data-id="upload">Upload Files</button>
                                                     <input type="file" name="files[]" class="hidden" id="upload" v-on:change="storeFilesInVar" accept="audio/*,video/*,image/*,media_type" multiple>
                                                     <p >${uploadedFilesNames}</p>
                                                 </div>
@@ -776,6 +718,101 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
                                 <div class="clearfix"></div>
+
+                            </tab>
+                            <tab header="Course Assignments">
+                                <div class="content-box assignments" v-for="assignmet in assignments">
+                                    <div class="col-sm-12 assignments">
+                                        <div class="col-sm-10">
+                                            <h3>${assignmet.title}</h3>
+                                            <p>
+                                                ${assignment.description}
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <h6>Due date</h6>
+                                            <p>${assignemnt.due_date}</p>
+                                            <p>
+                                                <button class="btn-danger btn" :data-id="assignmet.id">Edit</button>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="content-box assignments">
+                                    <div class="col-sm-12 assignments">
+                                        <form action="" class="form-horizontal">
+                                            <div :class=" {'form-group': true , 'form-group has-error' : errors.has('assignemntTitle')}">
+                                                <label for="focusedinput" class="col-sm-2 control-label">Create Assignemnt</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control1" id="focusedinput" v-model="assignemntTitle" data-vv-name="assignemntTitle" v-validate="'required|alpha_spaces'"  placeholder="Files Purpose" >
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="selector1" class="col-sm-2 control-label">Set Due Data</label>
+                                                <div class="col-sm-8">
+                                                    <datepicker :value.sync="date"  :format="format" :clear-button="clear" placeholder="Please select date" class="form-control1">
+                                                    </datepicker>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="selector1" class="col-sm-2 control-label">Files</label>
+                                                <div class="col-sm-8">
+                                                    <button class="btn btn-primary"  v-on:click="openUpload" data-id="uploadAss" >Upload Files</button>
+                                                    <input type="file" name="files[]" class="hidden" id="uploadAss" v-on:change="storeFilesInVar" accept="audio/*,video/*,image/*,media_type" multiple>
+                                                    <p >${uploadedFilesAssignment}</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="selector1" class="col-sm-2 control-label">Description</label>
+                                                <div class="col-sm-8">
+                                                    <textarea placeholder="Your Comment..." required="" style="width:100%;" rows="10" v-model="assignemntDescription"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="selector1" class="col-sm-2 control-label"></label>
+                                                <div class="col-sm-8">
+                                                    <p style="text-align: right;">
+                                                        <button class="btn-success btn" v-on:click="createAssignemt">Add Assignment</button>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+
+                                        </form>
+
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                {#<table class="table">#}
+                                    {#<tbody>#}
+                                    {#<th>Picture</th>#}
+                                    {#<th>Student Info</th>#}
+                                    {#<th>Request Status</th>#}
+                                    {#<th>Action</th>#}
+                                    {#<tr class="table-row" v-for="request in requests">#}
+                                        {#<td class="table-img">#}
+                                            {#<img :src="request.users.picture" alt="" width="60px">#}
+                                        {#</td>#}
+                                        {#<td class="table-text">#}
+                                            {#<h6>${request.users.first_name} ${request.users.last_name}</h6>#}
+                                            {#<p>${request.users.email}</p>#}
+                                        {#</td>#}
+                                        {#<td class="table-text">#}
+                                            {#<span class="mar" v-if="request.status == 'pending'"> ${request.status}</span>#}
+                                            {#<span class="work" v-else-if="request.status =='approved'"> Approved </span>#}
+                                        {#</td>#}
+
+                                        {#<td>#}
+                                            {#<button class="btn btn-success" v-if="request.status == 'pending'" v-on:click="acceptStudentRequest" :data-id="request.id">Accept Request</button>#}
+                                            {#<button class="btn btn-danger" v-if="request.status == 'pending'" v-on:click="deleteStudentRequest" :data-id="request.id">Delete Request</button>#}
+                                            {#<button class="btn btn-danger" v-if="request.status == 'approved'" v-on:click="deleteStudentRequest" :data-id="request.id">Remove Student</button>#}
+
+                                        {#</td>#}
+                                    {#</tr>#}
+                                    {#</tbody>#}
+                                {#</table>#}
 
                             </tab>
                         </tabs>

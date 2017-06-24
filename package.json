@@ -23,10 +23,12 @@
     "tinymce-vue-2": "0.0.2",
     "vee-validate": "^2.0.0-rc.5",
     "vue": "^2.3.4",
+    "vue-datepicker": "^1.3.0",
+    "vue-event-calendar": "^1.3.5",
     "vue-strap": "github:wffranco/vue-strap",
     "vue-tinymce": "^1.0.5",
     "vue-validator": "^3.0.0-alpha.2",
-    "vuejs-datepicker": "^0.7.14"
+    "vuejs-datepicker": "^0.7.16"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

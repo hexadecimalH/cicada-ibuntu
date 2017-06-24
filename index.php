@@ -106,6 +106,12 @@ $dashboardRouteCollection->delete('/files/{fileId}', [$dashboardController, 'del
         $authentication->validateUser($app,$request);
     });
 
+$dashboardRouteCollection->post('/assignment/{courseId}', [$dashboardController, 'createAssignment'])
+    ->before(function(Application $app, Request $request) use ($authentication){
+        $authentication->validateUser($app,$request);
+    });
+
+
 // start page Log in/ Sign up
 $loginRouteCollection->get('/',                         [$loginController, 'index']);
 $loginRouteCollection->get('/professor',                [$loginController, 'indexProfessor']);

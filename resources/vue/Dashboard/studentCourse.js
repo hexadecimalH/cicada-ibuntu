@@ -24,7 +24,9 @@ var CourseStudent = new Vue({
         courses:[],
         content:'',
         activeTab:0,
-        courseFiles:[]
+        courseFiles:[],
+        showTop:false,
+        errorMsg:""
     },
     computed:{
 
@@ -53,7 +55,9 @@ var CourseStudent = new Vue({
                     $('#content').html(content);
                 }
             }).catch(error => {
-                console.log(error.message);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             });
         },
         getCourseId(){
@@ -73,7 +77,9 @@ var CourseStudent = new Vue({
                 });
                 this.departmentName = response.data[0].department.name;
             }).catch( error => {
-                console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             })
         },
         getCourseId(){
@@ -81,6 +87,12 @@ var CourseStudent = new Vue({
             var array = url.split('/');
             var id = array[array.length - 1 ]
             return id.replace(/\D/g,'');
+        },
+        setAlertToFalse(){
+            var self = this;
+            setTimeout(function(){
+                self.showTop = false;
+            }, 3000);
         }
     },
     mounted() {

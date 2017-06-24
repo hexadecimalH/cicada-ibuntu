@@ -11,6 +11,7 @@ namespace Ibuntu\Services;
 
 
 use Ibuntu\Libraries\FileZipper;
+use Ibuntu\Models\Assignment;
 use Ibuntu\Models\Course;
 use Ibuntu\Models\CourseFiles;
 use Ibuntu\Models\CourseRequest;
@@ -56,7 +57,7 @@ class DashboardService
 
     public function retrieveProfessorCourses($professorId){
         /** @var Course[] $courses */
-        $courses = Course::all(['include' => ['course_schedule', 'department', 'course_files' ]]);
+        $courses = Course::all(['include' => ['course_schedule', 'department', 'course_files', 'assignments' ]]);
         $serializedCourses = [];
         foreach($courses as $course){
             if($course->professor_id == $professorId){
@@ -168,5 +169,35 @@ class DashboardService
         }
 
         return true;
+    }
+
+    public function storeAssignmentFiles($courseId, $files, $fileName){
+        /** @var Course $course */
+        $course = Course::find($courseId);
+
+        $courseName = explode(" ", $course->course_name);
+        $courseName = implode("_", $courseName);
+
+        $path = $this->fileZipper->zipFiles($courseName, $files, $fileName);
+
+        return $path;
+    }
+
+    public function createCourseAssignment($courseId, $title, $description, $date, $files){
+        $fileName = explode(" ", $title);
+        $fileName = implode("_", $fileName);
+
+        $path = $this->storeAssignmentFiles($courseId, $files['file'], $fileName);
+
+        /** @var Assignment $assignment */
+        $assignment = Assignment::create([
+            "name" => $title,
+            "description" => $description,
+            "course_id" => $courseId,
+            "due_date" => $date,
+            "url" => $path
+        ]);
+
+        return $assignment->serialize();
     }
 }

@@ -330,6 +330,11 @@
     </div>
     <!-- Loading Modal End -->
     <!-- Error Modal Start -->
+    <alert :value="showTop" placement="top-right" duration="3000" type="danger" width="400px" dismissable>
+        <span class="icon-info-circled alert-icon-float-left"></span>
+        <strong>Heads up!</strong>
+        <p>${ errorMsg }</p>
+    </alert>
     <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">

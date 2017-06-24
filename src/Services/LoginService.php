@@ -91,7 +91,9 @@ class LoginService
 
     public function customRegisterUser($name, $surname, $email, $imageUrl, $type){
         $exists = $this->findUser($email);
+        $id=1;
         if(empty($exists)){
+            // storing user values in DB
             /** @var User $user */
             $user = User::create([
                 "first_name" => $name,
@@ -99,6 +101,8 @@ class LoginService
                 "email" => $email,
                 "type" => $type
             ]);
+            // retreaving values from DB
+            $user = User::find($id);
 
             $url = $this->imageStorageService->moveAndRenameImage($type, $imageUrl, $user->id);
             $user->picture = $url;

@@ -3,7 +3,9 @@
  */
 import axios from 'axios';
 import Vue from 'vue';
-import {checkbox, buttonGroup} from 'vue-strap';
+import {checkbox, buttonGroup, alert} from 'vue-strap';
+import Datepicker from 'vuejs-datepicker';
+
 import moment from 'moment';
 
 import VeeValidate from 'vee-validate';
@@ -14,7 +16,8 @@ var Dashboard = new Vue({
     el:'#wrapper',
     components:{
         buttonGroup,
-        checkbox
+        checkbox,
+        alert
     },
     data:{
         days:[],
@@ -27,10 +30,12 @@ var Dashboard = new Vue({
         thursday:'',
         friday:'',
         year:0,
-        years:[]
+        years:[],
+        showTop: false,
+        errorMsg :"",
+
     },
     computed:{
-
     },
     methods:{
         daysCheckbox(event){
@@ -105,7 +110,9 @@ var Dashboard = new Vue({
                 this.thursday = '';
                 this.friday = '';
             }).catch(error =>{
-                $('#failModal').modal('show');
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
                 console.log(error);
             });
         },
@@ -115,7 +122,16 @@ var Dashboard = new Vue({
                 this.courses = response.data;
             }).catch( error => {
                 console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             })
+        },
+        setAlertToFalse(){
+            var self = this;
+            setTimeout(function(){
+                self.showTop = false;
+            }, 3000);
         }
     },
     beforeMount(){

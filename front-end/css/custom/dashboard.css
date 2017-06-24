@@ -66,3 +66,12 @@ content-top-1{
     display: block;
     padding: 6%;
 }
+
+.assignments{
+    margin:5% 0;
+}
+.datepicker-input{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}

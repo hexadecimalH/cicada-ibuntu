@@ -3,11 +3,13 @@
  */
 import axios from 'axios';
 import Vue from 'vue';
-import {tabset,tabs, tab} from 'vue-strap';
+import {tabset,tabs, tab, alert, datepicker} from 'vue-strap';
+import vueEventCalendar from 'vue-event-calendar'
+
 import moment from 'moment';
 
 import VeeValidate from 'vee-validate';
-
+Vue.use(vueEventCalendar, {locale: 'en'})
 Vue.use(VeeValidate);
 
 var Course = new Vue({
@@ -15,7 +17,9 @@ var Course = new Vue({
     components:{
         tabset,
         tabs,
-        tab
+        tab,
+        alert,
+        datepicker
     },
     data:{
         courses:[],
@@ -27,13 +31,49 @@ var Course = new Vue({
         fileName:'',
         files:[],
         uploadedFilesNames:'',
+        uploadedFilesAssignment:'',
         courseFiles:[],
-        editMode:false
+        editMode:false,
+        showTop:false,
+        errorMsg:"",
+        demoEvents: [{
+            date: '2017/6/15',
+            title: 'Foo',
+            desc: 'longlonglong description'
+        },{
+            date: '2017/6/16',
+            title: 'Bar'
+        }],
+        date:moment(new Date).format('YYYY-MM-D'),
+        format:'yyyy-MM-dd',
+        clear:false,
+        assignemntTitle:'',
+        assignemntDescription:'',
+        assignments:[]
     },
     computed:{
 
     },
     methods:{
+        createAssignemt:function(event){
+            event.preventDefault();
+            var data = new FormData();
+            data.append('title',this.assignemntTitle);
+            data.append('title',this.assignemntDescription);
+            data.append('due_date', this.date);
+            var i  = 0 ;
+            Array.from(this.files).forEach( file => {
+                data.append('file['+i+']', file)
+                i++;
+            });
+            axios.post('/dashboard/assignment/'+this.courseId, data).then( response =>{
+                this.assignments.push(response.data);
+            }).catch(error => {
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
+            });
+        },
         toggleEdit(){
             this.editMode = !this.editMode;
 
@@ -45,7 +85,8 @@ var Course = new Vue({
             Array.from(this.files).forEach( file => {
                 string = string.concat(file.name.toString() + " , ");
             });
-            this.uploadedFilesNames = string;
+            ($(event.target).attr("id") == "upload") ? this.uploadedFilesNames = string : this.uploadedFilesAssignment = string;
+
         },
         storeFiles:function(event){
             event.preventDefault();
@@ -55,7 +96,6 @@ var Course = new Vue({
             };
             var data = new FormData();
             let i = 0;
-            console.log(this.files.length);
             Array.from(this.files).forEach( file => {
                 data.append('file['+i+']', file)
                 i++;
@@ -63,12 +103,15 @@ var Course = new Vue({
             data.append('file_name', this.fileName);
             console.log(data);
             axios.post('/dashboard/upload/'+this.courseId, data, config).then( response => {
+                console.log(response.data);
                 this.courseFiles.push(response.data);
                 this.fileName = "";
                 $('#upload').val('');
                 this.uploadedFilesNames = '';
             }).catch( error => {
-                console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             })
         },
         deleteStoredFiles:function(id){
@@ -81,12 +124,15 @@ var Course = new Vue({
                     }
                 });
             }).catch( error => {
-                console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             });
         },
         openUpload:function(event){
             event.preventDefault();
-            $("#upload").click();
+            var id = $(event.target).attr('data-id');
+            $("#"+id).click();
         },
         sendCourseInfo(){
             var id = $(event.target).attr('data-id');
@@ -97,7 +143,9 @@ var Course = new Vue({
             axios.post('/dashboard/course/info/'+id, data, []).then(response => {
                 console.log(response.data);
             }).catch( error => {
-                console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             })
 
         },
@@ -113,7 +161,9 @@ var Course = new Vue({
                     }
                 });
             }).catch(error => {
-                console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             });
         },
         deleteStudentRequest:function(event){
@@ -127,7 +177,9 @@ var Course = new Vue({
                     }
                 });
             }).catch(error => {
-                console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             });
         },
         getIdFromEvent:function(event){
@@ -150,10 +202,13 @@ var Course = new Vue({
                 this.courses.forEach(course => {
                     if(course.id == courseId){
                         this.courseFiles = course.course_files;
+                        this.assignments = course.assignments;
                     }
                 });
             }).catch( error => {
-                console.log(error);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             })
         },
         getRequestsForCourse(){
@@ -161,7 +216,9 @@ var Course = new Vue({
             axios.get('/dashboard/request/'+this.courseId).then(response => {
                 this.requests = response.data;
             }).catch(error => {
-                console.log(error.message);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             });
         },
         getCourseData(){
@@ -175,7 +232,9 @@ var Course = new Vue({
                     $('#content').html(content);
                 }
             }).catch(error => {
-                console.log(error.message);
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
             });
         },
         getCourseId(){
@@ -187,6 +246,12 @@ var Course = new Vue({
         undoContent(){
             tinyMCE.activeEditor.setContent(this.content);
             $('#content').html(this.content);
+        },
+        setAlertToFalse(){
+            var self = this;
+            setTimeout(function(){
+                self.showTop = false;
+            }, 3000);
         }
     },
     beforeMount(){
