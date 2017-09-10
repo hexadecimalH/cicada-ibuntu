@@ -15,29 +15,12 @@ class User extends Model
 {
     static $table_name = 'users';
 
-    static $has_many = [
-        [
-            'professor',
-            'class_name' => 'Professor'
-        ],
-        [
-            'student',
-            'class_name' => 'Student'
-        ]
-    ];
+    public static $USER_TYPE_STUDENT = "student";
+    public static $USER_TYPE_PROFESSOR = "professor";
+
 
     public function serialize(){
         return $this->to_array();
     }
 
-    public function serializeWithProfessor(){
-        return $this->to_array([
-            'include'=> ['professor']
-        ]);
-    }
-    public function serializeWithStudent(){
-        return $this->to_array([
-            'include'=> ['student']
-        ]);
-    }
 }

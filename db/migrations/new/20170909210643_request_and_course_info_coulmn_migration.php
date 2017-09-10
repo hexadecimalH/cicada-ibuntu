@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class StudentAssignedForAssignemt extends AbstractMigration
+class RequestAndCourseInfoCoulmnMigration extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,25 +27,18 @@ class StudentAssignedForAssignemt extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('student_assigned');
-        $table->addColumn('status', 'text')
-            ->addColumn('user_id', 'integer')
-            ->addForeignKey('user_id', 'users', 'id', [
+        $table = $this->table('course_requests');
+        $table->addColumn('send_by_user_id', 'integer')
+            ->addForeignKey('send_by_user_id', 'users', 'id', [
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
-            ->addColumn('assignments_id', 'integer')
-            ->addForeignKey('assignments_id', 'assignments', 'id', [
+            ->addColumn('for_course_id', 'integer')
+            ->addForeignKey('for_course_id', 'course', 'id', [
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
-            ->addColumn('course_id', 'integer')
-            ->addForeignKey('course_id', 'course', 'id', [
-                'delete'=> 'CASCADE',
-                'update'=> 'CASCADE'
-            ])
-            ->addColumn('due_date', 'datetime')
-            ->addColumn('url', 'text')
+            ->addColumn('status', 'text')
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->create();
     }

@@ -42,6 +42,7 @@ class DashboardService
 
         $this->createWorkingTimeForCourse($course->id, $scheduledDays, $all);
         $course = Course::find($course->id,['include' => ['course_schedule', 'department'] ]);
+
         return $course->serializeWithScheduleAndDepartment();
 
     }
@@ -57,19 +58,21 @@ class DashboardService
 
     public function retrieveProfessorCourses($professorId){
         /** @var Course[] $courses */
-        $courses = Course::all(['include' => ['course_schedule', 'department', 'course_files', 'assignments' ]]);
+        $courses = Course::find('all', ['include' => ['course_schedule', 'department', 'course_requests', 'course_files', 'users', 'assignments']]);//'assignments'
         $serializedCourses = [];
+
         foreach($courses as $course){
             if($course->professor_id == $professorId){
-                $serializedCourses[] = $course->serializeWithScheduleAndDepartment();
+                $serializedCourses[] = $course->serializeWithScheduleDepartmentAndUser();
             }
         }
+
         return $serializedCourses;
     }
 
     public function retrieveStudentCourses($departmentId, $userId){
         /** @var Course[] $courses */
-        $courses = Course::all(['include' => ['course_schedule', 'department', 'course_requests', 'professor' => ['include' => 'user']]]);
+        $courses = Course::all(['include' => ['course_schedule', 'department', 'course_requests', 'course_files', 'users', 'assignments']]);
         $serializedCourses = [];
         foreach($courses as $course){
             if($course->department_id == $departmentId){
@@ -79,7 +82,7 @@ class DashboardService
                         $userRequest = $request->serialize();
                     }
                 }
-                $course = $course->serializeWithScheduleAndDepartment();
+                $course = $course->serializeWithScheduleDepartmentAndUser();
                 $course['request'] = $userRequest;
                 $serializedCourses[] = $course;
             }
@@ -176,7 +179,7 @@ class DashboardService
         $course = Course::find($courseId);
 
         $courseName = explode(" ", $course->course_name);
-        $courseName = implode("_", $courseName);
+        $courseName = implode("_", $courseName)."Assignemnt";
 
         $path = $this->fileZipper->zipFiles($courseName, $files, $fileName);
 
@@ -185,7 +188,11 @@ class DashboardService
 
     public function createCourseAssignment($courseId, $title, $description, $date, $files){
         $fileName = explode(" ", $title);
-        $fileName = implode("_", $fileName);
+        $fileName = implode("_", $fileName)."assignemnt";
+
+        $time = strtotime($date);
+
+        $newformat = date('Y-m-d',$time);
 
         $path = $this->storeAssignmentFiles($courseId, $files['file'], $fileName);
 
@@ -194,9 +201,35 @@ class DashboardService
             "name" => $title,
             "description" => $description,
             "course_id" => $courseId,
-            "due_date" => $date,
+            "due_date" => $newformat,
             "url" => $path
         ]);
+
+        return $assignment->serialize();
+    }
+
+    public function deleteAssignment($assignmentId)
+    {
+        try{
+            /** @var Assignment $assignment */
+            $assignment = Assignment::find($assignmentId);
+            $this->fileZipper->deleteZippedFiles($assignment->url);
+            $assignment->delete();
+        }catch (Exception $e){
+            return false;
+        }
+
+        return true;
+    }
+
+    public function updateAssignment($id, $title, $description, $date)
+    {
+        /** @var Assignment $assignment */
+        $assignment = Assignment::find($id);
+        $assignment->name = $title;
+        $assignment->description = $description;
+        $assignment->due_date = $date;
+        $assignment->save();
 
         return $assignment->serialize();
     }

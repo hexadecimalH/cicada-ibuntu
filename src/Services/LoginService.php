@@ -53,12 +53,13 @@ class LoginService
     }
 
     public function getUserAsArray($email){
+        /** @var User $user */
         $user = User::first(['conditions' => ['email LIKE ?', $email]]);
 
         if(empty($user)){
-            return "Wrong Credentials";
+            return null;
         }
-        return $user->to_array();
+        return $user->serialize();
     }
 
     public function findStudentByUser($user){
@@ -89,30 +90,7 @@ class LoginService
         return $professor;
     }
 
-    public function customRegisterUser($name, $surname, $email, $imageUrl, $type){
-        $exists = $this->findUser($email);
-        $id=1;
-        if(empty($exists)){
-            // storing user values in DB
-            /** @var User $user */
-            $user = User::create([
-                "first_name" => $name,
-                "last_name" => $surname,
-                "email" => $email,
-                "type" => $type
-            ]);
-            // retreaving values from DB
-            $user = User::find($id);
 
-            $url = $this->imageStorageService->moveAndRenameImage($type, $imageUrl, $user->id);
-            $user->picture = $url;
-            $user->save();
-
-            return $user->serialize();
-        }
-
-        return "User with same E-mail already exists";
-    }
     public function getUserWithDepartment($user){
         /** @var User $user */
         $user = User::find($user['id'],['include' => [ $user['type']]]);

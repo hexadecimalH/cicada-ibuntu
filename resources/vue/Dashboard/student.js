@@ -6,7 +6,7 @@
  */
 import axios from 'axios';
 import Vue from 'vue';
-import {checkbox, buttonGroup} from 'vue-strap';
+import {checkbox, buttonGroup, alert} from 'vue-strap';
 import moment from 'moment';
 
 import VeeValidate from 'vee-validate';
@@ -17,13 +17,14 @@ var DashboardStudent = new Vue({
     el:'#wrapper',
     components:{
         buttonGroup,
-        checkbox
+        checkbox,
+        alert
     },
     data:{
         courses:[],
         departmentName: '',
         showTop:false,
-        errorMsg:""
+        errorMsg:"",
     },
     computed:{
 
@@ -43,7 +44,6 @@ var DashboardStudent = new Vue({
         },
         getCoursesForDepartment(){
             axios.get('/dashboard/course/student').then(response => {
-                console.log(response.data);
                 this.courses = response.data;
                 this.departmentName = response.data[0].department.name;
             }).catch( error => {

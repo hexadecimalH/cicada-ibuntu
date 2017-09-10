@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class StudentAssignedForAssignemt extends AbstractMigration
+class CourseAndCourseSchedule extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,26 +27,35 @@ class StudentAssignedForAssignemt extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('student_assigned');
-        $table->addColumn('status', 'text')
-            ->addColumn('user_id', 'integer')
-            ->addForeignKey('user_id', 'users', 'id', [
+        $table = $this->table('course');
+        $table->addColumn('course_name', 'text')
+            ->addColumn('department_id', 'integer')
+            ->addForeignKey('department_id', 'department', 'id', [
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
-            ->addColumn('assignments_id', 'integer')
-            ->addForeignKey('assignments_id', 'assignments', 'id', [
+            ->addColumn('professor_id', 'integer')
+            ->addForeignKey('professor_id', 'users', 'id',[
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
+            ->addColumn('semester', 'text')
+            ->addColumn('info', 'text', ['null' => true])
+            ->addColumn('year', 'integer')
+            ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('modified', 'datetime', ['null' => true])
+            ->create();
+
+        $table = $this->table('course_schedule');
+        $table->addColumn('day', 'text')
             ->addColumn('course_id', 'integer')
             ->addForeignKey('course_id', 'course', 'id', [
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
-            ->addColumn('due_date', 'datetime')
-            ->addColumn('url', 'text')
+            ->addColumn('duration', 'text')
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('modified', 'datetime', ['null' => true])
             ->create();
     }
 }

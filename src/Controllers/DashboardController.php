@@ -31,9 +31,9 @@ class DashboardController
     }
 
     public function createCourse(Application $app, Request $request){
-        $user = $this->checkIfAuthorised($request);
-        $departmentId = $user['professor'][0]['department_id'];
-        $professorId = $user['professor'][0]['id'];
+        $user = $request->get('user');
+        $departmentId = $user['department_id'];
+        $professorId = $user['id'];
         $all = $request->request->all();
 
         $course = $this->dashboardService->storeCourseData($all, $departmentId, $professorId);
@@ -42,39 +42,30 @@ class DashboardController
     }
 
     public function getProfessorCourses(Application $app, Request $request){
-        $user = $this->checkIfAuthorised($request);
-        $professorId = $user['professor'][0]['id'];
+        $user = $request->get('user');
+        $professorId = $user['id'];
         $courses = $this->dashboardService->retrieveProfessorCourses($professorId);
 
         return new JsonResponse($courses);
     }
 
     public function getStudentCourses(Application $app, Request $request){
-        $user = $this->checkIfAuthorised($request);
-        $departmentId = $user['student'][0]['department_id'];
+        $user = $request->get('user');
+        $departmentId = $user['department_id'];
         $courses = $this->dashboardService->retrieveStudentCourses($departmentId, $user['id']);
 
         return new JsonResponse($courses);
     }
 
-    protected function checkIfAuthorised($request){
-        $user = $request->get('user');
-        if(gettype($user) == 'string'){
-            return new Response('Unauthorised User',401);
-        }
-
-        return $user;
-    }
-
     public function toCoursePage(Application $app, Request $request, $courseId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
         $course = $this->dashboardService->getCourse($courseId);
 
-        return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, "page" => "course", "course" => $course, "department" => $course->department]);
+        return $this->twig->render($user['type'].'/course.twig', ['user' => $user, "page" => "course", "course" => $course, "department" => $course->department]);
     }
 
     public function createRequest(Application $app, Request $request, $courseId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
 
         $courseRequest = $this->dashboardService->storeRequest($user['id'], $courseId);
 
@@ -82,14 +73,14 @@ class DashboardController
     }
 
     public function removeCourseRequest(Application $app, Request $request, $requestId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
         $this->dashboardService->removeRequest($requestId);
 
         return new JsonResponse("Request Succesfully Deleted" , 200);
     }
 
     public function getRequestsForCourse(Application $app, Request $request, $courseId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
 
         $requests = $this->dashboardService->getRequestsForCourse($courseId);
 
@@ -97,7 +88,7 @@ class DashboardController
     }
 
     public function approveRequest(Application $app, Request $request, $requestId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
 
         $courseRequest = $this->dashboardService->approveRequestForCourse($requestId);
 
@@ -105,7 +96,7 @@ class DashboardController
     }
 
     public function setCourseInfo(Application $app, Request $request, $courseId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
         $info = $request->request->get('info');
 
         $course = $this->dashboardService->storeCourseInfo($info, $courseId);
@@ -114,7 +105,7 @@ class DashboardController
     }
 
     public function getCourseData(Application $app, Request $request, $courseId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
         /** @var Course $course */
         $course = $this->dashboardService->getCourse($courseId);
 
@@ -122,7 +113,7 @@ class DashboardController
     }
 
     public function uploadFiles(Application $app, Request $request, $courseId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
 
         $files = $request->files->all();
         $fileName = $request->request->get('file_name');
@@ -132,20 +123,39 @@ class DashboardController
     }
 
     public function deleteFiles(Application $app, Request $request, $fileId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
 
         $zippedFile = $this->dashboardService->deleteFile($fileId);
     }
 
     public function createAssignment(Application $app, Request $request, $courseId){
-        $user = $this->checkIfAuthorised($request);
+        $user = $request->get('user');
         $title = $request->request->get('title');
         $description = $request->request->get('description');
         $date = $request->request->get('due_date');
         $files = $request->files->all();
+
         $assignment = $this->dashboardService->createCourseAssignment($courseId, $title, $description, $date, $files);
 
         return new JsonResponse($assignment);
+    }
+
+    public function deleteAssignment(Application $app, Request $request, $assignmentId){
+        $user = $request->get('user');
+        $success = $this->dashboardService->deleteAssignment($assignmentId);
+
+        return $success ? new JsonResponse("", 200) : new JsonResponse("Error", 500);
+    }
+
+    public function updateAssignment(Application $app, Request $request){
+        $user = $request->get('user');
+        $title = $request->request->get('title');
+        $description = $request->request->get('description');
+        $date = $request->request->get('due_date');
+        var_dump($request);die();
+        $result = $this->dashboardService->updateAssignment($id, $title, $description, $date);
+
+        return new JsonResponse($result);
     }
 
 

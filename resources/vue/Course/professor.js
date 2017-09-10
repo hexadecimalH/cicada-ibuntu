@@ -5,6 +5,8 @@ import axios from 'axios';
 import Vue from 'vue';
 import {tabset,tabs, tab, alert, datepicker} from 'vue-strap';
 import vueEventCalendar from 'vue-event-calendar'
+import NewAssignemntComonent from './Components/NewAssignmentComonent';
+import NewCourseFilesComonent from './Components/NewCourseFiles';
 
 import moment from 'moment';
 
@@ -15,11 +17,12 @@ Vue.use(VeeValidate);
 var Course = new Vue({
     el:'#wrapper',
     components:{
+        NewAssignemntComonent,
+        NewCourseFilesComonent,
         tabset,
         tabs,
         tab,
         alert,
-        datepicker
     },
     data:{
         courses:[],
@@ -28,111 +31,40 @@ var Course = new Vue({
         requests:[],
         content:'',
         course:{},
-        fileName:'',
         files:[],
-        uploadedFilesNames:'',
-        uploadedFilesAssignment:'',
+
         courseFiles:[],
         editMode:false,
         showTop:false,
         errorMsg:"",
         demoEvents: [{
-            date: '2017/6/15',
+            date: '2017/9/15',
             title: 'Foo',
             desc: 'longlonglong description'
         },{
-            date: '2017/6/16',
+            date: '2017/9/16',
             title: 'Bar'
         }],
-        date:moment(new Date).format('YYYY-MM-D'),
-        format:'yyyy-MM-dd',
-        clear:false,
-        assignemntTitle:'',
-        assignemntDescription:'',
-        assignments:[]
+        assignments:[],
+        currentAssignment:null
     },
     computed:{
 
     },
     methods:{
-        createAssignemt:function(event){
-            event.preventDefault();
-            var data = new FormData();
-            data.append('title',this.assignemntTitle);
-            data.append('title',this.assignemntDescription);
-            data.append('due_date', this.date);
-            var i  = 0 ;
-            Array.from(this.files).forEach( file => {
-                data.append('file['+i+']', file)
-                i++;
-            });
-            axios.post('/dashboard/assignment/'+this.courseId, data).then( response =>{
-                this.assignments.push(response.data);
-            }).catch(error => {
-                this.showTop = true;
-                this.setAlertToFalse();
-                this.errorMsg = error.message;
-            });
-        },
         toggleEdit(){
             this.editMode = !this.editMode;
 
         },
-        storeFilesInVar:function(event){
-            this.uploadedFilesNames = "";
-            this.files = event.target.files;
-            var string = "";
-            Array.from(this.files).forEach( file => {
-                string = string.concat(file.name.toString() + " , ");
-            });
-            ($(event.target).attr("id") == "upload") ? this.uploadedFilesNames = string : this.uploadedFilesAssignment = string;
-
-        },
-        storeFiles:function(event){
-            event.preventDefault();
-            // implement validation of fileds
-            const config = {
-                headers: { 'content-type': 'multipart/form-data' }
-            };
-            var data = new FormData();
-            let i = 0;
-            Array.from(this.files).forEach( file => {
-                data.append('file['+i+']', file)
-                i++;
-            });
-            data.append('file_name', this.fileName);
-            console.log(data);
-            axios.post('/dashboard/upload/'+this.courseId, data, config).then( response => {
-                console.log(response.data);
-                this.courseFiles.push(response.data);
-                this.fileName = "";
-                $('#upload').val('');
-                this.uploadedFilesNames = '';
-            }).catch( error => {
-                this.showTop = true;
-                this.setAlertToFalse();
-                this.errorMsg = error.message;
-            })
-        },
         deleteStoredFiles:function(id){
             axios.delete('/dashboard/files/'+id).then( response => {
                 console.log(response.data);
-                this.courseFiles.forEach( file => {
-                    if(file.id == id){
-                        let index = this.courseFiles.indexOf(file);
-                        this.courseFiles.splice(index,1);
-                    }
-                });
+                this.removeElementFromArray(this.courseFiles, id);
             }).catch( error => {
                 this.showTop = true;
                 this.setAlertToFalse();
                 this.errorMsg = error.message;
             });
-        },
-        openUpload:function(event){
-            event.preventDefault();
-            var id = $(event.target).attr('data-id');
-            $("#"+id).click();
         },
         sendCourseInfo(){
             var id = $(event.target).attr('data-id');
@@ -142,6 +74,7 @@ var Course = new Vue({
             data.append('info', content);
             axios.post('/dashboard/course/info/'+id, data, []).then(response => {
                 console.log(response.data);
+                this.toggleEdit()
             }).catch( error => {
                 this.showTop = true;
                 this.setAlertToFalse();
@@ -169,13 +102,7 @@ var Course = new Vue({
         deleteStudentRequest:function(event){
             var requestId = this.getIdFromEvent(event);
             axios.delete('/dashboard/request/'+requestId).then(response => {
-                this.requests.forEach(request => {
-                    if(request.id == requestId){
-                        let index = this.requests.indexOf(request);
-                        this.requests.splice(index,1);
-
-                    }
-                });
+                this.removeElementFromArray(this.requests, requestId);
             }).catch(error => {
                 this.showTop = true;
                 this.setAlertToFalse();
@@ -194,15 +121,19 @@ var Course = new Vue({
 
             }
         },
+        beautifyDate(date){
+            return moment(date).format('LLLL');
+        },
         getProfessorsCourses(){
+            var self = this;
             axios.get('/dashboard/course/professor').then(response => {
-                console.log(response.data);
+
                 this.courses = response.data;
                 var courseId = this.getCourseId();
                 this.courses.forEach(course => {
                     if(course.id == courseId){
-                        this.courseFiles = course.course_files;
-                        this.assignments = course.assignments;
+                        self.courseFiles = course.course_files;
+                        self.assignments = course.assignments;
                     }
                 });
             }).catch( error => {
@@ -247,11 +178,42 @@ var Course = new Vue({
             tinyMCE.activeEditor.setContent(this.content);
             $('#content').html(this.content);
         },
+        deleteAssignment(event){
+            let id = this.getIdFromEvent(event);
+            axios.delete("/dashboard/assignment/"+ id).then( response =>{
+                console.log(response);
+                this.removeElementFromArray(this.assignments, id);
+            }).catch(error => {
+                this.showTop = true;
+                this.setAlertToFalse();
+                this.errorMsg = error.message;
+            });
+        },
+        editAssignment(event){
+            let id = this.getIdFromEvent(event);
+            this.currentAssignment = id;
+            this.assignments.forEach(assigment =>{
+                if(assigment.id == id){
+                    this.currentAssignment = assigment;
+                }
+            });
+        },
+        removeElementFromArray(array, elementId){
+            array.forEach(element => {
+                if(element.id == elementId){
+                    let index = array.indexOf(element);
+                    array.splice(index, 1);
+                }
+            });
+        },
         setAlertToFalse(){
             var self = this;
             setTimeout(function(){
                 self.showTop = false;
             }, 3000);
+        },
+        getSelfObject(){
+            return this;
         }
     },
     beforeMount(){

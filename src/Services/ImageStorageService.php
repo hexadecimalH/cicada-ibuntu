@@ -10,6 +10,7 @@ namespace Ibuntu\Services;
 
 
 use Ibuntu\Libraries\ImageManipulationLibrary;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageStorageService
 {
@@ -28,7 +29,7 @@ class ImageStorageService
         $this->imageManipulationLibrary = $imageManipulationLibrary;
     }
 
-    public function storeImage($image, $folderName, $width, $height){
+    public function storeImage(UploadedFile $image, $folderName, $width, $height){
         // Compose image name
         // until I come up with algorithm that generates unique names
         $imageName = str_replace("_", " ", $image->getClientOriginalName());
@@ -49,8 +50,19 @@ class ImageStorageService
         return $path;
     }
 
-    public function moveAndRenameImage($folderName, $url, $id){
+    private function isAvatarPicture($url){
+
         if(strpos($url, 'avatar.png') !== false){
+            return false;
+        }else if( strpos($url, 'https') !== false){
+            return false;
+        }
+        return true;
+    }
+
+    public function moveAndRenameImage($folderName, $url, $id){
+
+        if($this->isAvatarPicture($url)){
             $digits = 5;
             $random = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
             $newUrl = "/uploads"."/".$folderName.'/'.$id."_".$random.".jpg";
@@ -60,4 +72,6 @@ class ImageStorageService
         return $url;
 
     }
+
+
 }

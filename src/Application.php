@@ -72,7 +72,7 @@ class Application extends \Cicada\Application
         };
 
         $this['registrationService'] = function () {
-            return new RegistrationService();
+            return new RegistrationService($this['imageStorageService']);
         };
 
         $this['dashboardService'] = function() {
@@ -124,6 +124,7 @@ class Application extends \Cicada\Application
                 return $route->getRealPath($params);
             };
             $twig->addFunction(new Twig_SimpleFunction('path', $pathFunction));
+
 
             return $twig;
         };

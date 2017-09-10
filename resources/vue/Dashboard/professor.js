@@ -4,6 +4,7 @@
 import axios from 'axios';
 import Vue from 'vue';
 import {checkbox, buttonGroup, alert} from 'vue-strap';
+import NewCourseComponent from './NewCourseComponent/new-course';
 import Datepicker from 'vuejs-datepicker';
 
 import moment from 'moment';
@@ -15,42 +16,22 @@ Vue.use(VeeValidate);
 var Dashboard = new Vue({
     el:'#wrapper',
     components:{
+        NewCourseComponent,
         buttonGroup,
         checkbox,
         alert
     },
     data:{
         days:[],
-        courseName:'',
-        semester:'Summer',
         courses:[],
-        monday:'',
-        tuesday:'',
-        wednesday:'',
-        thursday:'',
-        friday:'',
-        year:0,
-        years:[],
         showTop: false,
         errorMsg :"",
 
     },
     computed:{
+
     },
     methods:{
-        daysCheckbox(event){
-            $(event.target).toggleClass('active-button').blur();
-            var day = $(event.target).attr('data-info');
-            if(this.days.includes(day)){
-                let index = this.days.indexOf(day);
-                this.days.splice(index,1);
-            }
-            else{
-                this.days.push(day);
-            }
-            console.log(this.days);
-
-        },
         daysContains:function(day){
             let value;
             (this.days.includes(day)) ? value = true : value = false;
@@ -58,18 +39,6 @@ var Dashboard = new Vue({
         },
         capitalize:function(word){
             return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-        },
-        setSemester(event){
-            this.semester = $(event.target).attr('data-info');
-        },
-        setYear(event){
-            this.year = $(event.target).attr('data-info');
-        },
-        fillUpYearsContainer(){
-            this.year = moment().year();
-            this.years.push(this.year);
-            this.years.push(this.year + 1);
-            this.years.push(this.year + 2);
         },
         coursePath:function(id){
             return "/dashboard/course/"+id;
@@ -82,39 +51,6 @@ var Dashboard = new Vue({
                 return name;
 
             }
-        },
-        pileUserData(){
-            let data = new FormData();
-
-            data.append("course_name", this.courseName);
-            data.append("scheduled_days", this.days );
-            data.append("semester", this.semester);
-            data.append("year", this.year);
-            data.append("monday", this.monday);
-            data.append("tuesday", this.tuesday);
-            data.append("wednesday", this.wednesday);
-            data.append("thursday", this.thursday);
-            data.append("friday", this.friday);
-
-            axios.post('/dashboard/course/create',data, []).then(response => {
-                console.log(response.data);
-                this.courses.push(response.data);
-                $('#newCourse').modal('hide');
-                this.courseName = "";
-                this.days = [];
-                this.semester = '';
-                this.year = '';
-                this.monday = '';
-                this.tuesday = '';
-                this.wednesday = '';
-                this.thursday = '';
-                this.friday = '';
-            }).catch(error =>{
-                this.showTop = true;
-                this.setAlertToFalse();
-                this.errorMsg = error.message;
-                console.log(error);
-            });
         },
         getProfessorsCourses(){
             axios.get('/dashboard/course/professor').then(response => {
@@ -135,7 +71,6 @@ var Dashboard = new Vue({
         }
     },
     beforeMount(){
-        this.fillUpYearsContainer();
         this.getProfessorsCourses();
     },
     delimiters: ['${', '}']

@@ -2,17 +2,18 @@
 <html>
 <head>
     <title>Ibuntu | Signin </title>
+
     {% include 'parts/head.twig' %}
 </head>
 <body>
-<div id="root">
+<div id="root" v-cloak>
     <h2 class="header"><a href="index.html">Ibuntu</a></h2>
     <div class="login-bottom">
         <form action="/profile" method="post" id="logInForm">
             <h2 class="header">Login</h2>
             <div class="col-md-12">
                 <div class="login-mail">
-                    <input type="text" placeholder="Email" name="email">
+                    <input type="text" placeholder="Email" v-model="email" name="email">
                     <i class="fa fa-envelope"></i>
                 </div>
                 <div class="login-mail">

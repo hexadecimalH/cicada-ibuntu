@@ -247,25 +247,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <li><a href="blank.html" class=" hvr-bounce-to-right"><i class="fa fa-file-o nav_icon"></i>Blank</a></li>
                             </ul>
                         </li>
-                        {#<li>#}
-                            {#<a href="layout.html" class=" hvr-bounce-to-right"><i class="fa fa-th nav_icon"></i> <span class="nav-label">Grid Layouts</span> </a>#}
-                        {#</li>#}
-
-                        {#<li>#}
-                            {#<a href="#" class=" hvr-bounce-to-right"><i class="fa fa-list nav_icon"></i> <span class="nav-label">Forms</span><span class="fa arrow"></span></a>#}
-                            {#<ul class="nav nav-second-level">#}
-                                {#<li><a href="forms.html" class=" hvr-bounce-to-right"><i class="fa fa-align-left nav_icon"></i>Basic forms</a></li>#}
-                                {#<li><a href="validation.html" class=" hvr-bounce-to-right"><i class="fa fa-check-square-o nav_icon"></i>Validation</a></li>#}
-                            {#</ul>#}
-                        {#</li>#}
-
-                        {#<li>#}
-                            {#<a href="#" class=" hvr-bounce-to-right"><i class="fa fa-cog nav_icon"></i> <span class="nav-label">Settings</span><span class="fa arrow"></span></a>#}
-                            {#<ul class="nav nav-second-level">#}
-                                {#<li><a href="signin.html" class=" hvr-bounce-to-right"><i class="fa fa-sign-in nav_icon"></i>Signin</a></li>#}
-                                {#<li><a href="signup.html" class=" hvr-bounce-to-right"><i class="fa fa-sign-in nav_icon"></i>Singup</a></li>#}
-                            {#</ul>#}
-                        {#</li>#}
                     </ul>
                 </div>
             </div>
@@ -276,7 +257,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <strong>Heads up!</strong>
         <p>${ errorMsg }</p>
     </alert>
-    {% if page == "dashboard" %}
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="content-main">
 
@@ -338,38 +318,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                                         </td>
                                     </tr>
-                                    {#<tr class="table-row">#}
-                                        {#<td class="table-text">#}
-                                            {#<h6> Lorem ipsum</h6>#}
-                                            {#<p>Nullam quis risus eget urna mollis ornare vel eu leo</p>#}
-                                        {#</td>#}
-                                        {#<td>#}
-                                            {#<span class="mar">Market</span>#}
-                                        {#</td>#}
-                                        {#<td class="march">#}
-                                            {#in 5 days#}
-                                        {#</td>#}
-
-                                        {#<td>#}
-                                            {#<i class="fa fa-star-half-o icon-state-warning"></i>#}
-                                        {#</td>#}
-                                    {#</tr>#}
-                                    {#<tr class="table-row">#}
-                                        {#<td class="table-text">#}
-                                            {#<h6> Lorem ipsum</h6>#}
-                                            {#<p>Nullam quis risus eget urna mollis ornare vel eu leo</p>#}
-                                        {#</td>#}
-                                        {#<td>#}
-                                            {#<span class="work">work</span>#}
-                                        {#</td>#}
-                                        {#<td class="march">#}
-                                            {#in 5 days#}
-                                        {#</td>#}
-
-                                        {#<td>#}
-                                            {#<i class="fa fa-star-half-o icon-state-warning"></i>#}
-                                        {#</td>#}
-                                    {#</tr>#}
                                     <tr class="table-row">
                                         <td class="" colspan="4">
                                             <button class="btn btn-success btn-block" data-toggle="modal" data-target="#newCourse">Create New Course</button>
@@ -380,102 +328,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </div>
                         </div>
                     </div>
-                    <!-- New Course Modal Start -->
-                    <div class="modal fade" id="newCourse" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header" >
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h2 class="modal-title">Create Course</h2>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="" class="form-horizontal">
-                                        <div :class=" { 'form-group': true , 'form-group has-error' : errors.has('courseName')}">
-                                            <label for="focusedinput" class="col-sm-2 control-label">Name</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control1" id="focusedinput" v-model="courseName" data-vv-name="courseName" v-validate="'required|alpha_spaces'" placeholder="Course Name" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="" class="col-sm-2 control-label" >Working Days</label>
-                                            <div class="col-sm-8">
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-primary" data-info="monday" v-on:click="daysCheckbox">Monday</button>
-                                                    <button type="button" class="btn btn-primary" data-info="tuesday" v-on:click="daysCheckbox">Tuesday</button>
-                                                    <button type="button" class="btn btn-primary" data-info="wednesday" v-on:click="daysCheckbox">Wednesday</button>
-                                                    <button type="button" class="btn btn-primary" data-info="thursday" v-on:click="daysCheckbox">Thursday</button>
-                                                    <button type="button" class="btn btn-primary" data-info="friday" v-on:click="daysCheckbox">Friday</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" v-if="daysContains('monday')" >
-                                            <label for="" class="col-sm-2 control-label">Working Hours for Monday</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control1" id="focusedinput" v-model="monday"  placeholder="from 10:00 to 12:00, from 14:00 to 16:00" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group" v-if="daysContains('tuesday')" >
-                                            <label for="" class="col-sm-2 control-label">Working Hours for Tuesday</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control1" id="focusedinput" v-model="tuesday"  placeholder="from 10:00 to 12:00, from 14:00 to 16:00" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group" v-if="daysContains('wednesday')" >
-                                            <label for="" class="col-sm-2 control-label">Working Hours for Wednesday</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control1" id="focusedinput" v-model="wednesday"  placeholder="from 10:00 to 12:00, from 14:00 to 16:00" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group" v-if="daysContains('thursday')" >
-                                            <label for="" class="col-sm-2 control-label">Working Hours for Thursday</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control1" id="focusedinput" v-model="thursday"  placeholder="from 10:00 to 12:00, from 14:00 to 16:00" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group" v-if="daysContains('friday')" >
-                                            <label for="" class="col-sm-2 control-label">Working Hours for Friday</label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control1" id="focusedinput" v-model="friday"  placeholder="from 10:00 to 12:00, from 14:00 to 16:00" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="" class="col-sm-2 control-label">Smester</label>
-                                            <div class="col-sm-8">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" >
-                                                        ${semester} <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                                                        <li role="presentation">
-                                                            <a role="menuitem" tabindex="-1" href="#" v-on:click="setSemester" data-info="Summer">Summer</a>
-                                                        </li>
-                                                        <li role="presentation">
-                                                            <a role="menuitem" tabindex="-1" href="#" v-on:click="setSemester" data-info="Winter">Winter</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" >
-                                                        ${year} <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                                                        <li role="presentation" v-for="year in years">
-                                                            <a role="menuitem" tabindex="-1" href="#" v-on:click="setYear" :data-info="year">${year}</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Dismiss</button>
-                                    <button type="button" class="btn btn-primary" v-on:click="pileUserData">Create</button>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div>
-                    <!-- New Course Modal END -->
+
+                    {#New Course Modal Start#}
+                    <new-course></new-course>
+                    {#New Course Modal END#}
+
                     <div class="content-top-1">
                         <div class="col-md-6 top-content">
                             <h5>Tasks</h5>
@@ -546,22 +403,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                         </div>
                     </div>
-                    {#<!--//sreen-gallery-cursual---->#}
-                    {#<!-- requried-jsfiles-for owl -->#}
-                    {#<link href="/front-end/css/owl.carousel.css" rel="stylesheet">#}
-                    {#<script src="/front-end/js/assets/owl.carousel.js"></script>#}
-                    {#<script>#}
-                        {#$(document).ready(function() {#}
-                            {#$("#owl-demo").owlCarousel({#}
-                                {#items : 3,#}
-                                {#lazyLoad : true,#}
-                                {#autoPlay : true,#}
-                                {#pagination : true,#}
-                                {#nav:true,#}
-                            {#});#}
-                        {#});#}
-                    {#</script>#}
-                    {#<!-- //requried-jsfiles-for owl -->#}
                 </div>
                 <div class="clearfix"> </div>
             </div>
@@ -582,251 +423,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
         <div class="clearfix"> </div>
     </div>
-    {% else %}
-        <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="content-main">
-
-                <!--banner-->
-                <div class="banner">
-                    <h2>
-                        <a href="index.html">Home</a>
-                        <i class="fa fa-angle-right"></i>
-                        <span>Course</span>
-                        <i class="fa fa-angle-right"></i>
-                        {{ course.course_name }}
-                    </h2>
-                </div>
-                <!--//banner-->
-                <!--faq-->
-                <div class="blank">
-
-
-                    <div class="blank-page">
-                        <h1>{{ course.course_name }}</h1>
-                        <h3 class="sub-heading">{{ department.name }}</h3>
-                        <tabs v-model="activeTab" nav-style="tabs" justified>
-                            <tab header="Course Info">
-                                <div class="col-sm-12 content-block" id="content">
-
-                                </div>
-                                <div class="col-sm-12" v-bind:class="{ 'not-shown': !editMode }">
-                                    <textarea name="" id="tinymce" cols="30" rows="10"></textarea>
-                                </div>
-                                <div class="col-sm-12">
-                                    <p class="button-holder">
-                                        <button class="btn btn-default"  v-on:click="toggleEdit" v-if="!editMode">Edit</button>
-                                        <button class="btn btn-success"  v-on:click="sendCourseInfo" :data-id="courseId" v-if="editMode">Save Changes</button>
-                                        <button class="btn btn-primary"  v-on:click="getCourseData" v-if="editMode">Undo Changes</button>
-                                        <button class="btn btn-info"  v-on:click="toggleEdit" v-if="editMode">Cancel Edit</button>
-                                    </p>
-                                </div>
-                                <vue-event-calendar :events="demoEvents">
-                                    <template scope="props">
-                                        <div v-for="(event, index) in props.showEvents" class="event-item">
-
-                                            {{event.title}}
-                                        </div>
-                                    </template>
-                                </vue-event-calendar>
-
-                                <div class="clearfix"></div>
-
-                            </tab>
-                            <tab header="Requests">
-                                <table class="table">
-                                    <tbody>
-                                    <th>Picture</th>
-                                    <th>Student Info</th>
-                                    <th>Request Status</th>
-                                    <th>Action</th>
-                                    <tr class="table-row" v-for="request in requests">
-                                        <td class="table-img">
-                                            <img :src="request.users.picture" alt="" width="60px">
-                                        </td>
-                                        <td class="table-text">
-                                            <h6>${request.users.first_name} ${request.users.last_name}</h6>
-                                            <p>${request.users.email}</p>
-                                        </td>
-                                        <td class="table-text">
-                                            <span class="mar" v-if="request.status == 'pending'"> ${request.status}</span>
-                                            <span class="work" v-else-if="request.status =='approved'"> Approved </span>
-                                        </td>
-
-                                        <td>
-                                            <button class="btn btn-success" v-if="request.status == 'pending'" v-on:click="acceptStudentRequest" :data-id="request.id">Accept Request</button>
-                                            <button class="btn btn-danger" v-if="request.status == 'pending'" v-on:click="deleteStudentRequest" :data-id="request.id">Delete Request</button>
-                                            <button class="btn btn-danger" v-if="request.status == 'approved'" v-on:click="deleteStudentRequest" :data-id="request.id">Remove Student</button>
-
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-
-                            </tab>
-                            <tab header="Course Resources">
-                                <h2>Upload files for {{ course.course_name }}</h2>
-                                <h3 class="sub-heading">{{ department.name }}</h3>
-                                <div class="col-sm-12">
-                                    <div class="col-sm-3 back-file " v-for="file in courseFiles">
-                                        <div class="gallery-img">
-                                            <a href="#" class="b-link-stripe b-animate-go  swipebox"  title="Image Title" >
-                                                <img class="img-responsive download-img" src="/uploads/chunk/zip.svg" alt="" />
-                                                <span class="zoom-icon"> </span>
-                                            </a>
-                                            </a>
-                                        </div>
-                                        <div class="text-gallery gallery-file">
-                                            <p class="align">${file.file_name}</p>
-
-                                            <p class="align">
-                                                <form :action="file.url" method="get" style="display:inline">
-                                                    <button class="btn-primary btn download-btn" type="submit">Download Files</button>
-                                                </form>
-                                                <button class="btn-danger btn download-btn" v-on:click="deleteStoredFiles(file.id)">Delete Files</button>
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 content-block" id="files">
-                                    <h3 class="sub-heading">Upload new files for {{ course.course_name }}</h3>
-                                    <div class="col-sm-12 form-upload">
-                                        <form action="" class="form-horizontal">
-                                            <div :class=" {'form-group': true , 'form-group has-error' : errors.has('fileName')}">
-                                                <label for="focusedinput" class="col-sm-2 control-label">Files for </label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control1" id="focusedinput" v-model="fileName" data-vv-name="fileName" v-validate="'required|alpha_spaces'"  placeholder="Files Purpose" >
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="selector1" class="col-sm-2 control-label">Files</label>
-                                                <div class="col-sm-8">
-                                                    <button class="btn btn-primary"  v-on:click="openUpload" data-id="upload">Upload Files</button>
-                                                    <input type="file" name="files[]" class="hidden" id="upload" v-on:change="storeFilesInVar" accept="audio/*,video/*,image/*,media_type" multiple>
-                                                    <p >${uploadedFilesNames}</p>
-                                                </div>
-                                            </div>
-
-                                        </form>
-
-                                    </div>
-                                    <p class="storage-but">
-                                        <button v-on:click="storeFiles" class="btn btn-success" >Store Files</button>
-                                    </p>
-
-                                </div>
-
-
-                                <div class="clearfix"></div>
-
-                            </tab>
-                            <tab header="Course Assignments">
-                                <div class="content-box assignments" v-for="assignmet in assignments">
-                                    <div class="col-sm-12 assignments">
-                                        <div class="col-sm-10">
-                                            <h3>${assignmet.title}</h3>
-                                            <p>
-                                                ${assignment.description}
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <h6>Due date</h6>
-                                            <p>${assignemnt.due_date}</p>
-                                            <p>
-                                                <button class="btn-danger btn" :data-id="assignmet.id">Edit</button>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="content-box assignments">
-                                    <div class="col-sm-12 assignments">
-                                        <form action="" class="form-horizontal">
-                                            <div :class=" {'form-group': true , 'form-group has-error' : errors.has('assignemntTitle')}">
-                                                <label for="focusedinput" class="col-sm-2 control-label">Create Assignemnt</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control1" id="focusedinput" v-model="assignemntTitle" data-vv-name="assignemntTitle" v-validate="'required|alpha_spaces'"  placeholder="Files Purpose" >
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="selector1" class="col-sm-2 control-label">Set Due Data</label>
-                                                <div class="col-sm-8">
-                                                    <datepicker :value.sync="date"  :format="format" :clear-button="clear" placeholder="Please select date" class="form-control1">
-                                                    </datepicker>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="selector1" class="col-sm-2 control-label">Files</label>
-                                                <div class="col-sm-8">
-                                                    <button class="btn btn-primary"  v-on:click="openUpload" data-id="uploadAss" >Upload Files</button>
-                                                    <input type="file" name="files[]" class="hidden" id="uploadAss" v-on:change="storeFilesInVar" accept="audio/*,video/*,image/*,media_type" multiple>
-                                                    <p >${uploadedFilesAssignment}</p>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="selector1" class="col-sm-2 control-label">Description</label>
-                                                <div class="col-sm-8">
-                                                    <textarea placeholder="Your Comment..." required="" style="width:100%;" rows="10" v-model="assignemntDescription"></textarea>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="selector1" class="col-sm-2 control-label"></label>
-                                                <div class="col-sm-8">
-                                                    <p style="text-align: right;">
-                                                        <button class="btn-success btn" v-on:click="createAssignemt">Add Assignment</button>
-                                                    </p>
-                                                </div>
-                                            </div>
-
-
-                                        </form>
-
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                {#<table class="table">#}
-                                    {#<tbody>#}
-                                    {#<th>Picture</th>#}
-                                    {#<th>Student Info</th>#}
-                                    {#<th>Request Status</th>#}
-                                    {#<th>Action</th>#}
-                                    {#<tr class="table-row" v-for="request in requests">#}
-                                        {#<td class="table-img">#}
-                                            {#<img :src="request.users.picture" alt="" width="60px">#}
-                                        {#</td>#}
-                                        {#<td class="table-text">#}
-                                            {#<h6>${request.users.first_name} ${request.users.last_name}</h6>#}
-                                            {#<p>${request.users.email}</p>#}
-                                        {#</td>#}
-                                        {#<td class="table-text">#}
-                                            {#<span class="mar" v-if="request.status == 'pending'"> ${request.status}</span>#}
-                                            {#<span class="work" v-else-if="request.status =='approved'"> Approved </span>#}
-                                        {#</td>#}
-
-                                        {#<td>#}
-                                            {#<button class="btn btn-success" v-if="request.status == 'pending'" v-on:click="acceptStudentRequest" :data-id="request.id">Accept Request</button>#}
-                                            {#<button class="btn btn-danger" v-if="request.status == 'pending'" v-on:click="deleteStudentRequest" :data-id="request.id">Delete Request</button>#}
-                                            {#<button class="btn btn-danger" v-if="request.status == 'approved'" v-on:click="deleteStudentRequest" :data-id="request.id">Remove Student</button>#}
-
-                                        {#</td>#}
-                                    {#</tr>#}
-                                    {#</tbody>#}
-                                {#</table>#}
-
-                            </tab>
-                        </tabs>
-                    </div>
-
-                </div>
-
-                <!--//faq-->
-                <!---->
-                <div class="copy">
-                    <p> &copy; 2016 Minimal. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>	    </div>
-            </div>
-        </div>
-    {% endif %}
 </div>
 </div>
 <!----Calender -------->
@@ -838,12 +434,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!----End Calender -------->
 <!---->
 <script src="/front-end/js/vue-components/commons.chunk.js"></script>
-{% if page == "dashboard" %}
-<script src="/front-end/js/vue-components/dashboard.chunk.js"></script>
-{% else %}
-
-    <script src="/front-end/js/vue-components/course.chunk.js"></script>
-{% endif %}
+<script src="/front-end/js/vue-components/professor-dashboard.chunk.js"></script>
 <!--scrolling js-->
 <script src="/front-end/js/assets/jquery.nicescroll.js"></script>
 <script src="/front-end/js/assets/scripts.js"></script>

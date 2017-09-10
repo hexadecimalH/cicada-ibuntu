@@ -26,24 +26,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="/front-end/css/custom.css" rel="stylesheet">
     <script src="/front-end/js/assets/custom.js"></script>
     <script src="/front-end/js/assets/screenfull.js"></script>
-    <script>
-        $(function () {
-            $('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
-
-            if (!screenfull.enabled) {
-                return false;
-            }
-
-
-
-            $('#toggle').click(function () {
-                screenfull.toggle($('#container')[0]);
-            });
-
-
-
-        });
-    </script>
 
     <!----->
 
@@ -239,7 +221,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <strong>Heads up!</strong>
         <p>This alert needs your attention.</p>
     </alert>
-    {% if page == "dashboard" %}
         <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="content-main">
 
@@ -255,7 +236,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <!--//banner-->
                 <!--content-->
                 <div class="content-top">
-
+                    <div class="col-md-12">
+                        <div class="post">
+                            <form class="text-area">
+                                <textarea required="" > What are you doing...</textarea>
+                            </form>
+                            <div class="post-at">
+                                <ul class="icon">
+                                </ul>
+                                <form class="text-sub">
+                                    <input type="submit" value="post">
+                                </form>
+                                <div class="clearfix"> </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-md-12 ">
                         <div class="tab-pane active text-style" id="tab1">
@@ -284,7 +279,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                 <p>${course.semester} - ${ course.year} </p>
                                             </td>
                                             <td class="table-text">
-                                                <p>${ course.professor.user.first_name} ${ course.professor.user.last_name} </p>
+                                                <p>${ course.users.first_name} ${ course.users.last_name} </p>
                                             </td>
 
                                             <td>
@@ -299,38 +294,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                                             </td>
                                         </tr>
-                                        {#<tr class="table-row">#}
-                                            {#<td class="table-text">#}
-                                                {#<h6> Lorem ipsum</h6>#}
-                                                {#<p>Nullam quis risus eget urna mollis ornare vel eu leo</p>#}
-                                            {#</td>#}
-                                            {#<td>#}
-                                                {#<span class="mar">Market</span>#}
-                                            {#</td>#}
-                                            {#<td class="march">#}
-                                                {#in 5 days#}
-                                            {#</td>#}
-
-                                            {#<td>#}
-                                                {#<button class="btn btn-success">Send Request</button>#}
-                                            {#</td>#}
-                                        {#</tr>#}
-                                        {#<tr class="table-row">#}
-                                            {#<td class="table-text">#}
-                                                {#<h6> Lorem ipsum</h6>#}
-                                                {#<p>Nullam quis risus eget urna mollis ornare vel eu leo</p>#}
-                                            {#</td>#}
-                                            {#<td>#}
-                                                {#<span class="work">work</span>#}
-                                            {#</td>#}
-                                            {#<td class="march">#}
-                                                {#in 5 days#}
-                                            {#</td>#}
-
-                                            {#<td>#}
-                                                {#<button class="btn btn-success">Send Request</button>#}
-                                            {#</td>#}
-                                        {#</tr>#}
                                         </tbody>
                                     </table>
                                 </div>
@@ -402,80 +365,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                                 </div>
                             </div>
-                            {#<!--//sreen-gallery-cursual---->#}
-                            {#<!-- requried-jsfiles-for owl -->#}
-                            {#<link href="/front-end/css/owl.carousel.css" rel="stylesheet">#}
-                            {#<script src="/front-end/js/assets/owl.carousel.js"></script>#}
-                            {#<script>#}
-                            {#$(document).ready(function() {#}
-                            {#$("#owl-demo").owlCarousel({#}
-                            {#items : 3,#}
-                            {#lazyLoad : true,#}
-                            {#autoPlay : true,#}
-                            {#pagination : true,#}
-                            {#nav:true,#}
-                            {#});#}
-                            {#});#}
-                            {#</script>#}
-                            {#<!-- //requried-jsfiles-for owl -->#}
                         </div>
                         <div class="clearfix"> </div>
                     </div>
                     <!----->
                     <div class="content-bottom">
                         <div class="col-md-6 post-top">
-                            <div class="post">
-                                <form class="text-area">
-                                    <textarea   required="" > What are you doing...</textarea>
-                                </form>
-                                <div class="post-at">
-                                    <ul class="icon">
-
-
-                                        {#<div  class="post-file">#}
-                                        {#<i class="fa fa-location-arrow"></i>#}
-                                        {#<input id="input-1" name="input1[]" type="file" multiple="" class="">#}
-                                        {#</div>#}
-                                        {#<div  class="post-file">#}
-                                        {#<i class="fa fa-camera"></i>#}
-                                        {#<input id="input-2" name="input2[]" type="file" multiple="" class="">#}
-                                        {#</div>#}
-                                        {#<div  class="post-file">#}
-                                        {#<i class="fa fa-video-camera"></i>#}
-                                        {#<input id="input-3" name="input3[]" type="file" multiple="" class="">#}
-                                        {#</div>#}
-                                        {#<div  class="post-file">#}
-                                        {#<i class="fa fa-microphone"></i>#}
-                                        {#<input id="input-4" name="input4[]" type="file" multiple="" class="">#}
-                                        {#</div>#}
-
-                                        {#<script>#}
-                                        {#$(document).on('ready', function() {#}
-                                        {#$("#input-1").fileinput({showCaption: false});#}
-                                        {#});#}
-                                        {#</script>#}
-                                        {#<script>#}
-                                        {#$(document).on('ready', function() {#}
-                                        {#$("#input-2").fileinput({showCaption: false});#}
-                                        {#});#}
-                                        {#</script>#}
-                                        {#<script>#}
-                                        {#$(document).on('ready', function() {#}
-                                        {#$("#input-3").fileinput({showCaption: false});#}
-                                        {#});#}
-                                        {#</script>#}
-                                        {#<script>#}
-                                        {#$(document).on('ready', function() {#}
-                                        {#$("#input-4").fileinput({showCaption: false});#}
-                                        {#});#}
-                                        {#</script>#}
-                                    </ul>
-                                    <form class="text-sub">
-                                        <input type="submit" value="post">
-                                    </form>
-                                    <div class="clearfix"> </div>
-                                </div>
-                            </div>
                             <div class="post-bottom">
                                 <div class="post-bottom-1">
                                     <a href="#"><i class="fa fa-facebook"></i></a>
@@ -497,25 +392,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </div>
                     </div>
                     <div class="clearfix"> </div>
-                    <!-- Error Modal Start -->
-                    <div class="modal fade" id="failModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header" style="background: red;">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h2 class="modal-title">Error</h2>
-                                </div>
-                                <div class="modal-body">
-                                    <p >Sorry the picture hasn't been uploaded succesfully please try again or contact support</p>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div>
-                    <!-- Error Modal End -->
                 </div>
                 <!--//content-->
 
@@ -528,80 +404,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="clearfix"> </div>
         </div>
-    {% else %}
-        <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="content-main">
 
-                <!--banner-->
-                <div class="banner">
-                    <h2>
-                        <a href="index.html">Home</a>
-                        <i class="fa fa-angle-right"></i>
-                        <span>Course</span>
-                        <i class="fa fa-angle-right"></i>
-                        {{ course.course_name }}
-                    </h2>
-                </div>
-                <!--//banner-->
-                <!--faq-->
-                <div class="blank">
-
-
-                    <div class="blank-page">
-                        <h1>{{ course.course_name }}</h1>
-                        <h3 class="sub-heading">{{ department.name }}</h3>
-                        <tabs v-model="activeTab" nav-style="tabs" justified>
-                            <tab header="Course Info">
-
-                                <div class="col-sm-12  content-block" v-html="content">
-
-                                </div>
-
-                                <div class="clearfix"></div>
-
-                            </tab>
-                            <tab header="Course Resources">
-                                <h2>Upload files for {{ course.course_name }}</h2>
-                                <h3 class="sub-heading">{{ department.name }}</h3>
-                                <div class="col-sm-12">
-                                    <div class="col-sm-3 back-file " v-for="file in courseFiles">
-                                        <div class="gallery-img">
-                                            <a href="#" class="b-link-stripe b-animate-go  swipebox"  title="Image Title" >
-                                                <img class="img-responsive download-img" src="/uploads/chunk/zip.svg" alt="" />
-                                                <span class="zoom-icon"> </span>
-                                            </a>
-                                            </a>
-                                        </div>
-                                        <div class="text-gallery gallery-file">
-                                            <p class="align">${file.file_name}</p>
-
-                                            <p class="align">
-                                                <form :action="file.url" method="get" style="display:inline">
-                                                    <button class="btn-primary btn download-btn" type="submit">Download Files</button>
-                                                </form>
-                                            </p>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="clearfix"></div>
-
-                            </tab>
-                        </tabs>
-                        <div class="clearfix"></div>
-                    </div>
-
-                </div>
-
-                <!--//faq-->
-                <!---->
-                <div class="copy">
-                    <p> &copy; 2016 Minimal. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>	    </div>
-            </div>
-        </div>
-    {% endif %}
 </div>
 </div>
 <!----Calender -------->
@@ -613,11 +416,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!----End Calender -------->
 <!---->
 <script src="/front-end/js/vue-components/commons.chunk.js"></script>
-{% if page == "dashboard" %}
-    <script src="/front-end/js/vue-components/student-dashboard.chunk.js"></script>
-{% else %}
-    <script src="/front-end/js/vue-components/student-course.chunk.js"></script>
-{% endif %}
+<script src="/front-end/js/vue-components/student-dashboard.chunk.js"></script>
 <!--scrolling js-->
 <script src="/front-end/js/assets/jquery.nicescroll.js"></script>
 <script src="/front-end/js/assets/scripts.js"></script>

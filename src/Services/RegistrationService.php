@@ -8,7 +8,6 @@
 
 namespace Ibuntu\Services;
 
-
 use Ibuntu\Models\Department;
 use Ibuntu\Models\Faculty;
 use Ibuntu\Models\Professor;
@@ -18,8 +17,12 @@ use Ibuntu\Models\User;
 
 class RegistrationService
 {
-    function __construct()
+    /** @var  ImageStorageService $imageStorageService */
+    public $imageStorageService;
+
+    public function __construct($imageStorageService)
     {
+        $this->imageStorageService = $imageStorageService;
     }
 
     public function getUniversities(){
@@ -100,4 +103,48 @@ class RegistrationService
         ]);
         //implent response
     }
+
+    public function customRegisterUser($name, $surname, $email, $password,
+                                       $imageUrl, $type, $universityId, $facultyId, $departmentId){
+        // storing user values in DB
+        /** @var User $user */
+        $user = $this->createUser($name, $surname, $email, $password,$imageUrl, $type, $universityId, $facultyId, $departmentId);
+
+        $url = $this->imageStorageService->moveAndRenameImage($type, $imageUrl, $user->id);
+
+        $user->picture = $url;
+        $user->save();
+
+        return $user->serialize();
+    }
+
+    public function findUser($email){
+        /** @var User $user */
+        $user = User::first(['conditions' => ['email LIKE ?', $email]]);
+
+        return $user;
+    }
+
+    private function createUser($name, $surname, $email, $password,
+                                $imageUrl, $type, $universityId, $facultyId, $departmentId){
+        // hashing the password
+        $password = password_hash($password, PASSWORD_DEFAULT);
+
+        /** @var User $user */
+        $user = User::create([
+            "first_name" => $name,
+            "last_name" => $surname,
+            "email" => $email,
+            "password" => $password,
+            "type" => $type,
+            "picture" => $imageUrl,
+            "university_id" => (int) $universityId,
+            "faculty_id" => (int) $facultyId,
+            "department_id" => (int) $departmentId,
+        ]);
+
+        return $user;
+    }
+
+
 }

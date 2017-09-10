@@ -6,7 +6,7 @@
  */
 import axios from 'axios';
 import Vue from 'vue';
-import {tabset,tabs, tab} from 'vue-strap';
+import {tabset,tabs, tab, alert} from 'vue-strap';
 import moment from 'moment';
 
 import VeeValidate from 'vee-validate';
@@ -18,13 +18,15 @@ var CourseStudent = new Vue({
     components:{
         tabset,
         tabs,
-        tab
+        tab,
+        alert
     },
     data:{
         courses:[],
         content:'',
         activeTab:0,
         courseFiles:[],
+        assignments:[],
         showTop:false,
         errorMsg:""
     },
@@ -73,6 +75,7 @@ var CourseStudent = new Vue({
                 this.courses.forEach(course => {
                     if(course.id == courseId){
                         this.courseFiles = course.course_files;
+                        this.assignments = course.assignments;
                     }
                 });
                 this.departmentName = response.data[0].department.name;
@@ -87,6 +90,9 @@ var CourseStudent = new Vue({
             var array = url.split('/');
             var id = array[array.length - 1 ]
             return id.replace(/\D/g,'');
+        },
+        beautifyDate(date){
+            return moment(date).format('LLLL');
         },
         setAlertToFalse(){
             var self = this;

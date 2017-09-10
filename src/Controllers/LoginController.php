@@ -44,6 +44,9 @@ class LoginController
     }
 
     public function index(Application $app, Request $request){
+        session_unset();
+        session_destroy();
+        $_SESSION = array();
         $urls = $this->getClientUrl();
         $message = $request->query->get('message');
         return $this->twig->render("index.twig", ['google' => $urls['gp'], 'fb' => $urls['fb'], 'professor' => false, 'message'=> $message]);
@@ -60,75 +63,46 @@ class LoginController
     }
 
     public function profile(Application $app, Request $request){
-        $user = $request->request->get('user');
 
-        if($user['type'] == 'student'){
-            $academic = $this->loginService->findStudentByUserId($user['id']);
+        $userExists = $request->request->get('user_exists');
+        if($userExists) {
+            $user = $request->request->get('user');
+            return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, "page" => 'dashboard']);
         }
-        else{
-            $academic = $this->loginService->findProfessorByUserId($user['id']);
-        }
-        if(empty($academic)){
-            return $this->twig->render( $user['type'].'/signup.twig', ['customSignup' => "non-custom", "user" => $user]);
-        }
-        if(gettype($user) == "string" ){
-            return new RedirectResponse('/?message='.$user.'');
-        }
-        return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, "page" => 'dashboard']);
+
+        return new RedirectResponse('/');
     }
 
     public function login(Application $app, Request $request){
+        $userExists = $request->request->get('user_exists');
         $user = $request->request->get('user');
-        if(empty($user)){
-            $urls = $this->getClientUrl();
-            return $this->twig->render('index.twig', ['google' => $urls['gp'], 'fb' => $urls['fb'],'message' => "Wrong Credentials"]);
+        if($userExists){
+
+            return new RedirectResponse("/profile");
+
         }
 
-        if($user['type'] == 'student'){
-            $academic = $this->loginService->findStudentByUserId($user['id']);
-        }
-        else{
-            $academic = $this->loginService->findProfessorByUserId($user['id']);
-        }
+        return new RedirectResponse('/'.$user['type'].'/signup?email='.$user['email'] );
 
-        if(empty($academic)){
-            return $this->twig->render($user['type'].'/signup.twig', ['customSignup' => "non-custom", "user" => $user]);
-        }
-
-        return $this->twig->render($user['type'].'/landing.twig', ['user' => $user, "page" => 'dashboard']);
     }
 
     public function logOut(Application $app, Request $request){
         session_unset();
-        return new RedirectResponse("/");
+        session_destroy();
+        $_SESSION = array();
+        $response = new RedirectResponse("/");
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('max-age', 0);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+
+        return $response;
     }
 
     protected function getClientUrl(){
         $gpUrl = $this->googleClient->createAuthUrl();
         $fbUrl = $this->facebookClient->fbHelper->getLoginUrl($this->facebookClient->getRedirectUrl(), $this->facebookClient->getPermissions());
         return ['gp' => $gpUrl, 'fb' => $fbUrl];
-    }
-
-    public function studentCustomSignup(Application $app, Request $request){
-        return $this->twig->render('student/signup.twig', ['customSignup' => "custom"]);
-    }
-
-    public function professorCustomSignup(Application $app, Request $request){
-        return $this->twig->render('professor/signup.twig', ['customSignup' => "custom"]);
-    }
-
-    public function createCustomUser(Application $app, Request $request){
-        $name = $request->request->get('user_name');
-        $surname = $request->request->get('user_surname');
-        $email = $request->request->get('user_email');
-        $imageUrl = $request->request->get('image_url');
-        $type = $request->request->get('type');
-
-        $responseData = $this->loginService->customRegisterUser($name,$surname,$email, $imageUrl, $type);
-        if(gettype($responseData) == "string"){
-            return new Response($responseData, Response::HTTP_CONFLICT);
-        }
-        return new JsonResponse($responseData);
     }
 
 }

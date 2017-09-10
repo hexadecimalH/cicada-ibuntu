@@ -43,64 +43,85 @@ class Authentication
     }
     public function authorizeUser(Application $app, Request $request, $type){
         // get user information from Third party
-        $user = !empty($request->get('state')) ? $this->getFacebookUser($request->get('state')) : $this->getGoogleUser($request->get('code'));
-        if($this->userExists($user['email'])){
-            /** @var User $user */
-            $user = $this->loginService->createUser($user, $type);
+        $user = $this->getUserData($request, $type);
+        $userFromDb = $this->loginService->getUserAsArray($user['email']);
+        $this->session->set('userVendor', $user);
+        $request->request->set('user', $user);
+        $request->request->set('user_exists', !empty($userFromDb));
+        if(!empty($userFromDb)){
+            $this->loginService->getUserAsArray($user['email']);
+            $request->request->set('user', $userFromDb);
+            $this->session->set("user", $userFromDb);
         }
-        else{
-            $user = $this->loginService->getUserAsArray($user['email']);
+    }
+
+    public function getUserData(Request $request, $type){
+        if(empty($request->get('state'))){
+
+            $code = $request->get('code');
+            return $this->googleClient->getUserData($code, $type);
         }
 
-        $this->session->set("user", $user);
-        $request->request->set('user', $user);
+        $state = $request->get('state');
+        return $this->facebookClient->getUserData($state, $type);
+
     }
 
     public function checkCredentials(Application $app, Request $request)
     {
-        $email = $request->get('email');
-        $user = $this->loginService->getUserAsArray($email);
-        if(gettype($user) == "array"){
-            $this->session->set("user", $user);
+        if(!isset($_SESSION['_sf2_attributes']['user'])){
+            $email = $request->get('email');
+            $user = $this->loginService->getUserAsArray($email);
+            if(gettype($user) == "array"){
+                $this->session->set("user", $user);
+            }
+            $request->request->set('user', $user);
         }
+        else{
+            $user = $_SESSION['_sf2_attributes']['user'];
+            $request->request->set('user', $user);
+        }
+    }
+
+    public function isLoggedIn(Application $app, Request $request){
+        $request->request->set('user_exists', true);
+        if (!isset($_SESSION['_sf2_attributes']['user'])) {
+
+            $this->checkUserInformation($app, $request);
+
+        } else {
+            $user = $_SESSION['_sf2_attributes']['user'];
+            $request->request->set('user', $user);
+        }
+
+    }
+
+    public function check(){
+
+        return isset($_SESSION['user']);
+    }
+
+    public function checkUserInformation(Application $app, Request $request){
+        $isValid = false;
+        $email = $request->get('email');
+
+        $user = $this->loginService->getUserAsArray($email);
+        $_SESSION['_sf2_attributes']['user'] = $user;
+        if(!empty($user)){
+
+            $postPassword = $request->get('password');
+            $isValid = password_verify($postPassword, $user['password']);
+
+        }
+
+        $request->request->set('user_exists', $isValid);
         $request->request->set('user', $user);
 
     }
-    public function isLoggedIn(Application $app, Request $request){
-        if(!isset($_SESSION['_sf2_attributes']['user'])){
 
-            $this->checkCredentials($app,$request);
-        }
-        else{
-            $user = $_SESSION['_sf2_attributes']['user'];
-            $request->request->set('user', $user);
-        }
-    }
-
-    public function validateUser(Application $app, Request $request){
-        if(!isset($_SESSION['_sf2_attributes']['user'])){
-            $request->request->set('user',"User not Authorised to make changes please login as a Professor");
-        }
-        else{
-            $user = $_SESSION['_sf2_attributes']['user'];
-            $user = $this->loginService->getUserWithDepartment($user);
-            $request->request->set('user', $user);
-        }
-    }
-
-    public function getFacebookUser($state){
-        $user = $this->facebookClient->getUserData($state);
-
-        return $user;
-    }
-
-    public function getGoogleUser($code){
-        $user = $this->googleClient->getUserData($code);
-
-        return $user;
-    }
 
     public function userExists($email){
+
          $user = $this->loginService->findUser($email);
 
          return empty($user);

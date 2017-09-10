@@ -48,7 +48,7 @@ class FacebookClient extends Facebook
         $this->redirectUrl = $this->professorRedirect;
     }
 
-    public function getUserData($state){
+    public function getUserData($state, $type){
         try {
             $this->fbHelper->getPersistentDataHandler()->set('state', $state);
             $accessToken = $this->fbHelper->getAccessToken();
@@ -58,17 +58,17 @@ class FacebookClient extends Facebook
             // When Graph returns an error
             var_dump($this->fbHelper->getError());
             echo 'Graph returned an error: ' . $e->getMessage();
-            exit;die();
+            exit;
         } catch(FacebookSDKException $e) {
             // There was an error communicating with Graph
             echo $e->getMessage();
             exit;
         }
 
-        return $this->createUserObject($me);
+        return $this->createUserObject($me, $type);
     }
 
-    public function createUserObject($data){
+    public function createUserObject($data, $type){
         $data = json_decode($data->getBody());
         $userData = [
             "first_name" => $data->first_name,
@@ -77,7 +77,8 @@ class FacebookClient extends Facebook
             "link" => $data->link,
             "picture" => $data->picture->data->url,
             "oauth_provider" => "Facebook",
-            "oauth_uid" => $data->id
+            "oauth_uid" => $data->id,
+            "type" => $type
         ];
         return $userData;
     }

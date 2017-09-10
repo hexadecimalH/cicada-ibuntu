@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class StudentAssignedForAssignemt extends AbstractMigration
+class CourseFiles extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,24 +27,13 @@ class StudentAssignedForAssignemt extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('student_assigned');
-        $table->addColumn('status', 'text')
-            ->addColumn('user_id', 'integer')
-            ->addForeignKey('user_id', 'users', 'id', [
-                'delete'=> 'CASCADE',
-                'update'=> 'CASCADE'
-            ])
-            ->addColumn('assignments_id', 'integer')
-            ->addForeignKey('assignments_id', 'assignments', 'id', [
-                'delete'=> 'CASCADE',
-                'update'=> 'CASCADE'
-            ])
-            ->addColumn('course_id', 'integer')
+        $table = $this->table('course_files');
+        $table->addColumn('course_id', 'integer')
             ->addForeignKey('course_id', 'course', 'id', [
                 'delete'=> 'CASCADE',
                 'update'=> 'CASCADE'
             ])
-            ->addColumn('due_date', 'datetime')
+            ->addColumn('file_name', 'text')
             ->addColumn('url', 'text')
             ->addColumn('created', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
             ->create();

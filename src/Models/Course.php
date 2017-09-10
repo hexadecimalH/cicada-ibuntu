@@ -38,7 +38,11 @@ class Course extends Model
     ];
     static $belongs_to = [
         ['department'],
-        ['professor']
+        [
+            "users",
+            "class_name" => "User",
+            'foreign_key' => 'professor_id'
+        ],
     ];
 
     public function serialize(){
@@ -47,7 +51,14 @@ class Course extends Model
 
     public function serializeWithScheduleAndDepartment(){
         return $this->to_array([
-            'include'=> ['course_schedule', 'department','course_requests', 'course_files', 'assignments', 'professor' => ['include' => 'user']]
+            'include'=> ['course_schedule', 'department']
         ]);
     }
+
+    public function serializeWithScheduleDepartmentAndUser(){
+        return $this->to_array([
+            'include'=> ['course_schedule', 'department', 'course_requests', 'course_files', 'users', 'assignments' ]
+        ]);
+    }
+
 }

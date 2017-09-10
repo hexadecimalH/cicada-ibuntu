@@ -11,6 +11,7 @@ var Login = new Vue({
         input: '# hello',
         name: 'haris',
         showTop: false,
+        email:'',
         errorMsg :""
     },
     computed: {
@@ -22,11 +23,17 @@ var Login = new Vue({
         submitFormEmail:function(event){
             event.preventDefault();
             $('#loadingModal').modal('show');
-            $("#logInForm").submit();
+            axios.post('/session/'+this.email, {}, []).then( response =>{
+                $("#logInForm").submit();
+            }).catch( error => {
+                console.log(error);
+                $('#loadingModal').modal('hide');
+                this.showAlertWithCustomMessage("Not valid user");
+            });
+
         },
         openLoadingModal: function(event){
             event.preventDefault();
-            console.log(event);
             $('#loadingModal').modal('show');
         },
         toCustomSignUp:function(event){
@@ -37,6 +44,11 @@ var Login = new Vue({
             else{
                 window.location.href = '/student/signup'
             }
+        },
+        showAlertWithCustomMessage(message){
+            this.showTop = true;
+            this.setAlertToFalse();
+            this.errorMsg = message;
         },
         setAlertToFalse(){
             var self = this;

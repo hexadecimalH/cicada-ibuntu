@@ -1,12 +1,20 @@
 import axios from 'axios';
 import Vue from 'vue';
-import {tabset,tabs, tab, radio,alert} from 'vue-strap';
+import { tabset,tabs, tab, radio,alert} from 'vue-strap';
 
+import UniversityComponent from './InstitutionComponents/university';
+import FacultyComponent from './InstitutionComponents/faculty';
+import DepartmentComponent from './InstitutionComponents/department';
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
+
+
 var Registartion = new Vue({
     el: '#root',
     components: {
+        UniversityComponent,
+        FacultyComponent,
+        DepartmentComponent,
         tabset,
         tabs,
         tab,
@@ -25,37 +33,17 @@ var Registartion = new Vue({
         department:'',
         faculty:'',
         errorMsg:'Sorry the picture has NOT been uploaded succesfully please try again or contact support',
-        university_name:'',
-        university_email:'',
-        university_number:'',
-        university_city:'',
-        university_address:'',
-        university_country:'',
-        university_mail:'',
-        university_site:'',
-        universities:[],
         rePassword:'',
         buttonHref:'#profile',
         input: '#hello',
         labelClass: "form-group",
         image:'/uploads/chunk/avatar.png',
         imageUrl:'/uploads/chunk/avatar.png',
-        facultyBelongsToUniversity:'',
-        facultyName:'',
-        facultyBranch:'',
-        facultyInfo:'',
         faculties:[],
-        departmentBelongsToUniversity:'',
-        departmentBelongsToFaculty:'',
-        departmentName:'',
-        departmentInfo:'',
         departments:[],
-        userId:'',
+        universities:[],
         userEmail:'',
         showTop:false,
-    },
-    computed: {
-
     },
     methods: {
         checkEquality(pass, val){
@@ -84,113 +72,6 @@ var Registartion = new Vue({
         toFirstTab(event){
             event.preventDefault();
             this.activeTab = 0;
-        },
-        registerUniversity(){
-            this.$validator.validateAll({
-                university_name:this.university_name,
-                university_address:this.university_address,
-                university_city:this.university_city,
-                university_country:this.university_country,
-                university_email:this.university_email,
-                university_site:this.university_site
-            }).then( response => {
-                console.log('valid');
-                this.sendUniversityData();
-            }).catch(error => {
-                this.showTop = true;
-                this.setAlertToFalse();
-            });
-        },
-        registerFaculty(){
-            this.$validator.validateAll({
-                facultyBelongsToUniversity:this.facultyBelongsToUniversity,
-                facultyName:this.facultyName,
-            }).then( response => {
-                console.log('valid');
-                this.sendFacultyData();
-            }).catch(error => {
-                this.showTop = true;
-                this.setAlertToFalse();
-            });
-        },
-        registerDepartment(){
-            this.$validator.validateAll({
-                departmentBelongsToFaculty:this.departmentBelongsToFaculty,
-                departmentBelongsToUniversity:this.departmentBelongsToUniversity,
-                departmentName:this.departmentName
-            }).then( response => {
-                console.log('valid');
-                this.sendDepartmentData();
-            }).catch(error => {
-                this.showTop = true;
-                this.setAlertToFalse();
-            });
-        },
-        sendFacultyData(){
-            let data = new FormData();
-            data.append('university_id',this.facultyBelongsToUniversity);
-            data.append('faculty_name',this.facultyName);
-            data.append('faculty_branch',this.facultyBranch);
-            data.append('faculty_info',this.facultyInfo);
-
-            axios.post('/professor/faculty', data, []).then( response =>{
-                this.faculties.push(response.data);
-                this.facultyBelongsToUniversity = "";
-                this.facultyName = "";
-                this.facultyBranch = "";
-                this.facultyInfo = "";
-                $('#facultyModal').modal('hide');
-            }).catch( error => {
-                this.showTop = true;
-                this.setAlertToFalse();
-            });
-        },
-        sendDepartmentData(){
-            let data = new FormData();
-
-            data.append('department_name', this.departmentName);
-            data.append('university_id', this.departmentBelongsToUniversity);
-            data.append('faculty_id', this.departmentBelongsToFaculty);
-            data.append('department_info', this.departmentInfo);
-
-            axios.post('/professor/department', data, []).then( response => {
-                this.departments.push(response.data);
-                $('#departmentModal').modal('hide');
-                this.departmentName = "";
-                this.departmentBelongsToUniversity = "";
-                this.departmentBelongsToFaculty = "";
-                this.departmentInfo = "";
-
-            }).catch( error => {
-                this.showTop = true;
-                this.setAlertToFalse();
-            });
-        },
-        sendUniversityData(){
-            let data = new FormData();
-            data.append('university_name',this.university_name);
-            data.append('university_address',this.university_address);
-            data.append('university_country',this.university_country);
-            data.append('university_city',this.university_city);
-            data.append('university_site',this.university_site);
-            data.append('university_email',this.university_email);
-
-            axios.post('/professor/university',data, []).then(response => {
-                console.log(response.data);
-                this.universities.push(response.data);
-                this.university_name = "";
-                this.university_address = "";
-                this.university_country = "";
-                this.university_city = "";
-                this.university_site = "";
-                this.university_email = "";
-
-                $("#universityModal").modal('hide');
-            }).catch( error => {
-                // implment Error message showing
-                this.showTop = true;
-                this.setAlertToFalse();
-            })
         },
         getUniversities(){
             axios.get('/professor/university/all').then(response => {
@@ -235,8 +116,8 @@ var Registartion = new Vue({
                 password:this.password
             }).then( response =>{
                 this.activeTab = 1;
-
-                this.storeUserInformation();
+                let mail = this.email;
+                this.emailExists(mail);
                 return false;
             }).catch(error => {
                 console.log(error);
@@ -247,6 +128,21 @@ var Registartion = new Vue({
                 return false;
             });
             return false;
+        },
+        emailExists(email){
+            let data = new FormData();
+            data.append('email', email);
+            axios.post('/user/email', data, [])
+                .then( response => {
+
+                })
+                .catch( error => {
+                    this.activeTab = 0;
+                    this.showTop = true;
+                    this.setAlertToFalse();
+                    this.errorMsg = " User with e-mail " + email + " allready exists"
+                });
+
         },
         submitData(event){
             event.preventDefault();
@@ -266,33 +162,69 @@ var Registartion = new Vue({
         },
         sendDataToDb(){
             var data = new FormData();
+            data.append('image_url', this.imageUrl);
+            data.append('user_name', this.name );
+            data.append('user_surname', this.surname);
+            data.append('user_email', this.email );
+            data.append('password', this.password)
+            data.append('type', "professor");
             data.append('university', this.university);
             data.append('faculty', this.faculty);
             data.append('department', this.department);
-            data.append('user_id', this.userId);
-            data.append('type', "professor");
 
-            axios.post('/academic/create', data, []).then( response => {
-                this.userEmail = response.data.email;
-                console.log(response);
+            axios.post('/user/create', data, []).then( response => {
+                $('#email').val(response.data.email);
+                $('#password').val(this.password);
                 $('#hiddenFormSubmit').submit();
             }).catch( error => {
-                console.log(error);
                 this.showTop = true;
                 this.setAlertToFalse();
                 this.errorMsg = error.message;
             })
+        },
+        showAlertWithCustomMessage(message){
+            this.showTop = true;
+            this.setAlertToFalse();
+            this.errorMsg = message;
         },
         setAlertToFalse(){
             var self = this;
             setTimeout(function(){
                 self.showTop = false;
             }, 3000);
+        },
+        getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        },
+        getUserVendorData(email){
+            axios.get('/session/'+email).then( response => {
+                this.imageUrl = response.data.picture;
+                this.image = response.data.picture;
+                this.name = response.data.first_name;
+                this.surname = response.data.last_name;
+                this.email = response.data.email;
+            }).catch( error => {
+                this.showAlertWithCustomMessage(error.message);
+            });
         }
     },
     beforeMount(){
         this.getUniversities();
         this.showTop = false;
+    },
+    mounted(){
+        var email = this.getParameterByName('email',window.location);
+
+        if(email !== null){
+            this.getUserVendorData();
+        }
+
     },
     watch:{
         password:function(val,oldVal){
